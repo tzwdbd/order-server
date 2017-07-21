@@ -164,7 +164,7 @@ public class BrushOrderServiceJob implements RpcCallback{
 	            	userTradeAddress.setMobile(transferClearInfo.getRecipientTel());
 	            	task.addParam("address", userTradeAddress);
 	        	}
-	            
+	        	brushOrderDetailDAO.updateStatus(brushOrderDetail.getId(),AutoBuyStatus.AUTO_ORDER_ING.getValue());
 	            TaskService taskService = (TaskService)rpcServerProxy.wrapProxy(TaskService.class, ip, this);
 	            taskService.burshOrderService(task);
 	        } catch (Exception e) {
@@ -181,8 +181,18 @@ public class BrushOrderServiceJob implements RpcCallback{
 			try{
 				Task task = (Task)objs[0];
 				BrushOrderDetail brushOrderDetail = (BrushOrderDetail) task.getParam("brushOrderDetail");
-				brushOrderDetailDAO.updateStatus(brushOrderDetail.getId(),AutoBuyStatus.AUTO_ORDER_ING.getValue());
+				//brushOrderDetailDAO.updateStatus(brushOrderDetail.getId(),AutoBuyStatus.AUTO_ORDER_ING.getValue());
 				log.info(String.format("刷单提交自动下单订单号[%s],分配账号:%s:,发送机器IP:%s", brushOrderDetail.getOrderNo(), brushOrderDetail.getAccountId(), task.getGroup()));
+				
+			}catch(Exception e){
+				log.error(e);
+			}
+		}else{
+			try{
+				Task task = (Task)objs[0];
+				BrushOrderDetail brushOrderDetail = (BrushOrderDetail) task.getParam("brushOrderDetail");
+				brushOrderDetailDAO.updateStatus(brushOrderDetail.getId(),AutoBuyStatus.AUTO_PAY_PARPARE.getValue());
+				log.info(String.format("刷单提交出错自动下单订单号[%s],分配账号:%s:,发送机器IP:%s", brushOrderDetail.getOrderNo(), brushOrderDetail.getAccountId(), task.getGroup()));
 				
 			}catch(Exception e){
 				log.error(e);

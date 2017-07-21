@@ -157,6 +157,7 @@ public class OrderServiceJob implements RpcCallback{
                 
                 for (RobotOrderDetail orderDetail : orderList) {
                     orderDetail.setStatus(AutoBuyStatus.AUTO_ORDER_ING.getValue());
+                    robotOrderDetailDAO.updateRobotOrderDetailStatusById(AutoBuyStatus.AUTO_ORDER_ING.getValue(),orderDetail.getId());
                 }
                 task.addParam("robotOrderDetails", orderList);
                 task.addParam("account", acc);
@@ -274,10 +275,25 @@ public class OrderServiceJob implements RpcCallback{
 					if(orderDetail == null){
 						orderDetail = r;
 					}
-	                robotOrderDetailDAO.updateRobotOrderDetailStatusById(AutoBuyStatus.AUTO_ORDER_ING.getValue(),r.getId());
+	                //robotOrderDetailDAO.updateRobotOrderDetailStatusById(AutoBuyStatus.AUTO_ORDER_ING.getValue(),r.getId());
 	            }
 				log.info(String.format("提交自动下单订单号[%s],分配账号:%s:,发送机器IP:%s", orderDetail.getOrderNo(), orderDetail.getAccountId(), task.getGroup()));
 				
+			}catch(Exception e){
+				log.error(e);
+			}
+		}else{
+			try{
+				Task task = (Task)objs[0];
+				List<RobotOrderDetail> orderList = (List<RobotOrderDetail>) task.getParam("robotOrderDetails");
+				RobotOrderDetail orderDetail = null;
+				for (RobotOrderDetail r : orderList) {
+					if(orderDetail == null){
+						orderDetail = r;
+					}
+	                robotOrderDetailDAO.updateRobotOrderDetailStatusById(AutoBuyStatus.AUTO_PAY_PARPARE.getValue(),r.getId());
+	            }
+				log.info(String.format("提交自动出错下单订单号[%s],分配账号:%s:,发送机器IP:%s", orderDetail.getOrderNo(), orderDetail.getAccountId(), task.getGroup()));
 			}catch(Exception e){
 				log.error(e);
 			}

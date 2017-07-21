@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="BrushOrderDetailSQL">
+<resultMap id="BrushOrderDetail"	type="com.oversea.task.domain.BrushOrderDetail">
+	<result  property="id"  column="id"/>
+	<result  property="brushUserId"  column="brush_user_id"/>
+	<result  property="brushInfoId"  column="brush_info_id"/>
+	<result  property="reviewTitle"  column="review_title"/>
+	<result  property="reviewContent"  column="review_content"/>
+	<result  property="feedbackContent"  column="feedback_content"/>
+	<result  property="orderNo"  column="order_no"/>
+	<result  property="siteName"  column="site_name"/>
+	<result  property="productId"  column="product_id"/>
+	<result  property="productEntityId"  column="product_entity_id"/>
+	<result  property="productUrl"  column="product_url"/>
+	<result  property="productRebateUrl"  column="product_rebate_url"/>
+	<result  property="productSku"  column="product_sku"/>
+	<result  property="singlePrice"  column="single_price"/>
+	<result  property="num"  column="num"/>
+	<result  property="totalPrice"  column="total_price"/>
+	<result  property="rmbPrice"  column="rmb_price"/>
+	<result  property="units"  column="units"/>
+	<result  property="status"  column="status"/>
+	<result  property="mallOrderNo"  column="mall_order_no"/>
+	<result  property="expressCompany"  column="express_company"/>
+	<result  property="expressNo"  column="express_no"/>
+	<result  property="expressStatus"  column="express_status"/>
+	<result  property="remarks"  column="remarks"/>
+	<result  property="accountId"  column="account_id"/>
+	<result  property="deviceId"  column="device_id"/>
+	<result  property="payType"  column="pay_type"/>
+	<result  property="gmtCreate"  column="gmt_create"/>
+	<result  property="gmtModified"  column="gmt_modified"/>
+	<result  property="orderTime"  column="order_time"/>
+	<result  property="dispatchTime"  column="dispatch_time"/>
+	<result  property="company"  column="company"/>
+	<result  property="isDirect"  column="is_direct"/>
+	<result  property="isManual"  column="is_manual"/>
+	<result  property="manualMan"  column="manual_man"/>
+	<result  property="groupNumber"  column="group_number"/>
+	<result  property="modeType"  column="mode_type"/>
+</resultMap>
+
+<sql id="BrushOrderDetail_Column_List">
+		id,
+		brush_user_id,
+		brush_info_id,
+		review_title,
+		review_content,
+		feedback_content,
+		order_no,
+		site_name,
+		product_id,
+		product_entity_id,
+		product_url,
+		product_rebate_url,
+		product_sku,
+		single_price,
+		num,
+		total_price,
+		rmb_price,
+		units,
+		status,
+		mall_order_no,
+		express_company,
+		express_no,
+		express_status,
+		remarks,
+		account_id,
+		device_id,
+		pay_type,
+		gmt_create,
+		gmt_modified,
+		order_time,
+		dispatch_time,
+		company,
+		is_direct,
+		is_manual,
+		manual_man,
+		group_number,
+		mode_type
+</sql>
+
+<insert id="addBrushOrderDetail"  parameterType="com.oversea.task.domain.BrushOrderDetail">
+	INSERT INTO brush_order_detail (
+		brush_user_id,
+		brush_info_id,
+		review_title,
+		review_content,
+		feedback_content,
+		order_no,
+		site_name,
+		product_id,
+		product_entity_id,
+		product_url,
+		product_rebate_url,
+		product_sku,
+		single_price,
+		num,
+		total_price,
+		rmb_price,
+		units,
+		status,
+		mall_order_no,
+		express_company,
+		express_no,
+		express_status,
+		remarks,
+		account_id,
+		device_id,
+		pay_type,
+		gmt_create,
+		gmt_modified,
+		order_time,
+		dispatch_time,
+		company,
+		is_direct,
+		is_manual,
+		manual_man,
+		group_number,
+		mode_type
+) VALUES (
+		#{brushUserId},
+		#{brushInfoId},
+		#{reviewTitle},
+		#{reviewContent},
+		#{feedbackContent},
+		#{orderNo},
+		#{siteName},
+		#{productId},
+		#{productEntityId},
+		#{productUrl},
+		#{productRebateUrl},
+		#{productSku},
+		#{singlePrice},
+		#{num},
+		#{totalPrice},
+		#{rmbPrice},
+		#{units},
+		#{status},
+		#{mallOrderNo},
+		#{expressCompany},
+		#{expressNo},
+		#{expressStatus},
+		#{remarks},
+		#{accountId},
+		#{deviceId},
+		#{payType},
+		#{gmtCreate},
+		#{gmtModified},
+		#{orderTime},
+		#{dispatchTime},
+		#{company},
+		#{isDirect},
+		#{isManual},
+		#{manualMan},
+		#{groupNumber},
+		#{modeType})
+</insert>
+
+
+<update id="updateBrushOrderDetailById"  parameterType="com.oversea.task.domain.BrushOrderDetail">
+	update brush_order_detail set
+		brush_user_id=#{brushUserId},
+		brush_info_id=#{brushInfoId},
+		review_title=#{reviewTitle},
+		review_content=#{reviewContent},
+		feedback_content=#{feedbackContent},
+		order_no=#{orderNo},
+		site_name=#{siteName},
+		product_id=#{productId},
+		product_entity_id=#{productEntityId},
+		product_url=#{productUrl},
+		product_rebate_url=#{productRebateUrl},
+		product_sku=#{productSku},
+		single_price=#{singlePrice},
+		num=#{num},
+		total_price=#{totalPrice},
+		rmb_price=#{rmbPrice},
+		units=#{units},
+		status=#{status},
+		mall_order_no=#{mallOrderNo},
+		express_company=#{expressCompany},
+		express_no=#{expressNo},
+		express_status=#{expressStatus},
+		remarks=#{remarks},
+		account_id=#{accountId},
+		device_id=#{deviceId},
+		pay_type=#{payType},
+		gmt_create=#{gmtCreate},
+		gmt_modified=#{gmtModified},
+		order_time=#{orderTime},
+		dispatch_time=#{dispatchTime},
+		company=#{company},
+		is_direct=#{isDirect},
+		is_manual=#{isManual},
+		manual_man=#{manualMan},
+		group_number=#{groupNumber},
+		mode_type=#{modeType}
+	where id=#{id}
+</update>
+
+
+<update id="updateBrushOrderDetailByDynamic"  parameterType="com.oversea.task.domain.BrushOrderDetail">
+	update brush_order_detail <set>
+		<if test="brushUserId!= null">
+				brush_user_id=#{brushUserId},
+		</if>
+		<if test="brushInfoId!= null">
+				brush_info_id=#{brushInfoId},
+		</if>
+		<if test="reviewTitle!= null">
+				review_title=#{reviewTitle},
+		</if>
+		<if test="reviewContent!= null">
+				review_content=#{reviewContent},
+		</if>
+		<if test="feedbackContent!= null">
+				feedback_content=#{feedbackContent},
+		</if>
+		<if test="orderNo!= null">
+				order_no=#{orderNo},
+		</if>
+		<if test="siteName!= null">
+				site_name=#{siteName},
+		</if>
+		<if test="productId!= null">
+				product_id=#{productId},
+		</if>
+		<if test="productEntityId!= null">
+				product_entity_id=#{productEntityId},
+		</if>
+		<if test="productUrl!= null">
+				product_url=#{productUrl},
+		</if>
+		<if test="productRebateUrl!= null">
+				product_rebate_url=#{productRebateUrl},
+		</if>
+		<if test="productSku!= null">
+				product_sku=#{productSku},
+		</if>
+		<if test="singlePrice!= null">
+				single_price=#{singlePrice},
+		</if>
+		<if test="num!= null">
+				num=#{num},
+		</if>
+		<if test="totalPrice!= null">
+				total_price=#{totalPrice},
+		</if>
+		<if test="rmbPrice!= null">
+				rmb_price=#{rmbPrice},
+		</if>
+		<if test="units!= null">
+				units=#{units},
+		</if>
+		<if test="status!= null">
+				status=#{status},
+		</if>
+		<if test="mallOrderNo!= null">
+				mall_order_no=#{mallOrderNo},
+		</if>
+		<if test="expressCompany!= null">
+				express_company=#{expressCompany},
+		</if>
+		<if test="expressNo!= null">
+				express_no=#{expressNo},
+		</if>
+		<if test="expressStatus!= null">
+				express_status=#{expressStatus},
+		</if>
+		<if test="remarks!= null">
+				remarks=#{remarks},
+		</if>
+		<if test="accountId!= null">
+				account_id=#{accountId},
+		</if>
+		<if test="deviceId!= null">
+				device_id=#{deviceId},
+		</if>
+		<if test="payType!= null">
+				pay_type=#{payType},
+		</if>
+		<if test="gmtCreate!= null">
+				gmt_create=#{gmtCreate},
+		</if>
+		<if test="gmtModified!= null">
+				gmt_modified=#{gmtModified},
+		</if>
+		<if test="orderTime!= null">
+				order_time=#{orderTime},
+		</if>
+		<if test="dispatchTime!= null">
+				dispatch_time=#{dispatchTime},
+		</if>
+		<if test="company!= null">
+				company=#{company},
+		</if>
+		<if test="isDirect!= null">
+				is_direct=#{isDirect},
+		</if>
+		<if test="isManual!= null">
+				is_manual=#{isManual},
+		</if>
+		<if test="manualMan!= null">
+				manual_man=#{manualMan},
+		</if>
+		<if test="groupNumber!= null">
+				group_number=#{groupNumber},
+		</if>
+		<if test="modeType!= null">
+				mode_type=#{modeType}
+		</if>
+</set>
+
+	where id=#{id}
+</update>
+
+
+<select id="countBrushOrderDetailById"  parameterType="java.lang.Long" resultType="java.lang.Integer">
+<![CDATA[
+	select count(1) from brush_order_detail where id=#{id}
+]]>
+</select>
+
+<select id="getBrushOrderDetailById"  parameterType="java.lang.Long" resultMap="BrushOrderDetail">
+	select <include refid="BrushOrderDetail_Column_List"/>
+ from brush_order_detail where id=#{id}
+</select>
+
+<select id="getBrushOrderDetailByDate"  parameterType="map" resultMap="BrushOrderDetail">
+<![CDATA[ 
+	select *
+ from automan.brush_order_detail where dispatch_time<#{dispatchTime} and status = 500 limit 1
+ ]]>
+</select>
+
+<update id="updateStatus" parameterType="map">
+        update automan.order_detail set status=#{status},gmt_modified=now() where id=#{id}
+</update>
+
+<select id="getBrushOrderDetailListBystatus"  parameterType="map" resultMap="BrushOrderDetail">
+	select <include refid="BrushOrderDetail_Column_List"/>
+ from brush_order_detail where status in(${status}) and is_direct is null and express_status=0
+</select>
+
+<select id="getBrushOrderDetailListByExpressstatus"  parameterType="map" resultMap="BrushOrderDetail">
+	select <include refid="BrushOrderDetail_Column_List"/>
+ from brush_order_detail where express_status in(${expressStatus}) and status = 100
+</select>
+
+<select id="getBrushOrderDetailListByThree"  parameterType="map" resultMap="BrushOrderDetail">
+	select <include refid="BrushOrderDetail_Column_List"/>
+ from brush_order_detail where status in(${status}) and is_direct ='yes' and express_status=0
+</select>
+
+<select id="getBrushOrderDetailListByExpressNo"  parameterType="map" resultMap="BrushOrderDetail">
+	select <include refid="BrushOrderDetail_Column_List"/>
+ from brush_order_detail where express_no in <foreach item="item" index="index" collection="expressNos" open="("  
+		            separator="," close=")">  
+		            #{item}  
+		        </foreach>
+</select>
+
+
+
+
+
+</mapper>

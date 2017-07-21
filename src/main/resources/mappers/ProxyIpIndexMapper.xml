@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="ProxyIpIndexMapper">
+
+  	 <resultMap type="com.oversea.task.domain.ProxyIpIndex" id="ProxyIpIndex">
+        <result column="id" property="id"/>
+        <result column="url" property="url"/>
+        <result column="index" property="index"/>
+        <result column="is_finish" property="isFinish"/>
+		<result column="is_process" property="isProcess"/>
+    </resultMap>
+    
+    <insert id="addProxyIpIndex" parameterType="com.oversea.task.domain.ProxyIpIndex">
+        insert into proxy_ip_index
+          (ip,url,index,is_finish,is_process)
+        values
+          (#{ip},#{url},#{index},#{isFinish},#{isProcess})
+        <selectKey resultType="long" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+    <select id="getUnfinishIPRecord" resultMap="ProxyIpIndex">
+	 	SELECT  *
+        FROM  spider.proxy_ip_index
+        WHERE  is_process='no' and (is_finish='no' or is_finish is null)
+	 </select>
+
+    <delete id="deleteById" parameterType="long">
+	 	delete from proxy_ip_index where id = #{value}
+	 </delete>
+
+    <select id="getById" parameterType="long" resultMap="ProxyIpIndex">
+	 	select * from  proxy_ip_index where id = #{value}
+	 </select>
+
+    <update id="updateProxyIpIndex" parameterType="com.oversea.task.domain.ProxyIpIndex">
+        update proxy_ip_index set 
+        <if test="url!=null">url=#{url},</if>
+        <if test="index!=null">`index`=#{index},</if>
+        <if test="isFinish!=null">is_finish=#{isFinish},</if>
+        <if test="isProcess!=null">is_process=#{isProcess}</if>
+        where id = #{id}
+    </update>
+
+</mapper>

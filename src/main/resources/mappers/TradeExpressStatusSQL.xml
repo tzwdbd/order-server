@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="TradeExpressStatusSQL">
+
+<insert id="addTradeExpressStatus"  parameterType="com.oversea.task.domain.TradeExpressStatus">
+	INSERT INTO oversea.trade_express_status${shardKey} (
+	    order_no,
+		express_no,
+		status,
+		name,
+		remark,
+		gmt_create,
+		gmt_modified,
+		occur_time,
+		operator
+) VALUES (
+        #{orderNo},
+		#{expressNo},
+		#{status},
+		#{name},
+		#{remark},
+		now(),
+		now(),
+		#{occurTime},
+		#{operator})
+</insert>
+
+<select id="countTradeExpressStatusByOrderNoAndOccurTime" parameterType="java.util.Map" resultType="java.lang.Integer">
+	select count(*) from oversea.trade_express_status${shardKey} where express_no=#{expressNo} and occur_time=#{occurTime}
+</select>
+
+</mapper>

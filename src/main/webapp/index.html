@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>海狐全球购</title>
+<meta charset="utf-8">
+<meta name="apple-mobile-web-app-title" content="海狐全球购H5">
+<meta name="format-detection" content="telephone=no">
+<META HTTP-EQUIV="pragma" CONTENT="no-cache"> 
+<META HTTP-EQUIV="Cache-Control" CONTENT="no-store, must-revalidate"> 
+<META HTTP-EQUIV="expires" CONTENT="Wed, 26 Feb 1997 08:21:57 GMT"> 
+<META HTTP-EQUIV="expires" CONTENT="0"> 
+<meta http-equiv="Access-Control-Allow-Origin" content="*">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+<link type="text/css" rel="stylesheet"  href="css/index.css?v=statictime"></link>
+<link type="text/css" rel="stylesheet"  href="css/mainTab.css?v=statictime"></link>
+<link type="text/css" rel="stylesheet"  href="css/scroll.css?v=statictime"></link>
+<link type="text/css" rel="stylesheet"  href="css/swiper.css?v=statictime"></link>
+<script type="text/javascript" src="js/common/iscroll.js?v=statictime"></script>
+<script type="text/javascript" src="js/jquery/jquery-2.1.4.js?v=statictime"></script>
+<script type="text/javascript" src="js/jquery/jquery.lazyload.mini.js?v=statictime"></script>
+<script type="text/javascript" src="js/common/mustache.js?v=statictime"></script>
+<script type="text/javascript" src="js/common/md5.js?v=statictime"></script>
+<script type="text/javascript" src="js/common/global.js?v=statictime"></script>
+<script type="text/javascript" src="js/common/lxlib.js?v=statictime"></script>
+<script type="text/javascript" src="js/common/weChatPay.js?v=statictime"></script>
+<script type="text/javascript" src="js/common/swiper.min.js?v=statictime"></script>
+<script type="text/javascript" src="js/resource/index.js?v=statictime"></script>
+
+<!--
+<script type="text/javascript" src="http://m.haihu.com/js/??jquery/jquery-2.1.4.js,jquery/jquery.lazyload.mini.js,common/mustache.js,common/md5.js,common/iscroll.js,common/global.js,resource/index.js"></script>
+-->
+</head>
+<body>
+  <div class="mask hidden"></div>
+  <div class="menuMask hidden"></div>
+
+  <div class="launchMask hidden"></div>
+  <div class="launchView hidden">
+      <div class="swiper-container">
+         <div class="swiper-wrapper" data-image-index = "0">
+             <div class="swiper-slide container">
+                 <div class="imageFirst"><img src="icon/frame01.png"></div>
+
+                <div class="swiper-next"><img src="icon/arrow_right.png" class="arrowImage"></div>
+             </div>
+             <div class="swiper-slide container">
+                 <div class="imageSecond"><img src="icon/frame02.png"></div>
+              <div class="swiper-prev"><img src="icon/arrow_left.png" class="arrowImage"></div>
+
+             </div>
+
+         </div>
+         <div class="swiper-pagination"></div>
+      </div>
+
+  </div>
+	<div class="groupMainTab">
+		<div class="tabPress floatLeft tabFirst" data-link ="index.html"><img src="icon/tab/homeact@3x.png" class="tabImg"/><div class="samlltitle">首页</div></div>
+		<div class="tabNormal floatLeft" data-link ="order.html"><img src="icon/tab/ordernor@3x.png" class="tabImg"/><div class="samlltitle">订单</div></div>
+		<div class="tabNormal floatLeft" data-link ="shoppingCar.html"><img src="icon/tab/carnor@3x.png" class="tabImg"/><div class="samlltitle">购物车</div></div>
+		<div class="tabNormal floatLeft" data-link ="severPromise.html"><img src="icon/tab/servnor@3x.png" class="tabImg"/><div class="samlltitle">服务承诺</div></div>
+	</div>
+
+
+  <div id="_body">
+      {category_static}
+     <div class="page indexPage">
+        <!--<div class="_header"><img src="icon/index/ht-startup-logo@2x.png" class="logo"/></div>-->
+        <div class="_context">
+            <div class="brandSource">
+                {banner_static}
+                {theme_static}
+            </div>
+            <div class="recommendProduct">
+                {goods_static}
+            </div>
+        </div>
+		<!--
+        <div class="operateIconSmall">
+           <div class="plus"></div>
+        </div>
+        <div class="operateIcon">
+           <div class="plus"></div>
+           <div class="cart icon"><img src="icon/index/shoppingcar.png" data-sign="home_plus_shopcar" data-href="shoppingCar.html"/></div>
+           <div class="order icon"><img src="icon/index/order.png" data-sign="home_plus_order" data-href="order.html"/></div>
+           <div class="service icon"><img src="icon/index/service.png" data-sign="home_plus_protocol" data-href="http://m.haihu.com/read/QualityDeclaration.html"/></div>
+        </div>
+		-->
+
+		<!-- mainTab -->
+
+
+        <div class="scrollToTopPage hidden"></div>
+         <div class="downloadClientApp hidden">
+             <div class="c1 floatLeft closeDownloadApp"></div>
+             <div class="c2 floatLeft">更多好买尖货尽在海狐全球购!</div>
+             <div class="c3 floatRight"><a type="button" class="downloadAppButton">立即下载</a></div>
+             <div class="clearFloat"></div>
+         </div>
+
+     </div>
+  </div>
+
+  
+  
+</body>
+</html>

@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- 废弃 discount,desc,activecode -->
+<mapper namespace="ProductEntitySQL">
+    <resultMap id="ProductEntity" type="com.oversea.task.domain.ProductEntity">
+        <result property="id" column="id"/>
+        <result property="productId" column="product_id"/>
+        <result property="productEntityCode" column="product_entity_code"/>
+        <result property="externalProductEntitytId" column="external_product_entity_id"/>
+        <result property="storeNumber" column="store_number"/>
+        <result property="price" column="price"/>
+        <result property="originprice" column="originprice"/>
+        <result property="realprice" column="realprice"/>
+        <result property="mallId" column="mall_id"/>
+        <result property="partnerId" column="partner_id"/>
+        <result property="productImageId" column="product_image_id"/>
+        <result property="status" column="status"/>
+        <result property="skuStatus" column="sku_status"/>
+        <result property="ean" column="EAN"/>
+        <result property="upc" column="UPC"/>
+        <result property="gmtCreate" column="gmt_create"/>
+        <result property="gmtModified" column="gmt_modified"/>
+        <result property="externalProductEntityCode" column="external_product_entity_code"/>
+        <result property="taxWeight" column="tax_weight"/>
+        <result property="weight" column="weight"/>
+        <result property="referenceprice" column="reference_price"/>
+        <result property="stock" column="stock"/>
+        <result property="stockIn" column="stock_in"/>
+        <result property="stockOut" column="stock_out"/>
+        <result property="storeOwn" column="store_own"/>
+        <result property="skuLimitBuy" column="sku_limit_buy"/>
+    </resultMap>
+
+    <sql id="ProductEntity_Column_List">
+		id,
+		product_id,
+		product_entity_code,
+		external_product_entity_id,
+		store_number,
+		price,
+		originprice,
+		realprice,
+		mall_id,
+		partner_id,
+		product_image_id,
+		status,
+		sku_status,
+		gmt_create,
+		gmt_modified,
+		external_product_entity_code,
+		tax_weight,
+		weight,
+		reference_price,
+		stock,
+		stock_in,
+		stock_out,
+		EAN,
+		UPC,
+		store_own,
+		sku_limit_buy
+</sql>
+
+    <insert id="addProductEntity" parameterType="com.oversea.task.domain.ProductEntity">
+	INSERT INTO oversea.product_entity (
+		id,
+		product_id,
+		product_entity_code,
+		external_product_entity_id,
+		store_number,
+		price,
+		originprice,
+		realprice,
+		mall_id,
+		partner_id,
+		product_image_id,
+		status,
+		gmt_create,
+		gmt_modified,
+		external_product_entity_code,
+		tax_weight,
+		weight,
+		reference_price,
+		EAN,
+		UPC,
+		stock,
+		stock_in,
+		stock_out,
+		sku_limit_buy
+) VALUES (
+		#{id},
+		#{productId},
+		#{productEntityCode},
+		#{externalProductEntitytId},
+		#{storeNumber},
+		#{price},
+		#{originprice},
+		#{realprice},
+		#{mallId},
+		#{partnerId},
+		#{productImageId},
+		#{status},
+		now(),
+		now(),
+		#{externalProductEntityCode},
+		#{taxWeight},
+		#{weight},
+		#{referenceprice},
+		#{ean},
+		#{upc},
+		#{stock},
+		#{stockIn},
+		#{stockOut},
+		#{skuLimitBuy}
+		)
+</insert>
+
+
+    <update id="updateProductEntityByDynamic" parameterType="com.oversea.task.domain.ProductEntity">
+        update oversea.product_entity set gmt_modified=now(),
+        sku_limit_buy=#{skuLimitBuy}
+        <if test="productEntityCode!= null">
+            ,product_entity_code=#{productEntityCode}
+        </if>
+        <if test="externalProductEntitytId!= null">
+            ,external_product_entity_id=#{externalProductEntitytId}
+        </if>
+        <if test="storeNumber!= null">
+            ,store_number=#{storeNumber}
+        </if>
+        <if test="price!= null">
+            ,price=#{price}
+        </if>
+        <if test="originprice!= null">
+            ,originprice=#{originprice}
+        </if>
+        <if test="productImageId!= null">
+            ,product_image_id=#{productImageId}
+        </if>
+        <if test="status!= null">
+            ,status=#{status}
+        </if>
+        <if test="taxWeight!= null">
+            ,tax_weight=#{taxWeight}
+        </if>
+        <if test="weight!= null">
+            ,weight=#{weight}
+        </if>
+        <if test="ean!= null">
+            ,EAN=#{ean}
+        </if>
+        <if test="upc!= null">
+            ,UPC=#{upc}
+        </if>
+        <if test="weight!= null">
+            ,weight=#{weight}
+        </if>
+        <if test="storeOwn!= null">
+            ,store_own=#{storeOwn}
+        </if>
+        where id=#{id}
+    </update>
+
+
+    <select id="countProductEntityById" parameterType="java.lang.Long" resultType="java.lang.Integer">
+	  select count(1) from oversea.product_entity where id=#{id}
+    </select>
+
+    <select id="getProductEntityByProductIdAndStatus" parameterType="java.util.Map" resultMap="ProductEntity">
+        select
+        <include refid="ProductEntity_Column_List"/>
+        from oversea.product_entity 
+        where product_id=#{productId}
+        and status=#{status}
+    </select>
+    
+    <select id="getProductEntityById" parameterType="java.lang.Long" resultMap="ProductEntity">
+        select
+        <include refid="ProductEntity_Column_List"/>
+        from oversea.product_entity 
+        where id=#{id} 
+    </select>
+
+    <select id="getProductEntityByProductIdAndProductEntityCode" parameterType="java.util.Map"
+            resultMap="ProductEntity">
+        select
+        <include refid="ProductEntity_Column_List"/>
+        from oversea.product_entity 
+        where product_id=#{productId}
+        and product_entity_code=#{productEntityCode}
+        and status=#{status}
+    </select>
+
+    <select id="getProductEntityByProductIdAndProductEntityCodeWithoutStatus" parameterType="java.util.Map"
+            resultMap="ProductEntity">
+        select
+        <include refid="ProductEntity_Column_List"/>
+        from oversea.product_entity 
+        where product_id=#{productId}
+        and product_entity_code=#{productEntityCode}
+    </select>
+
+    <select id="getProductEntityByProductId" parameterType="java.lang.Long" resultMap="ProductEntity">
+        select
+        <include refid="ProductEntity_Column_List"/>
+        from oversea.product_entity 
+        where product_id=#{productId}
+    </select>
+
+    <update id="updateProductEntityStautsById" parameterType="java.util.Map">
+      update oversea.product_entity set status=#{status},gmt_modified=now() where id=#{id}
+    </update>
+
+    <select id="getProductEntityByExternalProductId" parameterType="java.lang.String" resultMap="ProductEntity">
+        select
+        <include refid="ProductEntity_Column_List"/>
+        from oversea.product_entity 
+        where external_product_entity_id=#{externalProductId}
+    </select>
+
+    <select id="getProductEntityByProductIdAndExternalProductEntitytId" parameterType="java.util.Map"
+            resultMap="ProductEntity">
+        select
+        <include refid="ProductEntity_Column_List"/>
+        from oversea.product_entity 
+        where external_product_entity_id=#{externalProductId}
+        AND product_id=#{productId} LIMIT 1
+    </select>
+
+
+    <!-- add by evan 2015.10.08 -->
+    <update id="updateProductEntityStatusOrPrice" parameterType="com.oversea.task.domain.ProductEntity">
+        update oversea.product_entity set gmt_modified=now()
+        <if test="price!= null">
+            ,price=#{price}
+        </if>
+        <if test="status!= null">
+            ,status=#{status}
+        </if>
+        where id=#{id}
+    </update>
+
+    <select id="countProductEntityByProdcutId" parameterType="java.lang.Long" resultType="java.lang.Integer">
+	  select count(1) from oversea.product_entity where product_id=#{id} and status = 0
+    </select>
+
+    <update id="increaseStockIn" parameterType="java.util.Map">
+        update oversea.product_entity set stock_in=stock_in+#{cnt},stock=stock+#{cnt} where id=#{id}
+    </update>
+
+    <update id="decreaseStockOut" parameterType="java.util.Map">
+        update oversea.product_entity set stock_out=stock_out+#{cnt},stock=stock-#{cnt} where id=#{id} and stock>=#{cnt}
+    </update>
+    
+    <update id="updateStoreOwn" parameterType="java.util.Map">
+        update oversea.product_entity set store_own=store_own-#{num} where id=#{id} and store_own>=#{num}
+    </update>
+    
+    <update id="updateStoreOwnAndStatus" parameterType="java.lang.Long">
+        update oversea.product_entity set store_own=null,status=2 where id=#{id} 
+    </update>
+</mapper>

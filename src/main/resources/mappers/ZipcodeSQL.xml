@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ZipcodeSQL">
+<resultMap id="Zipcode"    type="com.oversea.task.domain.Zipcode">
+	<result  property="id"  column="id"/>
+	<result  property="state"  column="state"/>
+	<result  property="stateCode"  column="state_code"/>
+	<result  property="city"  column="city"/>
+	<result  property="cityCode"  column="city_code"/>
+	<result  property="district"  column="district"/>
+	<result  property="zip"  column="zip"/>
+	<result  property="gmtCreate"  column="gmt_create"/>
+	<result  property="gmtModified"  column="gmt_modified"/>
+	<result  property="operator"  column="operator"/>
+</resultMap>
+
+<sql id="Zipcode_Column_List">
+	id,
+	state,
+	state_code,
+	city,
+	city_code,
+	district,
+	zip,
+	gmt_create,
+	gmt_modified,
+	operator
+</sql>
+
+<insert id="addZipcode"  parameterType="com.oversea.task.domain.Zipcode">
+	INSERT INTO oversea.zipcode ( 
+	<trim suffix="" suffixOverrides=",">  
+		<if test="state!= null" >state,</if>
+		<if test="stateCode!= null" >state_code,</if>
+		<if test="city!= null" >city,</if>
+		<if test="cityCode!= null" >city_code,</if>
+		<if test="district!= null" >district,</if>
+		<if test="zip!= null" >zip,</if>
+		gmt_create,
+		gmt_modified,
+		<if test="operator!= null" >operator,</if>
+	</trim>
+	) VALUES (
+	<trim suffix="" suffixOverrides=",">  
+		<if test="state!= null" >#{state},</if>
+		<if test="stateCode!= null" >#{stateCode},</if>
+		<if test="city!= null" >#{city},</if>
+		<if test="cityCode!= null" >#{cityCode},</if>
+		<if test="district!= null" >#{district},</if>
+		<if test="zip!= null" >#{zip},</if>
+		NOW(),
+		NOW(),
+		<if test="operator!= null" >#{operator},</if>
+	</trim>
+	)<selectKey resultType="java.lang.Long" keyProperty="id">SELECT LAST_INSERT_ID()</selectKey>
+</insert>
+
+
+<update id="updateZipcode"  parameterType="com.oversea.task.domain.Zipcode">
+	update oversea.zipcode
+	<set>
+		<if test="state!=null">
+			state=#{state},
+		</if>
+		<if test="stateCode!=null">
+			state_code=#{stateCode},
+		</if>
+		<if test="city!=null">
+			city=#{city},
+		</if>
+		<if test="cityCode!=null">
+			city_code=#{cityCode},
+		</if>
+		<if test="district!=null">
+			district=#{district},
+		</if>
+		<if test="zip!=null">
+			zip=#{zip},
+		</if>
+			gmt_modified=NOW(),
+		<if test="operator!=null">
+			operator=#{operator},
+		</if>
+	</set>
+	where id=#{id}
+</update>
+
+
+<select id="countZipcodeByCondition"  parameterType="com.oversea.task.domain.Zipcode" resultType="java.lang.Integer">
+	 select count(1) from oversea.zipcode
+	<where>
+		<if test="id!=null">
+			 and id=#{id}
+		</if>
+		<if test="state!=null">
+			 and state=#{state}
+		</if>
+		<if test="stateCode!=null">
+			 and state_code=#{stateCode}
+		</if>
+		<if test="city!=null">
+			 and city=#{city}
+		</if>
+		<if test="cityCode!=null">
+			 and city_code=#{cityCode}
+		</if>
+		<if test="district!=null">
+			 and district=#{district}
+		</if>
+		<if test="zip!=null">
+			 and zip=#{zip}
+		</if>
+		<if test="gmtCreate!=null">
+			 and gmt_create=#{gmtCreate}
+		</if>
+		<if test="gmtModified!=null">
+			 and gmt_modified=#{gmtModified}
+		</if>
+		<if test="operator!=null">
+			 and operator=#{operator}
+		</if>
+	</where>
+</select>
+
+
+<select id="getZipcodeByCondition"  parameterType="com.oversea.task.domain.Zipcode" resultMap="Zipcode">
+	select <include refid="Zipcode_Column_List"/>
+	from oversea.zipcode
+	<where>
+		<if test="id!=null">
+			 and id=#{id}
+		</if>
+		<if test="state!=null">
+			 and state=#{state}
+		</if>
+		<if test="stateCode!=null">
+			 and state_code=#{stateCode}
+		</if>
+		<if test="city!=null">
+			 and city=#{city}
+		</if>
+		<if test="cityCode!=null">
+			 and city_code=#{cityCode}
+		</if>
+		<if test="district!=null">
+			 and district=#{district}
+		</if>
+		<if test="zip!=null">
+			 and zip=#{zip}
+		</if>
+		<if test="gmtCreate!=null">
+			 and gmt_create=#{gmtCreate}
+		</if>
+		<if test="gmtModified!=null">
+			 and gmt_modified=#{gmtModified}
+		</if>
+		<if test="operator!=null">
+			 and operator=#{operator}
+		</if>
+	</where>
+	<if test="sidx!= null">
+	order by ${sidx} ${sord}
+	</if>
+	limit #{start}, #{end}
+</select>
+
+<select id="getZipcodeByStateCityDistrict"  parameterType="java.util.Map" resultMap="Zipcode">
+	SELECT <include refid="Zipcode_Column_List"/>
+	FROM oversea.zipcode
+	<where>
+		<if test="state !=null">
+			 AND state=#{state}
+		</if>
+		<if test="city !=null">
+			 AND city=#{city}
+		</if>
+		<if test="district !=null">
+			 AND district=#{district}
+		</if>
+	</where>
+</select>
+
+</mapper>

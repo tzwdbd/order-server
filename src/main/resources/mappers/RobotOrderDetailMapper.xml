@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="com.oversea.task.mapper.RobotOrderDetailDAO">
+
+    <resultMap id="RobotOrderDetail" type="com.oversea.task.domain.RobotOrderDetail">
+        <result property="id" column="id"/>
+        <result property="orderNo" column="order_no"/>
+        <result property="productId" column="product_id"/>
+        <result property="productEntityId" column="product_entity_id"/>
+        <result property="productUrl" column="product_url"/>
+        <result property="productRebateUrl" column="product_rebate_url"/>
+        <result property="productSku" column="product_sku"/>
+        <result property="siteName" column="site_name"/>
+        <result property="num" column="num"/>
+        <result property="myPrice" column="my_price"/>
+        <result property="rmbPrice" column="rmb_price"/>
+        <result property="status" column="status"/>
+        <result property="mallOrderNo" column="mall_order_no"/>
+        <result property="expressCompany" column="express_company"/>
+        <result property="expressNo" column="express_no"/>
+        <result property="accountId" column="account_id"/>
+        <result property="deviceId" column="device_id"/>
+        <result property="isManual" column="is_manual"/>
+        <result property="manualMan" column="manual_man"/>
+        <result property="gmtCreate" column="gmt_create"/>
+        <result property="gmtModified" column="gmt_modified"/>
+        <result property="orderTime" column="order_time"/>
+        <result property="totalPrice" column="total_price"/>
+        <result property="singlePrice" column="single_price"/>
+        <result property="isStockpile" column="is_stockpile"/>
+        <result property="units" column="units"/>
+        <result property="promotionStatus" column="promotion_status"/>
+        <result property="company" column="company"/>
+        <result property="promotionCodeList" column="promotion_code_list"/>
+        <result property="promotionCodeListStatus" column="promotion_code_list_status"/>
+        <result property="expressStatus" column="express_status"/>
+        <result property="mallExpressFee" column="mall_express_fee"/>
+        <result property="promotionFee" column="promotion_fee"/>
+        <result property="isAutoExpress" column="is_auto_express"/>
+        <result property="orderImg" column="order_img"/>
+        <result property="isDirect" column="is_direct"/>
+        <result property="groupNumber" column="group_number"/>
+        <result property="dispatchTime" column="dispatch_time"/>
+    </resultMap>
+    
+    <resultMap id="TransferClearInfo" type="com.oversea.task.domain.TransferClearInfo">
+        <result property="recipientName" column="recipient_name"/>
+        <result property="recipientProvince" column="recipient_province"/>
+        <result property="recipientCity" column="recipient_city"/>
+        <result property="recipientAddress" column="recipient_address"/>
+        <result property="recipientZipCode" column="recipient_zip_code"/>
+        <result property="recipientTel" column="recipient_tel"/>
+    </resultMap>
+
+    <sql id="RobotOrderDetail_Column_List">
+        id,
+        order_no,
+        product_id,
+        product_entity_id,
+        product_url,
+        product_rebate_url,
+        product_sku,
+        site_name,
+        num,
+        my_price,
+        rmb_price,
+        status,
+        mall_order_no,
+        express_company,
+        express_no,
+        account_id,
+        device_id,
+        is_manual,
+        manual_man,
+        gmt_create,
+        gmt_modified,
+        order_time,
+        total_price,
+        single_price,
+        is_stockpile,
+        units,
+        promotion_status,
+        company,
+        is_direct,
+        promotion_code_list,
+        promotion_code_list_status,
+        express_status,
+        mall_express_fee,
+        promotion_fee,
+        is_auto_express,
+        order_img,
+        group_number,
+        dispatch_time
+    </sql>
+
+    <insert id="addRobotOrderDetail" parameterType="com.oversea.task.domain.RobotOrderDetail">
+        INSERT INTO automan.order_detail (
+        order_no,
+        product_id,
+        product_entity_id,
+        product_url,
+        product_rebate_url,
+        product_sku,
+        site_name,
+        num,
+        my_price,
+        rmb_price,
+        status,
+        mall_order_no,
+        express_company,
+        express_no,
+        account_id,
+        device_id,
+        is_manual,
+        manual_man,
+        gmt_create,
+        gmt_modified,
+        order_time,
+        total_price,
+        single_price,
+        is_stockpile,
+        remarks,
+        units,
+        promotion_status,
+        company,
+        promotion_code_list,
+        promotion_code_list_status,
+        express_status,
+        mall_express_fee,
+        promotion_fee,
+        is_auto_express
+        ) VALUES (
+        #{orderNo},
+        #{productId},
+        #{productEntityId},
+        #{productUrl},
+        #{productRebateUrl},
+        #{productSku},
+        #{siteName},
+        #{num},
+        #{myPrice},
+        #{rmbPrice},
+        #{status},
+        #{mallOrderNo},
+        #{expressCompany},
+        #{expressNo},
+        #{accountId},
+        #{deviceId},
+        #{isManual},
+        #{manualMan},
+        now(),
+        now(),
+        now(),
+        #{totalPrice},
+        #{singlePrice},
+        #{isStockpile},
+        #{remarks},
+        #{units},
+        #{promotionStatus},
+        #{company},
+        #{promotionCodeList},
+        #{promotionCodeListStatus},
+        #{expressStatus},
+        #{mallExpressFee},
+        #{promotionFee},
+        #{isAutoExpress})
+    </insert>
+
+
+    <update id="updateRobotOrderDetailById" parameterType="com.oversea.task.domain.RobotOrderDetail">
+        update automan.order_detail set
+        order_no=#{orderNo},
+        product_id=#{productId},
+        product_entity_id=#{productEntityId},
+        product_url=#{productUrl},
+        product_rebate_url=#{productRebateUrl},
+        product_sku=#{productSku},
+        site_name=#{siteName},
+        num=#{num},
+        my_price=#{myPrice},
+        rmb_price=#{rmbPrice},
+        status=#{status},
+        mall_order_no=#{mallOrderNo},
+        express_company=#{expressCompany},
+        express_no=#{expressNo},
+        account_id=#{accountId},
+        device_id=#{deviceId},
+        is_manual=#{isManual},
+        manual_man=#{manualMan},
+        gmt_create=#{gmtCreate},
+        gmt_modified=#{gmtModified},
+        total_price=#{totalPrice},
+        single_price=#{singlePrice},
+        is_stockpile=#{isStockpile},
+        company=#{company},
+        promotion_code_list=#{promotionCodeList},
+        promotion_code_list_status=#{promotionCodeListStatus},
+        company=#{company}
+        where express_status=#{expressStatus}
+    </update>
+
+
+    <update id="updateRobotOrderDetail" parameterType="com.oversea.task.domain.RobotOrderDetail">
+        update automan.order_detail
+        <set>
+            <if test="orderNo!= null">
+                order_no=#{orderNo},
+            </if>
+            <if test="productId!= null">
+                product_id=#{productId},
+            </if>
+            <if test="productEntityId!= null">
+                product_entity_id=#{productEntityId},
+            </if>
+            <if test="productUrl!= null">
+                product_url=#{productUrl},
+            </if>
+            <if test="productRebateUrl!= null">
+                product_rebate_url=#{productRebateUrl},
+            </if>
+            <if test="productSku!= null">
+                product_sku=#{productSku},
+            </if>
+            <if test="siteName!= null">
+                site_name=#{siteName},
+            </if>
+            <if test="num!= null">
+                num=#{num},
+            </if>
+            <if test="myPrice!= null">
+                my_price=#{myPrice},
+            </if>
+            <if test="rmbPrice!= null">
+                rmb_price=#{rmbPrice},
+            </if>
+            <if test="status!= null">
+                status=#{status},
+            </if>
+            <if test="mallOrderNo!= null">
+                mall_order_no=#{mallOrderNo},
+            </if>
+            <if test="expressCompany!= null">
+                express_company=#{expressCompany},
+            </if>
+            <if test="expressNo!= null">
+                express_no=#{expressNo},
+            </if>
+            <if test="accountId!= null">
+                account_id=#{accountId},
+            </if>
+            <if test="deviceId!= null">
+                device_id=#{deviceId},
+            </if>
+            <if test="isManual!= null">
+                is_manual=#{isManual},
+            </if>
+            <if test="manualMan!= null">
+                manual_man=#{manualMan},
+            </if>
+            <if test="totalPrice!= null">
+                total_price=#{totalPrice},
+            </if>
+            <if test="singlePrice!= null">
+                single_price=#{singlePrice},
+            </if>
+            <if test="isStockpile!= null">
+                is_stockpile=#{isStockpile},
+            </if>
+            <if test="remarks!= null">
+                remarks=#{remarks},
+            </if>
+            <if test="orderTime!= null">
+                order_time=#{orderTime},
+            </if>
+            <if test="company!= null">
+                company=#{company},
+            </if>
+            <if test="promotionCodeListStatus!= null">
+                promotion_code_list_status=#{promotionCodeListStatus},
+            </if>
+            <if test="expressStatus!= null">
+                express_status=#{expressStatus},
+            </if>
+            <if test="mallExpressFee!= null">
+                mall_express_fee=#{mallExpressFee},
+            </if>
+            <if test="promotionFee!= null">
+                promotion_fee=#{promotionFee},
+            </if>
+            <if test="orderImg!= null">
+                order_img=#{orderImg},
+            </if>
+            gmt_modified=#{gmtModified}
+        </set>
+        where id=#{id}
+    </update>
+
+    <update id="updateRobotOrderDetailOrderById" parameterType="map">
+        update automan.order_detail set order_no=#{orderNo} where id=#{id}
+    </update>
+
+    <update id="updateRobotOrderDetailStatusById" parameterType="map">
+        update automan.order_detail set status=#{status},gmt_modified=now() where id=#{id}
+    </update>
+    
+    <update id="updateRobotOrderDetailExpressStatusById" parameterType="map">
+        update automan.order_detail set express_status=#{expressStatus},gmt_modified=now() where id=#{id}
+    </update>
+
+    <select id="getStorageRobotOrderDetailOrderByProductEntityId" resultMap="RobotOrderDetail">
+        select
+        <include refid="RobotOrderDetail_Column_List"/>
+        from automan.order_detail
+        where
+        <![CDATA[ status <= 1000 and status>0]]>
+        and product_entity_id=#{productEntityId}
+        and (order_no is null or order_no='')
+        and is_stockpile
+        order by gmt_create
+        limit 1
+    </select>
+
+
+    <select id="countRobotOrderDetailById" parameterType="java.lang.Long" resultType="long">
+        <![CDATA[
+
+
+
+
+			select count(1) from automan.order_detail where id=#{id}
+
+
+
+
+        ]]>
+    </select>
+
+    <select id="getRobotOrderDetailById" parameterType="java.lang.Long" resultMap="RobotOrderDetail">
+        select
+        <include refid="RobotOrderDetail_Column_List"/>
+        from automan.order_detail where id=#{id}
+    </select>
+    
+    <select id="getRobotOrderDetailByOrderNo" parameterType="java.lang.String" resultMap="RobotOrderDetail">
+        select
+        <include refid="RobotOrderDetail_Column_List"/>
+        from automan.order_detail where order_no=#{orderNo}
+    </select>
+    
+    
+
+
+    <select id="getRobotOrderDetailByOrderNoAndProductEntityId" resultMap="RobotOrderDetail" parameterType="map">
+        select
+        <include refid="RobotOrderDetail_Column_List"/>
+        from automan.order_detail where order_no=#{orderNo} and product_entity_id=#{productEntityId}
+    </select>
+
+    <!-- <select id="findOrderDetailForAutoOrder" parameterType="map" resultMap="RobotOrderDetail">
+        select
+        <include refid="RobotOrderDetail_Column_List"/>
+        from automan.order_detail where `status`=#{status} and account_id >0 and device_id>0 and is_manual=#{isManual}
+    </select> -->
+    <select id="findOrderDetailForAutoOrder" parameterType="map" resultMap="RobotOrderDetail">
+        select distinct d.* from automan.order_detail a left join  automan.order_detail d on a.order_no=d.order_no and a.account_id=d.account_id and a.status=#{status} and a.account_id >0 and a.device_id>0 and a.is_manual=#{isManual} where d.id is not null;
+    </select>
+    
+
+    <select id="countOrderDetailForAutoOrderByAccountId" parameterType="map" resultType="int">
+        select count(1)
+        from (
+            select
+              order_no,count(1)
+            from automan.order_detail
+            where
+              account_id=#{accountId}
+              and order_no!=#{orderNo}
+            <![CDATA[ and id<#{id}]]>
+            group by order_no
+        ) c;
+    </select>
+
+    <select id="findOrderDetailAccountIdForExpress" parameterType="map" resultType="long">
+        select
+        account_id
+        from automan.order_detail
+        where
+        `status` in (${status})
+        and mall_order_no is not null and mall_order_no!=''
+        and is_auto_express=1
+        group by account_id
+    </select>
+    
+    <select id="findOrderDetailAccountIdForExpressNode" resultType="long">
+        select
+        account_id
+        from automan.order_detail
+        where
+        `status`=100 
+        and express_status=1
+        and mall_order_no is not null and mall_order_no!=''
+        and is_auto_express=1
+        group by account_id
+    </select>
+
+    <select id="findOrderDetailByAccountId" parameterType="map" resultMap="RobotOrderDetail">
+        select
+        <include refid="RobotOrderDetail_Column_List"/>
+        from automan.order_detail where (`status` in(${status}) or (`status`=100 and express_status=1)) and account_id=#{accountId} and mall_order_no is not null
+        and
+        mall_order_no!='' and is_auto_express=1
+        order by id desc
+    </select>
+        
+    <select id="findOrderDetailsForSpiderExpress" parameterType="map" resultMap="RobotOrderDetail">
+        select
+        <include refid="RobotOrderDetail_Column_List"/>
+        from automan.order_detail where `status` in(${status})  and mall_order_no is not null
+        and
+        mall_order_no!='' and is_auto_express=1
+        order by gmt_modified
+    </select>
+    
+    <select id="findOrderDetailsForSpiderExpressDetail" resultMap="RobotOrderDetail">
+        select
+        <include refid="RobotOrderDetail_Column_List"/>
+        <![CDATA[
+        from automan.order_detail where `status`=100 and express_status=4
+        order by gmt_modified]]>
+    </select>
+
+    <select id="getRobotOrderDetailsByStatusAndAccountId" parameterType="map" resultMap="RobotOrderDetail">
+        select
+        <include refid="RobotOrderDetail_Column_List"/>
+        from automan.order_detail where status=#{status} and account_id=#{accountId}
+    </select>
+
+    <select id="getExternalProductEntityId" parameterType="long" resultType="string">
+        select external_product_entity_id from oversea.product_entity where id = #{id}
+    </select>
+    
+    <select id="getExpressAddress" parameterType="long" resultMap="TransferClearInfo">
+    	select * from transfer_clear_info where express_company_id = #{companyId} LIMIT 1
+    </select>
+    
+     <select id="findOrderDetailsByOrderTime" parameterType="map" resultMap="RobotOrderDetail">
+    	 select
+        <include refid="RobotOrderDetail_Column_List"/>
+        from automan.order_detail where status=100 and site_name='amazon' and order_time>#{orderTime} and express_status=14;
+    </select>
+    
+</mapper>

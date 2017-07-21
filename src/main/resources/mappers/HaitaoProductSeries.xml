@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="HaitaoProductSeries">
+
+    <resultMap id="haitaoProductSeries" type="com.oversea.task.domain.HaitaoProductSeries">
+        <result property="id" column="id"/>
+        <result property="platform" column="platform"/>
+        <result property="itemId" column="item_id"/>
+        <result property="asinCode" column="asin_code"/>
+        <result property="parentAsinCode" column="parent_asin_code"/>
+        <result property="currencyCode" column="currency_code"/>
+        <result property="listPrice" column="list_price"/>
+        <result property="price" column="price"/>
+        <result property="salePrice" column="sale_price"/>
+        <result property="sku" column="sku"/>
+        <result property="availabilityType" column="availability_type"/>
+        <result property="condition" column="condition"/>
+        <result property="merchant" column="merchant"/>
+        <result property="manufacturer" column="manufacturer"/>
+        <result property="upc" column="UPC"/>
+        <result property="ean" column="EAN"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="deleteFlag" column="delete_flag"/>
+        <result property="weight" column="weight"/>
+        <result property="shipper" column="shipper"/>
+    </resultMap>
+
+    <select id="load" resultMap="haitaoProductSeries">
+		SELECT  *
+		  FROM  haitao_product_series
+		 WHERE  id = #{id}
+	</select>
+
+    <update id="updateHaitaoProductSeries" parameterType="com.oversea.task.domain.HaitaoProductSeries">
+		UPDATE  haitao_product_series
+		   SET  
+		    platform=#{platform}
+			,item_id=#{itemId}
+			,asin_code=#{asinCode}
+			,parent_asin_code=#{parentAsinCode}
+			,currency_code=#{currencyCode}
+			,list_price=#{listPrice}
+			,price=#{price}
+			,sale_price=#{salePrice}
+			,sku=#{sku}
+			,availability_type=#{availabilityType}
+			,`condition`=#{condition}
+			,merchant=#{merchant}
+			,manufacturer=#{manufacturer}
+			,create_time=#{createTime}
+			,update_time=#{updateTime}
+			,delete_flag=#{deleteFlag}
+		 WHERE  id=#{id}
+	</update>
+
+    <insert id="addHaitaoProductSeries" parameterType="com.oversea.task.domain.HaitaoProductSeries">
+        <selectKey resultType="long" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        INSERT INTO haitao_product_series(
+        platform
+        ,item_id
+        ,asin_code
+        ,parent_asin_code
+        ,currency_code
+        ,list_price
+        ,price
+        ,sale_price
+        ,sku
+        ,availability_type
+        ,`condition`
+        ,merchant
+        ,manufacturer
+        ,UPC
+        ,EAN
+        ,create_time
+        ,update_time
+        ,delete_flag
+        ,weight
+        ,shipper
+        )
+        VALUES(
+        #{platform}
+        ,#{itemId}
+        ,#{asinCode}
+        ,#{parentAsinCode}
+        ,#{currencyCode}
+        ,#{listPrice}
+        ,#{price}
+        ,#{salePrice}
+        ,#{sku}
+        ,#{availabilityType}
+        ,#{condition}
+        ,#{merchant}
+        ,#{manufacturer}
+        ,#{upc}
+        ,#{ean}
+        ,#{createTime}
+        ,#{updateTime}
+        ,#{deleteFlag}
+        ,#{weight}
+        ,#{shipper}
+        )
+    </insert>
+
+    <delete id="deleteByPrimaryKey">
+		DELETE FROM  haitao_product_series
+		      WHERE  id = #{id}
+	</delete>
+
+    <select id="getHaitaoProductSeriesByItemId" parameterType="java.util.Map" resultMap="haitaoProductSeries">
+        SELECT  *
+        FROM  haitao_product_series
+        WHERE  item_id = #{itemId}
+    </select>
+
+    <delete id="deleteDetailProductSeriesByItemId" parameterType="string">
+        DELETE FROM  haitao_product_series WHERE  item_id = #{itemId}
+    </delete>
+</mapper>

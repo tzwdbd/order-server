@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/mvc
+    http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-3.0.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop-3.0.xsd"
+       default-autowire="byName">
+
+   <context:annotation-config/>
+   <context:component-scan base-package="com.oversea.task"/>
+   
+   <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="ignoreUnresolvablePlaceholders" value="true" />
+        <property name="locations">
+            <list>
+                <value>classpath*:system-server-default.properties</value>
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="cdnClient" class="com.oversea.cdn.service.impl.HttpCdnClient">
+		<property name="serviceUrl" value="${os.cdn.service.address}"></property>
+	</bean>
+    
+   <!-- <bean id="log4jInitializer" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean" >
+		<property name="staticMethod">
+			<value>org.springframework.util.Log4jConfigurer.initLogging</value>
+		</property>
+		<property name="arguments">
+			<list>
+				<value>classpath:log4j.xml</value>
+			</list>
+		</property>
+	</bean>  -->
+	<!-- <bean id="log4jInitializer" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">  
+        <property name="targetClass"  
+                  value="org.springframework.util.Log4jConfigurer" />  
+        <property name="targetMethod" value="initLogging" />  
+        <property name="arguments">  
+            <list>  
+                <value>classpath:log4j.xml</value>  
+            </list>  
+        </property>  
+    </bean> -->
+    
+    
+    <bean id="schedulingJobManager" class="com.oversea.task.manager.impl.SchedulingJobManagerImpl"></bean>
+    <bean id="quartzJob" class="com.oversea.task.controller.QuartzJobController" init-method="init"></bean>
+    
+	<bean id="brushOrderServiceJob" class="com.oversea.task.job.BrushOrderServiceJob"/>
+	<bean id="burshShipDetailServiceJob" class="com.oversea.task.job.BurshShipDetailServiceJob"/>
+	<bean id="brushShipServiceJob" class="com.oversea.task.job.BrushShipServiceJob"/>
+	
+	<bean id="orderServiceJob" class="com.oversea.task.job.OrderServiceJob"/>
+	
+	<bean id="rechargeServiceJob" class="com.oversea.task.job.RechargeServiceJob"/>
+	
+	<bean id="shipServiceJob" class="com.oversea.task.job.ShipServiceJob"/>
+	
+	<bean id="shipServiceSingleJob" class="com.oversea.task.job.ShipServiceSingleJob"/>
+	
+	<bean id="shipDetailServiceJob" class="com.oversea.task.job.ShipDetailServiceJob"/>
+	
+	<bean id="rechargeBatchServiceJob" class="com.oversea.task.job.RechargeBatchServiceJob"/>
+	
+	<bean id="rechargedNowServiceJob" class="com.oversea.task.job.RechargedNowServiceJob"/>
+	
+	<bean id="machineStatusProcessor" class="com.oversea.task.machine.MachineStatusProcessor" depends-on="springObjectFactory"/>
+   
+</beans>

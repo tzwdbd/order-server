@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="UserTradeExpressMapper">
+	<resultMap id="UserTradeExpress" type="com.oversea.task.domain.UserTradeExpress">
+		<result column="id" property="id" jdbcType="BIGINT" />
+		<result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+		<result column="express_no" property="expressNo" jdbcType="VARCHAR" />
+		<result column="company_type" property="companyType" jdbcType="INTEGER" />
+		<result column="oversea_name" property="overseaName" jdbcType="VARCHAR" />
+		<result column="oversea_track_no" property="overseaTrackNo"
+			jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="track_no" property="trackNo" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="weight" property="weight" jdbcType="VARCHAR" />
+		<result column="version" property="version" jdbcType="VARCHAR" />
+		<result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
+		<result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+		<result column="product_id_list" property="productIdList"
+			jdbcType="VARCHAR" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="length" property="length" jdbcType="VARCHAR" />
+		<result column="width" property="width" jdbcType="VARCHAR" />
+		<result column="height" property="height" jdbcType="VARCHAR" />
+		<result column="segment_code" property="segmentCode" jdbcType="VARCHAR" />
+		<result column="dutys_img_url" property="dutysImgUrl" jdbcType="VARCHAR" />
+		<result column="real_tax" property="realTax" jdbcType="VARCHAR" />
+		<result column="external_status" property="externalStatus"
+			jdbcType="INTEGER" />
+		<result column="external_status_desc" property="externalStatusDesc"
+			jdbcType="VARCHAR" />
+		<result column="logistics_cost" property="logisticsCost"
+			jdbcType="VARCHAR" />
+		<result column="package_cost" property="packageCost" jdbcType="VARCHAR" />
+		<result column="operating_cost" property="operatingCost"
+			jdbcType="VARCHAR" />
+		<result column="insurance_cost" property="insuranceCost"
+			jdbcType="VARCHAR" />
+		<result column="other_cost" property="otherCost" jdbcType="VARCHAR" />
+		<result column="air_take_off" property="airTakeOff" jdbcType="VARCHAR" />
+		<result column="airlines" property="airlines" jdbcType="VARCHAR" />
+		<result column="flight" property="flight" jdbcType="VARCHAR" />
+		<result column="client_identifier" property="clientIdentifier"
+			jdbcType="VARCHAR" />
+		<result column="order_status" property="orderStatus" jdbcType="INTEGER" />
+		<result column="first_name" property="firstName" jdbcType="VARCHAR" />
+		<result column="checkin_time" property="checkinTime" jdbcType="TIMESTAMP" />
+		<result column="send_status" property="sendStatus" jdbcType="INTEGER" />
+		<result column="express_type" property="expressType" jdbcType="TINYINT" />
+		<result column="operator" property="operator" jdbcType="VARCHAR" />
+		<result column="change_track_no_list" property="changeTrackNoList"
+			jdbcType="VARCHAR" />
+		<result column="change_send_status" property="changeSendStatus"
+			jdbcType="INTEGER" />
+	</resultMap>
+	<sql id="UserTradeExpress_Column_List">
+		id, order_no, express_no, company_type, oversea_name, oversea_track_no,
+		name, track_no,
+		status, weight, version, gmt_create, gmt_modified, product_id_list, remark,
+		length,
+		width, height, segment_code, dutys_img_url, real_tax, external_status,
+		external_status_desc,
+		logistics_cost, package_cost, operating_cost, insurance_cost, other_cost,
+		air_take_off,
+		airlines, flight, client_identifier, order_status, first_name, checkin_time,
+		send_status,
+		express_type, operator, change_track_no_list, change_send_status
+	</sql>
+	<insert id="insert" parameterType="com.oversea.task.domain.UserTradeExpress">
+		insert into oversea.user_trade_express (id, order_no, express_no,
+		company_type, oversea_name, oversea_track_no,
+		name, track_no, status,
+		weight, version, gmt_create,
+		gmt_modified, product_id_list, remark,
+		length, width, height,
+		segment_code, dutys_img_url, real_tax,
+		external_status, external_status_desc, logistics_cost,
+		package_cost, operating_cost, insurance_cost,
+		other_cost, air_take_off, airlines,
+		flight, client_identifier, order_status,
+		first_name, checkin_time, send_status,
+		express_type, operator, change_track_no_list,
+		change_send_status)
+		values (#{id,jdbcType=BIGINT}, #{orderNo,jdbcType=VARCHAR},
+		#{expressNo,jdbcType=VARCHAR},
+		#{companyType,jdbcType=INTEGER}, #{overseaName,jdbcType=VARCHAR}, #{overseaTrackNo,jdbcType=VARCHAR},
+		#{name,jdbcType=VARCHAR}, #{trackNo,jdbcType=VARCHAR},
+		#{status,jdbcType=INTEGER},
+		#{weight,jdbcType=VARCHAR}, #{version,jdbcType=VARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP},
+		#{gmtModified,jdbcType=TIMESTAMP}, #{productIdList,jdbcType=VARCHAR},
+		#{remark,jdbcType=VARCHAR},
+		#{length,jdbcType=VARCHAR}, #{width,jdbcType=VARCHAR}, #{height,jdbcType=VARCHAR},
+		#{segmentCode,jdbcType=VARCHAR}, #{dutysImgUrl,jdbcType=VARCHAR},
+		#{realTax,jdbcType=VARCHAR},
+		#{externalStatus,jdbcType=INTEGER}, #{externalStatusDesc,jdbcType=VARCHAR},
+		#{logisticsCost,jdbcType=VARCHAR},
+		#{packageCost,jdbcType=VARCHAR}, #{operatingCost,jdbcType=VARCHAR}, #{insuranceCost,jdbcType=VARCHAR},
+		#{otherCost,jdbcType=VARCHAR}, #{airTakeOff,jdbcType=VARCHAR},
+		#{airlines,jdbcType=VARCHAR},
+		#{flight,jdbcType=VARCHAR}, #{clientIdentifier,jdbcType=VARCHAR},
+		#{orderStatus,jdbcType=INTEGER},
+		#{firstName,jdbcType=VARCHAR}, #{checkinTime,jdbcType=TIMESTAMP}, #{sendStatus,jdbcType=INTEGER},
+		#{expressType,jdbcType=TINYINT}, #{operator,jdbcType=VARCHAR},
+		#{changeTrackNoList,jdbcType=VARCHAR},
+		#{changeSendStatus,jdbcType=INTEGER})
+	</insert>
+	<insert id="insertSelective" parameterType="com.oversea.task.domain.UserTradeExpress">
+		insert into oversea.user_trade_express
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="orderNo != null">
+				order_no,
+			</if>
+			<if test="expressNo != null">
+				express_no,
+			</if>
+			<if test="companyType != null">
+				company_type,
+			</if>
+			<if test="overseaName != null">
+				oversea_name,
+			</if>
+			<if test="overseaTrackNo != null">
+				oversea_track_no,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="trackNo != null">
+				track_no,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="weight != null">
+				weight,
+			</if>
+			<if test="version != null">
+				version,
+			</if>
+			<if test="gmtCreate != null">
+				gmt_create,
+			</if>
+			<if test="gmtModified != null">
+				gmt_modified,
+			</if>
+			<if test="productIdList != null">
+				product_id_list,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+			<if test="length != null">
+				length,
+			</if>
+			<if test="width != null">
+				width,
+			</if>
+			<if test="height != null">
+				height,
+			</if>
+			<if test="segmentCode != null">
+				segment_code,
+			</if>
+			<if test="dutysImgUrl != null">
+				dutys_img_url,
+			</if>
+			<if test="realTax != null">
+				real_tax,
+			</if>
+			<if test="externalStatus != null">
+				external_status,
+			</if>
+			<if test="externalStatusDesc != null">
+				external_status_desc,
+			</if>
+			<if test="logisticsCost != null">
+				logistics_cost,
+			</if>
+			<if test="packageCost != null">
+				package_cost,
+			</if>
+			<if test="operatingCost != null">
+				operating_cost,
+			</if>
+			<if test="insuranceCost != null">
+				insurance_cost,
+			</if>
+			<if test="otherCost != null">
+				other_cost,
+			</if>
+			<if test="airTakeOff != null">
+				air_take_off,
+			</if>
+			<if test="airlines != null">
+				airlines,
+			</if>
+			<if test="flight != null">
+				flight,
+			</if>
+			<if test="clientIdentifier != null">
+				client_identifier,
+			</if>
+			<if test="orderStatus != null">
+				order_status,
+			</if>
+			<if test="firstName != null">
+				first_name,
+			</if>
+			<if test="checkinTime != null">
+				checkin_time,
+			</if>
+			<if test="sendStatus != null">
+				send_status,
+			</if>
+			<if test="expressType != null">
+				express_type,
+			</if>
+			<if test="operator != null">
+				operator,
+			</if>
+			<if test="changeTrackNoList != null">
+				change_track_no_list,
+			</if>
+			<if test="changeSendStatus != null">
+				change_send_status,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=BIGINT},
+			</if>
+			<if test="orderNo != null">
+				#{orderNo,jdbcType=VARCHAR},
+			</if>
+			<if test="expressNo != null">
+				#{expressNo,jdbcType=VARCHAR},
+			</if>
+			<if test="companyType != null">
+				#{companyType,jdbcType=INTEGER},
+			</if>
+			<if test="overseaName != null">
+				#{overseaName,jdbcType=VARCHAR},
+			</if>
+			<if test="overseaTrackNo != null">
+				#{overseaTrackNo,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="trackNo != null">
+				#{trackNo,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="weight != null">
+				#{weight,jdbcType=VARCHAR},
+			</if>
+			<if test="version != null">
+				#{version,jdbcType=VARCHAR},
+			</if>
+			<if test="gmtCreate != null">
+				#{gmtCreate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="gmtModified != null">
+				#{gmtModified,jdbcType=TIMESTAMP},
+			</if>
+			<if test="productIdList != null">
+				#{productIdList,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="length != null">
+				#{length,jdbcType=VARCHAR},
+			</if>
+			<if test="width != null">
+				#{width,jdbcType=VARCHAR},
+			</if>
+			<if test="height != null">
+				#{height,jdbcType=VARCHAR},
+			</if>
+			<if test="segmentCode != null">
+				#{segmentCode,jdbcType=VARCHAR},
+			</if>
+			<if test="dutysImgUrl != null">
+				#{dutysImgUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="realTax != null">
+				#{realTax,jdbcType=VARCHAR},
+			</if>
+			<if test="externalStatus != null">
+				#{externalStatus,jdbcType=INTEGER},
+			</if>
+			<if test="externalStatusDesc != null">
+				#{externalStatusDesc,jdbcType=VARCHAR},
+			</if>
+			<if test="logisticsCost != null">
+				#{logisticsCost,jdbcType=VARCHAR},
+			</if>
+			<if test="packageCost != null">
+				#{packageCost,jdbcType=VARCHAR},
+			</if>
+			<if test="operatingCost != null">
+				#{operatingCost,jdbcType=VARCHAR},
+			</if>
+			<if test="insuranceCost != null">
+				#{insuranceCost,jdbcType=VARCHAR},
+			</if>
+			<if test="otherCost != null">
+				#{otherCost,jdbcType=VARCHAR},
+			</if>
+			<if test="airTakeOff != null">
+				#{airTakeOff,jdbcType=VARCHAR},
+			</if>
+			<if test="airlines != null">
+				#{airlines,jdbcType=VARCHAR},
+			</if>
+			<if test="flight != null">
+				#{flight,jdbcType=VARCHAR},
+			</if>
+			<if test="clientIdentifier != null">
+				#{clientIdentifier,jdbcType=VARCHAR},
+			</if>
+			<if test="orderStatus != null">
+				#{orderStatus,jdbcType=INTEGER},
+			</if>
+			<if test="firstName != null">
+				#{firstName,jdbcType=VARCHAR},
+			</if>
+			<if test="checkinTime != null">
+				#{checkinTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="sendStatus != null">
+				#{sendStatus,jdbcType=INTEGER},
+			</if>
+			<if test="expressType != null">
+				#{expressType,jdbcType=TINYINT},
+			</if>
+			<if test="operator != null">
+				#{operator,jdbcType=VARCHAR},
+			</if>
+			<if test="changeTrackNoList != null">
+				#{changeTrackNoList,jdbcType=VARCHAR},
+			</if>
+			<if test="changeSendStatus != null">
+				#{changeSendStatus,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<select id="getUserTradeExpressByExpressCompanyAndMaxStatus" parameterType="java.util.Map"
+		resultMap="UserTradeExpress">
+		select
+		<include refid="UserTradeExpress_Column_List" />
+		from oversea.user_trade_express
+		where name=#{expressCompany}
+		and status <![CDATA[ < ]]> #{status}
+	</select>
+	
+	<update id="updateUserTradeExpressByDynamic" parameterType="com.oversea.task.domain.UserTradeExpress">
+		update oversea.user_trade_express
+		<set>
+			<if test="orderNo!= null">
+				order_no=#{orderNo},
+			</if>
+			<if test="expressNo!= null">
+				express_no=#{expressNo},
+			</if>
+			<if test="companyType!= null">
+				company_type=#{companyType},
+			</if>
+			<if test="name!= null">
+				name=#{name},
+			</if>
+			<if test="overseaName!= null">
+				oversea_name=#{overseaName},
+			</if>
+			<if test="trackNo!= null">
+				track_no=#{trackNo},
+			</if>
+			<if test="overseaTrackNo!= null">
+				oversea_track_no=#{overseaTrackNo},
+			</if>
+			<if test="status!= null">
+				status=#{status},
+			</if>
+			<if test="weight!= null">
+				weight=#{weight},
+			</if>
+			<if test="version!= null">
+				version=#{version},
+			</if>
+			<if test="productIdList!=null">
+				product_id_list=#{productIdList},
+			</if>
+			<if test="remark!=null">
+				remark=#{remark},
+			</if>
+			<if test="length!=null">
+				length=#{length},
+			</if>
+			<if test="width!=null">
+				width=#{width},
+			</if>
+			<if test="height!=null">
+				height=#{height},
+			</if>
+			<if test="segmentCode!=null">
+				segment_code=#{segmentCode},
+			</if>
+			<if test="dutysImgUrl!=null">
+				dutys_img_url=#{dutysImgUrl},
+			</if>
+			<if test="realTax!=null">
+				real_tax=#{realTax},
+			</if>
+			<if test="externalStatus!=null">
+				external_status=#{externalStatus},
+			</if>
+			<if test="externalStatusDesc!=null">
+				external_status_desc=#{externalStatusDesc},
+			</if>
+			<if test="logisticsCost!=null">
+				logistics_cost=#{logisticsCost},
+			</if>
+			<if test="packageCost!=null">
+				package_cost=#{packageCost},
+			</if>
+			<if test="operatingCost!=null">
+				operating_cost=#{operatingCost},
+			</if>
+			<if test="insuranceCost!=null">
+				insurance_cost=#{insuranceCost},
+			</if>
+			<if test="otherCost!=null">
+				other_cost=#{otherCost},
+			</if>
+			<if test="airTakeOff!=null">
+				air_take_off=#{airTakeOff},
+			</if>
+			<if test="flight!=null">
+				airlines=#{airlines},
+			</if>
+			<if test="flight!=null">
+				flight=#{flight},
+			</if>
+			<if test="clientIdentifier!=null">
+				client_identifier=#{clientIdentifier},
+			</if>
+			<if test="orderStatus!=null">
+				order_status=#{orderStatus},
+			</if>
+			<if test="firstName!=null">
+				first_name=#{firstName},
+			</if>
+			<if test="checkinTime!=null">
+				checkin_time=#{checkinTime},
+			</if>
+			<if test="operator!=null">
+				operator=#{operator},
+			</if>
+			<if test="changeTrackNoList!=null">
+				change_track_no_list=#{changeTrackNoList},
+			</if>
+			<if test="changeSendStatus!=null">
+				change_send_status=#{changeSendStatus},
+			</if>
+			gmt_modified=now()
+		</set>
+		where id=#{id}
+	</update>
+	
+	<select id="getUserTradeExpressByExpressNo" parameterType="java.lang.String" resultMap="UserTradeExpress">
+		select
+		<include refid="UserTradeExpress_Column_List" />
+		from oversea.user_trade_express where express_no=#{expressNo}
+	</select>
+	
+</mapper>

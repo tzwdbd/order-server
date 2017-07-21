@@ -1,0 +1,585 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- 废除 recommend,use_limit,day_limit,order_limit,detail_images_list,添加brand_id -->
+<mapper namespace="ProductSQL">
+	<resultMap id="Product" type="com.oversea.task.domain.Product">
+		<result property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="categoryId" column="category_id" />
+		<result property="defaultEntityId" column="default_entity_id" />
+		<result property="externalProductId" column="external_product_id" />
+		<result property="url" column="url" />
+		<result property="mallId" column="mall_id" />
+		<result property="partnerId" column="partner_id" />
+		<result property="status" column="status" />
+		<result property="version" column="version" />
+		<result property="gmtCreate" column="gmt_create" />
+		<result property="gmtModified" column="gmt_modified" />
+		<result property="brand" column="brand" />
+		<result property="homeFreight" column="home_freight" />
+		<result property="unit" column="unit" />
+		<result property="startTime" column="start_time" />
+		<result property="endTime" column="end_time" />
+		<result property="source" column="source" />
+		<result property="taxRate" column="tax_rate" />
+		<result property="birdCid" column="bird_cid" />
+		<result property="rootCategoryId" column="root_category_id" />
+		<result property="secondCategoryId" column="second_category_id" />
+		<result property="mallProductCode" column="mall_product_code" />
+		<result property="keyWords" column="key_words" />
+		<result property="attrType" column="attr_type" />
+		<result property="topNum" column="top_num" />
+		<result property="sortNum" column="sort_num" />
+		<result property="shortTitle" column="short_title" />
+		<result property="brandId" column="brand_id" />
+		<result property="imageUrl" column="image_url" />
+		<result property="urlVersion" column="url_version" />
+		<result property="operatorId" column="operator_id" />
+		<result property="titleCn" column="title_cn"></result>
+		<result property="needTranslate" column="need_translate"></result>
+		<result property="limitBuy" column="limit_buy"></result>
+		<result property="standardPrice" column="standard_price"></result>
+		<result property="expressType" column="express_type"></result>
+		<result property="hotEndTime" column="hot_end_time" />
+		<result property="storeType" column="store_type" />
+		<result property="outOfStockReason" column="out_of_stack_reason" />
+	</resultMap>
+
+
+	<sql id="Product_Column_List">
+		id,
+		name,
+		category_id,
+		default_entity_id,
+		external_product_id,
+		url,
+		mall_id,
+		partner_id,
+		status,
+		version,
+		gmt_create,
+		gmt_modified,
+		brand,
+		home_freight,
+		unit,
+		start_time,
+		end_time,
+		source,
+		tax_rate,
+		bird_cid,
+		root_category_id,
+		second_category_id,
+		mall_product_code,
+		key_words,
+		attr_type,
+		top_num,
+		sort_num,
+		short_title,
+		brand_id,
+		image_url,
+		url_version,
+		operator_id,
+		title_cn,
+		need_translate,
+		limit_buy,
+		standard_price,
+		express_type,
+		hot_end_time,
+		store_type,
+		out_of_stack_reason
+	</sql>
+
+	<insert id="addProduct" parameterType="com.oversea.task.domain.Product">
+		INSERT INTO oversea.product (
+		id,
+		name,
+		category_id,
+		default_entity_id,
+		external_product_id,
+		url,
+		mall_id,
+		partner_id,
+		status,
+		version,
+		gmt_create,
+		gmt_modified,
+		brand,
+		home_freight,
+		unit,
+		start_time,
+		end_time,
+		source,
+		tax_rate,
+		bird_cid,
+		root_category_id,
+		second_category_id,
+		mall_product_code,
+		key_words,
+		attr_type,
+		top_num,
+		sort_num,
+		brand_id,
+		url_version,
+		standard_price,
+		express_type
+		) VALUES (
+		#{id},
+		#{name},
+		#{categoryId},
+		#{defaultEntityId},
+		#{externalProductId},
+		#{url},
+		#{mallId},
+		#{partnerId},
+		#{status},
+		#{version},
+		now(),
+		now(),
+		#{brand},
+		#{homeFreight},
+		#{unit},
+		#{startTime},
+		#{endTime},
+		#{source},
+		#{taxRate},
+		#{birdCid},
+		#{rootCategoryId},
+		#{secondCategoryId},
+		#{mallProductCode},
+		#{keyWords},
+		#{attrType},
+		#{topNum},
+		#{sortNum},
+		#{brandId},
+		#{urlVersion},
+		#{standardPrice},
+		#{expressType}
+		)
+	</insert>
+
+
+	<update id="updateProductByDynamic" parameterType="com.oversea.task.domain.Product">
+		update oversea.product
+		<set>
+			<if test="name!= null">
+				name=#{name},
+			</if>
+			<if test="categoryId!= null">
+				category_id=#{categoryId},
+			</if>
+			<if test="defaultEntityId!= null">
+				default_entity_id=#{defaultEntityId},
+			</if>
+			<if test="status!= null">
+				status=#{status},
+			</if>
+			<if test="url!= null">
+				url=#{url},
+			</if>
+			<if test="version!= null">
+				version=#{version},
+			</if>
+			<if test="brand!= null">
+				brand=#{brand},
+			</if>
+			<if test="startTime!= null">
+				start_time=#{startTime},
+			</if>
+			<if test="endTime!= null">
+				end_time=#{endTime},
+			</if>
+			<if test="source!= null">
+				source=#{source},
+			</if>
+			<if test="taxRate!= null">
+				tax_rate=#{taxRate},
+			</if>
+			<if test="birdCid!= null">
+				bird_cid=#{birdCid},
+			</if>
+			<if test="rootCategoryId!= null">
+				root_category_id=#{rootCategoryId},
+			</if>
+			<if test="secondCategoryId!= null">
+				second_category_id=#{secondCategoryId},
+			</if>
+			<if test="keyWords!= null">
+				key_words=#{keyWords},
+			</if>
+			<if test="attrType!=null">
+				attr_type=#{attrType},
+			</if>
+			<if test="mallProductCode!=null">
+				mall_product_code=#{mallProductCode},
+			</if>
+			<if test="externalProductId!=null">
+				external_product_id=#{externalProductId},
+			</if>
+			<if test="sortNum!=0">
+				sort_num=#{sortNum},
+			</if>
+			<if test="topNum!=null">
+				top_num=#{topNum},
+			</if>
+			<if test="status>0">
+				top_num=0,
+			</if>
+			<if test="shortTitle!=null">
+				short_title=#{shortTitle},
+			</if>
+			<if test="brandId!=0">
+				brand_id=#{brandId},
+			</if>
+			<if test="titleCn!=null">
+				title_cn = #{titleCn},
+			</if>
+			<if test="needTranslate!=null">
+				need_translate=#{needTranslate},
+			</if>
+			<if test="standardPrice!=null">
+				standard_price=#{standardPrice},
+			</if>
+			<if test="outOfStockReason!=null">
+				out_of_stack_reason=#{outOfStockReason},
+			</if>
+			gmt_modified=now()
+		</set>
+		where id=#{id}
+	</update>
+
+
+	<select id="countProductById" parameterType="java.lang.Long" resultType="java.lang.Integer">
+        <![CDATA[
+
+        select count(1) from oversea.product where id=#{id}
+
+        ]]>
+	</select>
+
+	<select id="getProductById" parameterType="java.lang.Long" resultMap="Product">
+		select
+		<include refid="Product_Column_List" />
+		from oversea.product where id=#{id}
+	</select>
+
+	<select id="getProductByExternalId" parameterType="java.lang.String" resultMap="Product">
+		select
+		<include refid="Product_Column_List" />
+		from oversea.product where external_product_id=#{externalProductId}
+	</select>
+
+	<select id="pageGoods" parameterType="java.util.Map" resultType="java.lang.Long">
+        <![CDATA[
+
+    select id
+        from oversea.product
+        where status=0 
+        and start_time<=now()
+        and end_time>now()
+        order by sort_num desc,gmt_modified desc
+        limit #{start}, #{limit}
+
+        ]]>
+	</select>
+
+	<update id="updateProductStatusById" parameterType="java.util.Map">
+		update oversea.product
+		<set>
+			<if test="status>0">
+				top_num=0,
+			</if>
+			status=#{status},
+			gmt_modified=now()
+		</set>
+		where id=#{id}
+	</update>
+
+	<select id="getProductByExternalProductIdLikeAndMallIdAndPartnerId" parameterType="java.util.Map" resultMap="Product">
+		select
+		<include refid="Product_Column_List" />
+		from oversea.product
+		where external_product_id like '${externalProductIdLike}%'
+		and status !=5
+		and mall_id = #{mallId}
+	</select>
+
+	<select id="getProductListByRootCategoryId" parameterType="java.util.Map" resultType="java.lang.Long">
+		select id
+		from oversea.product
+		where status=0
+		<if test="rootCategoryId!=null">
+			and root_category_id=#{rootCategoryId}
+		</if>
+        <![CDATA[
+        and start_time<=now()
+        and end_time>now()
+        order by sort_num desc,gmt_modified desc
+        limit #{start}, #{limit}
+    	]]>
+	</select>
+
+
+	<select id="getProductIdListInAWeek" resultType="java.lang.Long">
+		select id
+		from oversea.product
+		where status=0
+        <![CDATA[
+        and sort_num>0
+        and start_time<=now()
+        and end_time>now()
+        and gmt_modified > date_add(now(), INTERVAL -7 day)
+        ]]>
+		order by date(gmt_modified) desc, sort_num desc
+	</select>
+
+	<select id="getPIdAndCIdMapInAWeek" resultType="java.util.Map">
+		select root_category_id,id
+		from oversea.product
+		where status=0
+        <![CDATA[
+        and sort_num>0
+        and start_time<=now()
+        and end_time>now()
+        and gmt_modified > date_add(now(), INTERVAL -7 day)
+        ]]>
+		order by date(gmt_modified) desc, sort_num desc
+	</select>
+
+	<select id="getProductIdListOutAWeek" resultType="java.lang.Long">
+		select id
+		from oversea.product
+		where status=0
+        <![CDATA[
+        and start_time<=now()
+        and end_time>now()
+        and gmt_modified <= date_add(now(), INTERVAL -7 day)
+        ]]>
+		order by gmt_modified desc
+	</select>
+
+	<select id="getPIdAndCIdMapOutAWeek" resultType="java.util.Map">
+		select root_category_id,id
+		from oversea.product
+		where status=0
+        <![CDATA[
+        and start_time<=now()
+        and end_time>now()
+        and gmt_modified <= date_add(now(), INTERVAL -7 day)
+        ]]>
+		order by gmt_modified desc
+	</select>
+
+	<select id="getPCIdWhichIsOnTop" resultType="java.util.Map">
+		select root_category_id,id
+		from oversea.product
+		where status=0
+        <![CDATA[
+        and start_time<=now()
+        and end_time>now()
+     	and top_num is not null
+        ]]>
+		order by top_num desc, sort_num desc, gmt_modified desc
+		limit 30
+	</select>
+
+	<select id="getPCIdWhichIsNotOnTop" resultType="java.util.Map">
+		select root_category_id,id
+		from oversea.product
+		where status=0
+        <![CDATA[
+        and start_time<=now()
+        and end_time>now()
+     	and top_num is null
+        ]]>
+		order by sort_num desc, gmt_modified desc
+	</select>
+
+	<select id="getProductListToday" parameterType="java.lang.String" resultMap="Product">
+		select
+		<include refid="Product_Column_List" />
+		from oversea.product
+		where root_category_id is not null
+        <![CDATA[
+         and gmt_modified > #{gmt_modified}
+         ]]>
+		order by sort_num desc
+	</select>
+
+	<select id="selectMaxSortNum" resultType="int">
+		select MAX(sort_num) from oversea.product
+	</select>
+
+	<select id="getProductByMallProductCode" parameterType="string" resultMap="Product">
+		select
+		<include refid="Product_Column_List" />
+		from oversea.product
+		where
+		mall_product_code=#{mallProductCode} order by start_time desc limit 1
+	</select>
+
+	<select id="getProductListByCategoryId" parameterType="java.util.Map" resultType="java.lang.Long">
+		select id
+		from oversea.product
+		where status=0
+		<if test="categoryId!=null">
+			and category_id=#{categoryId}
+		</if>
+        <![CDATA[
+        and start_time<=now()
+        and end_time>now()
+        order by sort_num desc,gmt_modified desc
+        limit #{start}, #{limit}
+    	]]>
+	</select>
+
+	<select id="getGoodsDetailListByCondition" parameterType="java.util.Map" resultType="java.lang.Long">
+		select id
+		from oversea.product
+		where status=0
+		<if test="rootCategoryId!=null">
+			and root_category_id=#{rootCategoryId}
+		</if>
+		<if test="mallId!=null">
+			and mall_id=#{mallId}
+		</if>
+		<if test="brandId!=null">
+			and brand_id=#{brandId}
+		</if>
+
+        <![CDATA[
+        and start_time<=now()
+        and end_time>now()
+        order by start_time desc
+        limit #{start}, #{limit}
+    	]]>
+	</select>
+	<select id="getCategoryProduct" parameterType="java.util.Map" resultMap="Product">
+		select
+		<include refid="Product_Column_List" />
+		from oversea.product
+		where status=0
+		and root_category_id=#{rootCategoryId}
+		<if test="direction == 'old'">
+            <![CDATA[
+     			and start_time <#{startTime}
+        	]]>
+		</if>
+		<if test="direction == 'new'">
+            <![CDATA[
+     			and start_time >#{startTime}
+        	]]>
+		</if>
+		order by start_time desc
+		limit #{limit}
+	</select>
+
+	<select id="getProductAllCountForSolr" resultType="long">
+		select count(1) from oversea.product where status=0
+	</select>
+
+	<select id="getProductListForSolr" parameterType="java.util.Map" resultMap="Product">
+		select
+		<include refid="Product_Column_List" />
+		from oversea.product where status=0
+		limit #{start}, #{limit}
+	</select>
+
+	<select id="getAllProductForRecommend" parameterType="java.util.Map" resultMap="Product">
+		select
+		<include refid="Product_Column_List" />
+		from oversea.product
+		where status=0 and category_id>0 and brand_id>0
+        <![CDATA[
+        and id>#{minId} and id<=#{maxId} group by brand_id,category_id
+        ]]>
+	</select>
+
+	<select id="countProductByBrandId" parameterType="java.lang.Long" resultType="java.lang.Integer">
+        <![CDATA[
+
+        select count(1) from oversea.product where status=0 and brand_id=#{brandId}
+
+        ]]>
+	</select>
+
+
+	<select id="getProductByMallIdCountForSolr" resultType="long" parameterType="long">
+		select count(1) from oversea.product where status=0 and mall_id=#{value}
+	</select>
+
+
+	<select id="getProductByMallIdListForSolr" parameterType="java.util.Map" resultMap="Product">
+		select
+		<include refid="Product_Column_List" />
+		from oversea.product where status=0 and mall_id=#{mallId}
+		limit #{start}, #{limit}
+	</select>
+
+
+	<update id="updateProductTopNumById" parameterType="java.util.Map">
+		update oversea.product set top_num=#{topNum},gmt_modified=now() where id=#{id}
+	</update>
+
+	<select id="getProductByProductUrlVersion" parameterType="java.util.Map" resultMap="Product">
+		select
+		<include refid="Product_Column_List" />
+		from oversea.product
+		where url_version=#{urlVersion} and mall_id=#{mallId}
+	</select>
+
+	<update id="updateProductUrlVersionById" parameterType="java.util.Map">
+		update oversea.product set url_version=#{urlVersion} where id=#{id}
+	</update>
+
+	<select id="getProductIdListForChange" resultType="java.lang.Long" parameterType="java.util.Map">
+        <![CDATA[
+		select id from oversea.product where id>=#{minId} and id<#{maxId}
+        ]]>
+	</select>
+
+	<select id="getProductsByIndex" parameterType="map" resultMap="Product">
+		select
+		<include refid="Product_Column_List" />
+        <![CDATA[ from oversea.product where id>#{index} and status in (0,1) order by id limit #{limit}]]>
+	</select>
+
+	<!-- 获取运营推荐商品 -->
+	<select id="getRecommendProduct" resultMap="Product">
+		select
+		<include refid="Product_Column_List" />
+		from oversea.product where hot_end_time is not null;
+	</select>
+	<!-- 查询当天下架商品 -->
+	<select id="getProductByStatusList" resultMap="Product" parameterType="java.util.Map">
+     <![CDATA[
+    select  <include refid="Product_Column_List"/> from oversea.product where status=#{status} and gmt_modified>#{startTime} and gmt_modified<#{endTime}
+      ]]>
+	</select>
+
+	<select id="getProductByStatusForPage" parameterType="map" resultMap="Product">
+		select	id	from oversea.product where status != 0	and id &gt; #{start} and id &lt; #{end}
+	</select>
+
+	<select id="getMaxProductId"  resultType="long">
+		select	id	from oversea.product order by id desc limit 1
+	</select>
+
+    <update id="updateIsTopItemById" parameterType="long">
+        UPDATE oversea.product SET is_top_item=1 where id = #{id} and is_top_item=0
+    </update>
+    
+    <select id="getProductByAmazon"  parameterType="java.util.Map" resultMap="Product">
+    	SELECT
+		<include refid="Product_Column_List" />
+		FROM oversea.product 
+		<![CDATA[
+		WHERE id>#{fromId}
+		AND mall_id in(1)
+		AND order_test_status=0
+		AND status in(0)
+		ORDER BY id ASC
+		LIMIT #{step}
+		]]>
+	</select>
+</mapper>

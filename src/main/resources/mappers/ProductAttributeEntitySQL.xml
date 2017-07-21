@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="ProductAttributeEntitySQL">
+
+    <resultMap id="ProductAttributeEntity" type="com.oversea.task.domain.ProductAttributeEntity">
+        <result property="id" column="id"/>
+        <result property="productId" column="product_id"/>
+        <result property="productAttributeId" column="product_attribute_id"/>
+        <result property="name" column="name"/>
+        <result property="value" column="value"/>
+        <result property="chineseValue" column="chinese_value"/>
+        <result property="status" column="status"/>
+        <result property="gmtCreate" column="gmt_create"/>
+        <result property="gmtModified" column="gmt_modified"/>
+        <result property="externalValue" column="external_value"/>
+        <result property="index" column="index"/>
+        <result property="skuStatus" column="sku_status"/>
+    </resultMap>
+
+    <sql id="ProductAttributeEntity_Column_List">
+			id,
+			product_id,
+			product_attribute_id,
+			name,
+			value,
+			chinese_value,
+			status,
+			gmt_create,
+			gmt_modified,
+			external_value,
+			`index`,
+			sku_status
+	</sql>
+
+    <insert id="addProductAttributeEntity" parameterType="com.oversea.task.domain.ProductAttributeEntity">
+        INSERT INTO oversea.product_attribute_entity (
+	        id,
+	        product_id,
+	        product_attribute_id,
+	        name,
+	        value,
+	        chinese_value,
+	        status,
+	        gmt_create,
+	        gmt_modified,
+	        external_value,
+	        `index`,
+	        sku_status
+        ) VALUES (
+	        #{id},
+	        #{productId},
+	        #{productAttributeId},
+	        #{name},
+	        #{value},
+	        #{chineseValue},
+	        #{status},
+	        now(),
+	        now(),
+	        #{externalValue},
+	        #{index},
+	        #{skuStatus}
+	    )
+    </insert>
+
+
+    <update id="updateProductAttributeEntityById"
+            parameterType="com.oversea.task.domain.ProductAttributeEntity">
+        update oversea.product_attribute_entity set
+        product_id=#{productId},
+        product_attribute_id=#{productAttributeId},
+        name=#{name},
+        value=#{value},
+        chinese_value=#{chineseValue},
+        status=#{status},
+        gmt_create=#{gmtCreate},
+        gmt_modified=#{gmtModified}
+        where id=#{id}
+    </update>
+
+
+    <update id="updateProductAttributeEntityByDynamic"
+            parameterType="com.oversea.task.domain.ProductAttributeEntity">
+        update oversea.product_attribute_entity
+        <set>
+            <if test="name!= null">
+                name=#{name},
+            </if>
+            <if test="value!= null">
+                value=#{value},
+            </if>
+            <if test="chineseValue!= null">
+                chinese_value=#{chineseValue},
+            </if>
+            <if test="index!= null">
+                `index`=#{index},
+            </if>
+            <if test="externalValue!= null">
+                external_value=#{externalValue},
+            </if>
+            <if test="status!= null">
+                status=#{status},
+            </if>
+            gmt_modified=#{gmtModified}
+        </set>
+        where id=#{id}
+    </update>
+
+
+    <select id="countProductAttributeEntityById" parameterType="java.lang.Long" resultType="java.lang.Integer">
+	<![CDATA[
+
+		select count(1) from oversea.product_attribute_entity where id=#{id}
+
+        ]]>
+	</select>
+
+    <select id="getProductAttributeEntityByProductIdAndAttributeId" parameterType="java.util.Map"
+            resultMap="ProductAttributeEntity">
+        select
+        <include refid="ProductAttributeEntity_Column_List"/>
+        from oversea.product_attribute_entity
+        where product_id = #{productId}
+        and product_attribute_id = #{attributeId}
+        and status = #{status}
+        order by `index`
+    </select>
+
+    <select id="getProductAttributeEntityAllStatusByProductIdAndAttributeId" parameterType="java.util.Map"
+            resultMap="ProductAttributeEntity">
+        select
+        <include refid="ProductAttributeEntity_Column_List"/>
+        from oversea.product_attribute_entity
+        where product_id = #{productId}
+        and product_attribute_id = #{attributeId}
+        order by `index`
+    </select>
+
+    <update id="updateProductAttributeEntityStatusById" parameterType="java.lang.Long">
+        update oversea.product_attribute_entity
+        set
+        status=#{status},
+        gmt_modified=now()
+        where id=#{id}
+    </update>
+
+    <select id="getNormalProductAttributeEntityById" parameterType="java.lang.Long" resultMap="ProductAttributeEntity">
+        select
+        <include refid="ProductAttributeEntity_Column_List"/>
+        from oversea.product_attribute_entity where id=#{id} and status=0
+    </select>
+
+    <select id="getProductAttributeEntityById" parameterType="java.lang.Long" resultMap="ProductAttributeEntity">
+        select
+        <include refid="ProductAttributeEntity_Column_List"/>
+        from oversea.product_attribute_entity where id=#{id}
+    </select>
+
+    <select id="getProductAttributeEntityByNameAndValue" parameterType="java.util.Map" resultMap="ProductAttributeEntity">
+        select
+        <include refid="ProductAttributeEntity_Column_List"/>
+        from oversea.product_attribute_entity
+        where
+        name = #{name}
+        and value = #{value}
+        and chinese_value is not null
+        limit 1
+    </select>
+
+    <select id="getProductAttributeEntityByProductIdAndValue" parameterType="java.util.Map" resultMap="ProductAttributeEntity">
+        select
+        <include refid="ProductAttributeEntity_Column_List"/>
+        from oversea.product_attribute_entity
+        where
+        product_id = #{productId}
+        and value = #{value}
+        and chinese_value is not null
+        limit 1
+    </select>
+
+    <select id="getProductAttributeEntityByNameAndValueAndCategoryId" parameterType="java.util.Map" resultMap="ProductAttributeEntity">
+        select
+            e.id,
+			e.product_id,
+			e.product_attribute_id,
+			e.name,
+			e.value,
+			e.chinese_value,
+			e.status,
+			e.gmt_create,
+			e.gmt_modified,
+			e.external_value,
+			e.`index`,
+			e.sku_status
+        from oversea.product_attribute_entity e left join product p on e.product_id = p.id and p.second_category_id = #{catatoryId} and p.id is not null
+        where e.name = #{name}
+        and e.value = #{value} 
+        and e.chinese_value is not null
+        order by e.id desc
+        limit 1;
+    </select>
+
+    <select id="getNormalProductAttributeEntityByProductId" parameterType="java.lang.Long" resultMap="ProductAttributeEntity">
+        select <include refid="ProductAttributeEntity_Column_List"/>
+        from oversea.product_attribute_entity 
+        where product_id=#{productId} and status=0
+        order by name
+    </select>
+    
+    <update id="updateProductAttributeEntitySkuStatusById" parameterType="java.util.Map">
+    	update oversea.product_attribute_entity set sku_status=#{skuStatus},gmt_modified=now() where id=#{id}
+    </update>
+    
+    
+    <select id="getProductAttributeEntityByAttributeIdList" parameterType="java.util.Map"
+            resultMap="ProductAttributeEntity">
+        select
+        <include refid="ProductAttributeEntity_Column_List"/>
+        from oversea.product_attribute_entity
+        where product_id = #{productId}
+        and product_attribute_id in (${attributeIdList})
+        and status = #{status}
+        order by `index`
+    </select>
+</mapper>

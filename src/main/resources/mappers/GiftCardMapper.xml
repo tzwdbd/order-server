@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="GiftCardMapper">
+
+    <resultMap id="GiftCard" type="com.oversea.task.domain.GiftCard">
+        <result property="id" column="id"/>
+        <result property="accountId" column="account_id"/>
+        <result property="siteName" column="site_name"/>
+        <result property="balance" column="balance"/>
+        <result property="securityCode" column="security_code"/>
+        <result property="isUsed" column="is_used"/>
+        <result property="gmtCreate" column="gmt_create"/>
+        <result property="gmtModified" column="gmt_modified"/>
+        <result property="isSuspect" column="is_suspect"/>
+        <result property="realBalance" column="real_balance"/>
+        <result property="isRechargeNow" column="is_recharge_now"/>
+        <result property="rate" column="rate"/>
+        <result property="operatorName" column="operator_name"/>
+        <result property="passWord" column="pass_word"/>
+    </resultMap>
+
+    <update id="updateGiftCardProcessStatus" parameterType="map">
+		update automan.gift_card set is_process=#{isProcess} where id=#{id}
+	</update>
+
+    <select id="getUnusedGiftCard" parameterType="map" resultMap="GiftCard">
+		select * from automan.gift_card where is_used='no' and is_process='no' and is_suspect is null and site_name=#{siteName} limit #{limitNum},#{num}
+	</select>
+
+    <select id="getGiftCardById" parameterType="java.lang.Long"
+            resultMap="GiftCard">
+		select * from automan.gift_card where id=#{id}
+	</select>
+
+    <update id="updateGiftCard" parameterType="com.oversea.task.domain.GiftCard">
+        update automan.gift_card set gmt_modified=now()
+        <if test="accountId!= null">
+            ,account_id=#{accountId}
+        </if>
+        <if test="siteName!= null">
+            ,site_name=#{siteName}
+        </if>
+        <if test="balance!= null">
+            ,balance=#{balance}
+        </if>
+        <if test="securityCode!= null">
+            ,security_code=#{securityCode}
+        </if>
+        <if test="isUsed!= null">
+            ,is_used=#{isUsed}
+        </if>
+        <if test="isProcess!= null">
+            ,is_process=#{isProcess}
+        </if>
+        <if test="isSuspect!= null">
+            ,is_suspect=#{isSuspect}
+        </if>
+        <if test="realBalance!= null">
+            ,real_balance=#{realBalance}
+        </if>
+        <if test="isRechargeNow!= null">
+            ,is_recharge_now=#{isRechargeNow}
+        </if>
+        where id=#{id}
+    </update>
+    <select id="getNowRechargeGiftCard" parameterType="map" resultMap="GiftCard">
+		select * from automan.gift_card where is_used='no' and is_process='no' and is_suspect is null and is_recharge_now=1 and site_name=#{siteName} limit #{num}
+	</select>
+	
+	<select id="getPassWordCard" parameterType="map" resultMap="GiftCard">
+		select * from automan.gift_card where is_process='no' and is_suspect is null and real_balance>0 and site_name=#{siteName} order by gmt_modified 
+	</select>
+
+</mapper>

@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="AddressSQL">
+
+	<resultMap id="Address"	type="com.oversea.task.domain.Address">
+		<result  property="id"  column="id"/>
+		<result  property="userId"  column="user_id"/>
+		<result  property="name"  column="name"/>
+		<result  property="mobile"  column="mobile"/>
+		<result  property="zip"  column="zip"/>
+		<result  property="state"  column="state"/>
+		<result  property="city"  column="city"/>
+		<result  property="district"  column="district"/>
+		<result  property="address"  column="address"/>
+		<result  property="isthemain"  column="isthemain"/>
+		<result  property="gmtCreate"  column="gmt_create"/>
+		<result  property="gmtModified"  column="gmt_modified"/>
+		<result  property="idCard"  column="id_card"/>
+		<result  property="idCardFront"  column="id_card_front"/>
+		<result  property="idCardBack"  column="id_card_back"/>
+		<result  property="idCardStatus"  column="id_card_status"/>
+	</resultMap>
+
+	<sql id="Address_Column_List">
+			id,
+			user_id,
+			name,
+			mobile,
+			zip,
+			state,
+			city,
+			district,
+			address,
+			isthemain,
+			gmt_create,
+			gmt_modified,
+			id_card,
+			id_card_front,
+			id_card_back,
+			id_card_status 
+	</sql>
+
+	<insert id="addAddress"  parameterType="com.oversea.task.domain.Address">
+		INSERT INTO oversea.address (
+		    id,
+			user_id,
+			name,
+			mobile,
+			zip,
+			state,
+			city,
+			district,
+			address,
+			isthemain,
+			gmt_create,
+			gmt_modified,
+			id_card,
+			id_card_front,
+			id_card_back,
+			id_card_status
+	) VALUES (
+	        #{id},
+			#{userId},
+			#{name},
+			#{mobile},
+			#{zip},
+			#{state},
+			#{city},
+			#{district},
+			#{address},
+			#{isthemain},
+			now(),
+			now(),
+			#{idCard},
+			#{idCardFront},
+			#{idCardBack},
+			#{idCardStatus}
+	)
+	</insert>
+
+
+	<update id="updateDefaultAddressById"  parameterType="java.lang.Long">
+		update oversea.address set isthemain='YES', gmt_modified=now()
+		where id=#{id}
+	</update>
+	
+	<update id="cancelDefaultAddressByUserId"  parameterType="java.lang.Long">
+		update oversea.address set isthemain='NO', gmt_modified=now()
+		where user_id=#{userId}
+	</update>
+	
+	<update id="updateAddressById"  parameterType="com.oversea.task.domain.Address">
+		update oversea.address set gmt_modified=now()
+			,district=#{district}
+			<if test="name!= null">
+					,name=#{name}
+			</if>
+			<if test="mobile!= null">
+					,mobile=#{mobile}
+			</if>
+			<if test="zip!= null">
+					,zip=#{zip}
+			</if>
+			<if test="state!= null">
+					,state=#{state}
+			</if>
+			<if test="city!= null">
+					,city=#{city}
+			</if>
+			<if test="address!= null">
+					,address=#{address}
+			</if>
+			<if test="idCard!= null">
+					,id_card=#{idCard}
+			</if>
+			<if test="idCardFront!= null">
+					,id_card_front=#{idCardFront}
+			</if>
+			<if test="idCardBack!= null">
+					,id_card_back=#{idCardBack}
+			</if>
+			<if test="idCardStatus!= null">
+					,id_card_status=#{idCardStatus}
+			</if>
+			<if test="isthemain!= null">
+					,isthemain=#{isthemain}
+			</if>
+		where id=#{id}
+	</update>
+	
+	<select id="getAddressById"  parameterType="java.lang.Long" resultMap="Address">
+		select <include refid="Address_Column_List"/> from oversea.address where id=#{id} and status=0
+	</select>
+	
+	<select id="getAddressByUserId"  parameterType="java.util.Map" resultMap="Address">
+		select <include refid="Address_Column_List"/> from oversea.address 
+		where user_id in (${user_id_list}) and status=0
+		order by isTheMain desc, gmt_modified desc
+	</select>
+	
+	<select id="countAddressByUserId" parameterType="java.util.Map" resultType="java.lang.Integer">
+		select count(1) from oversea.address
+		where user_id in (${user_id_list})
+	</select>
+	
+	<update id="deleteAddressById"  parameterType="java.lang.Long" >
+		update oversea.address set status=1 where id = #{id}
+	</update>
+
+	<update id="updateAddressStatusById" parameterType="java.util.Map">
+		update oversea.address set id_card_status=#{idCardStatus} where id=#{id}
+	</update>
+	
+	<select id="getAddressByMobile_Address_Name" parameterType="java.util.Map" resultMap="Address">
+		select <include refid="Address_Column_List"/> from oversea.address 
+		<where>
+		<if test="mobile!=null">
+			and mobile=#{mobile}
+		</if>
+		<if test="address!=null">
+			and address like #{address}
+		</if>
+		<if test="name!=null">
+			and name=#{name}
+		</if>
+		</where>
+	</select>
+	
+		
+	<select id="getAddressMobileByUserId"  parameterType="java.util.Map" resultType="java.lang.String">
+		select mobile from oversea.address 
+		where user_id in (${user_id_list}) and status=0 order by gmt_modified desc limit 1
+	</select>
+</mapper>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="OrderDeviceMapper">
+
+    <resultMap id="PayOrderDevice" type="com.oversea.task.domain.OrderDevice">
+        <result property="deviceId" column="device_id"/>
+        <result property="deviceIp" column="device_ip"/>
+        <result property="priority" column="priority"/>
+        <result property="status" column="status"/>
+        <result property="orderAccountId" column="order_account_id"/>
+        <result property="remark" column="remark"/>
+        <result property="deviceStatus" column="device_status"/>
+        <result property="createTime" column="create_time"/>
+        <result property="modifyTime" column="modify_time"/>
+    </resultMap>
+
+    <sql id="PayOrderDevice_Column_List">
+         device_id
+        ,device_ip
+        ,priority
+        ,status
+        ,order_account_id
+        ,remark
+        ,device_status
+        ,create_time
+        ,modify_time
+    </sql>
+
+    <select id="findById" resultMap="PayOrderDevice" parameterType="long">
+		select * from automan.order_device_new where device_id = #{id}
+	</select>
+
+    <update id="updateOrderDeviceStatus" parameterType="map">
+        update automan.order_device_new set status=#{status} where device_id=#{id}
+    </update>
+
+</mapper>

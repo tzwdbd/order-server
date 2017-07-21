@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="OrderPayAccountSQL">
+
+	<resultMap id="OrderPayAccount"	type="com.oversea.task.domain.OrderPayAccount">
+		<result  property="id"  column="id"/>
+		<result  property="account"  column="account"/>
+		<result  property="loginPassword"  column="login_password"/>
+		<result  property="payPassword"  column="pay_password"/>
+		<result  property="balance"  column="balance"/>
+		<result  property="creditCardId"  column="credit_card_id"/>
+		<result  property="accountType"  column="account_type"/>
+		<result  property="owner"  column="owner"/>
+		<result  property="bindPhone"  column="bind_phone"/>
+		<result  property="lastLogin"  column="last_login"/>
+		<result  property="gmtCreate"  column="gmt_create"/>
+		<result  property="gmtModify"  column="gmt_modify"/>
+		<result  property="remarks"  column="remarks"/>
+	</resultMap>
+
+	<sql id="OrderPayAccount_Column_List">
+			id,
+			account,
+			login_password,
+			pay_password,
+			balance,
+			credit_card_id,
+			account_type,
+			owner,
+			bind_phone,
+			last_login,
+			gmt_create,
+			gmt_modify,
+			remarks
+	</sql>
+
+	<insert id="addOrderPayAccount"  parameterType="com.oversea.task.domain.OrderPayAccount">
+		INSERT INTO automan.order_pay_account (
+		    id,
+			account,
+			login_password,
+			pay_password,
+			balance,
+			credit_card_id,
+			account_type,
+			owner,
+			bind_phone,
+			last_login,
+			gmt_create,
+			gmt_modify,
+			remarks
+	) VALUES (
+	        #{id},
+			#{account},
+			#{loginPassword},
+			#{payPassword},
+			#{balance},
+			#{creditCardId},
+			#{accountType},
+			#{owner},
+			#{bindPhone},
+			#{lastLogin},
+			now(),
+			now(),
+			#{remarks}
+	)
+	</insert>
+
+	
+	<update id="updateOrderPayAccount"  parameterType="com.oversea.task.domain.OrderPayAccount">
+		update automan.order_pay_account set gmt_modify=now()
+			<if test="account!= null">
+					,account=#{account}
+			</if>
+			<if test="loginPassword!= null">
+					,login_password=#{loginPassword}
+			</if>
+			<if test="payPassword!= null">
+					,pay_password=#{payPassword}
+			</if>
+			<if test="balance!= null">
+					,balance=#{balance}
+			</if>
+			<if test="creditCardId!= null">
+					,credit_card_id=#{creditCardId}
+			</if>
+			<if test="accountType!= null">
+					,account_type=#{accountType}
+			</if>
+			<if test="owner!= null">
+					,owner=#{owner}
+			</if>
+			<if test="bindPhone!= null">
+					,bind_phone=#{bindPhone}
+			</if>
+			<if test="lastLogin!= null">
+					,last_login=#{lastLogin}
+			</if>
+			<if test="remarks!= null">
+					,remarks=#{remarks}
+			</if>
+		where id=#{id}
+	</update>
+	
+	<select id="getOrderPayAccountById"  parameterType="java.lang.Long" resultMap="OrderPayAccount">
+		select <include refid="OrderPayAccount_Column_List"/> from automan.order_pay_account where id=#{id}
+	</select>
+	
+	<select id="getOrderPayAccountByCreditCardId"  parameterType="java.lang.Long" resultMap="OrderPayAccount">
+		select <include refid="OrderPayAccount_Column_List"/> from automan.order_pay_account where credit_card_id=#{creditCardId}
+	</select>
+	
+</mapper>

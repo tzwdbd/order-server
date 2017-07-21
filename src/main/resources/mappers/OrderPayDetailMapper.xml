@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="OrderPayDetailMapper">
+
+<resultMap id="OrderPayDetail" type="com.oversea.task.domain.OrderPayDetail">
+        <result property="id" column="id"/>
+        <result property="orderNo" column="order_no"/>
+        <result property="siteName" column="site_name"/>
+        <result property="solePrice" column="sole_price"/>
+        <result property="price" column="price"/>
+        <result property="rmbPrice" column="rmb_price"/>
+        <result property="units" column="units"/>
+        <result property="statusType" column="status_type"/>
+        <result property="accountId" column="account_id"/>
+        <result property="payAccount" column="pay_account"/>
+        <result property="deviceId" column="device_id"/>
+        <result property="deviceIp" column="device_ip"/>
+        <result property="creditCardId" column="credit_card_id"/>
+        <result property="cardNo" column="card_no"/>
+        <result property="bankName" column="bank_name"/>
+        <result property="payType" column="pay_type"/>
+        <result property="gmtCreate" column="gmt_create"/>
+        <result property="orderTime" column="order_time"/>
+        <result property="payTime" column="pay_time"/>
+        <result property="company" column="company"/>
+        <result property="isDirect" column="is_direct"/>
+        <result property="operator" column="operator"/>
+        <result property="isManual" column="is_manual"/>
+        <result property="startBalance" column="start_balance"/>
+        <result property="endBalance" column="end_balance"/>
+        <result property="groupNumber" column="group_number"/>
+        <result property="productEntityId" column="product_entity_id"/>
+        <result property="num" column="num"/>
+        <result property="skuPrice" column="sku_price"/>
+        <result property="orderStatus" column="order_status"/>
+        
+    </resultMap>
+
+    <insert id="addOrderPayDetail" parameterType="com.oversea.task.domain.OrderPayDetail">
+        INSERT INTO automan.order_pay_detail (
+        order_no,
+        site_name,
+        sole_price,
+        price,
+        rmb_price,
+        units,
+        status_type,
+        account_id,
+        pay_account,
+        device_id,
+        device_ip,
+        credit_card_id,
+        card_no,
+        bank_name,
+        pay_type,
+        gmt_create,
+        order_time,
+        pay_time,
+        company,
+        is_direct,
+        operator,
+        is_manual,
+        start_balance,
+        end_balance,
+        group_number,
+        product_entity_id,
+        num,
+        sku_price,
+        order_status
+        ) VALUES (
+        #{orderNo},
+        #{siteName},
+        #{solePrice},
+        #{price},
+        #{rmbPrice},
+        #{units},
+        #{statusType},
+        #{accountId},
+        #{payAccount},
+        #{deviceId},
+        #{deviceIp},
+        #{creditCardId},
+        #{cardNo},
+        #{bankName},
+        #{payType},
+        #{gmtCreate},
+        #{orderTime},
+        #{payTime},
+        #{company},
+        #{isDirect},
+        #{operator},
+        #{isManual},
+        #{startBalance},
+        #{endBalance},
+        #{groupNumber},
+        #{productEntityId},
+        #{num},
+        #{skuPrice},
+        #{orderStatus})
+    </insert>
+    
+</mapper>

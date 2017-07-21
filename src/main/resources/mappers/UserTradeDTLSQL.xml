@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="UserTradeDTLSQL">
+<resultMap id="UserTradeDTL"	type="com.oversea.task.domain.UserTradeDTL">
+	<result  property="id"  column="id"/>
+	<result  property="userId"  column="user_id"/>
+	<result  property="payNo"  column="pay_no"/>
+	<result  property="orderNo"  column="order_no"/>
+	<result  property="productId"  column="product_id"/>
+	<result  property="productEntityId"  column="product_entity_id"/>
+	<result  property="externalProductId"  column="external_product_id"/>
+	<result  property="productUrl"  column="product_url"/>
+	<result  property="productRebateUrl"  column="product_rebate_url"/>
+	<result  property="homeFreight"  column="home_freight"/>
+	<result  property="mallId"  column="mall_id"/>
+	<result  property="amount"  column="amount"/>
+	<result  property="num"  column="num"/>
+	<result  property="discount"  column="discount"/>
+	<result  property="discountDesc"  column="discount_desc"/>
+	<result  property="unitPrice"  column="unit_price"/>
+	<result  property="weight"  column="weight"/>
+	<result  property="gmtCreate"  column="gmt_create"/>
+	<result  property="gmtModified"  column="gmt_modified"/>
+	<result  property="tax"  column="tax"/>
+	<result  property="taxRate"  column="tax_rate"/>
+	<result  property="pushStatus"  column="push_status"/>
+	<result  property="forwardFee"  column="forward_fee"/>
+	<result  property="rate"  column="rate"/>
+	<result  property="fixedPrice"  column="fixed_price"/>
+	<result  property="status"  column="status"/>
+	<result  property="stockStatus" column="stock_status"/>
+	<result  property="remark" column="remark"/>
+	<result  property="mallOrderPrice" column="mall_order_price"/>
+	<result  property="productTitle" column="product_title"/>
+	<result  property="frozenStatus" column="frozen_status"/>
+	<result  property="freeTaxPrice" column="free_tax_price"/>
+	<result  property="skuAddPrice" column="sku_add_price"/>
+	<result  property="insurancePrice" column="insurance_price"/>
+	<result  property="modeType" column="mode_type"/>
+	<result  property="promotionCodeList" column="promotion_code_list"/>
+	<result  property="afterSaleType" column="after_sale_type"/>
+	<result  property="saleCouponId" column="sale_coupon_id"/>
+	<result  property="saleCouponPrice" column="sale_coupon_price"/>
+	<result  property="expressType" column="express_type"/>
+</resultMap>
+
+<sql id="UserTradeDTL_Column_List">
+		id,
+		user_id,
+		pay_no,
+		order_no,
+		product_id,
+		product_entity_id,
+		external_product_id,
+		product_url,
+		product_rebate_url,
+		home_freight,
+		mall_id,
+		amount,
+		num,
+		discount,
+		discount_desc,
+		unit_price,
+		weight,
+		gmt_create,
+		gmt_modified,
+		tax,
+		tax_rate,
+		forward_fee,
+		rate,
+		fixed_price,
+		stock_status,
+		status,
+		remark,
+		mall_order_price,
+		product_title,
+		frozen_status,
+		free_tax_price,
+		sku_add_price,
+		insurance_price,
+		mode_type,
+		promotion_code_list,
+		after_sale_type,
+		sale_coupon_id,
+		sale_coupon_price,
+		express_type
+</sql>
+
+<insert id="addUserTradeDTL"  parameterType="com.oversea.task.domain.UserTradeDTL">
+	INSERT INTO oversea.user_trade_dtl (
+		user_id,
+		pay_no,
+		order_no,
+		product_id,
+		product_entity_id,
+		external_product_id,
+		product_url,
+		product_rebate_url,
+		home_freight,
+		mall_id,
+		amount,
+		num,
+		discount,
+		discount_desc,
+		unit_price,
+		weight,
+		gmt_create,
+		gmt_modified,
+		tax,
+		tax_rate,
+		forward_fee,
+		rate,
+		fixed_price,
+		status,
+		stock_status,
+		product_title,
+		frozen_status,
+		free_tax_price,
+		sku_add_price,
+		insurance_price,
+		mode_type,
+		promotion_code_list,
+		after_sale_type,
+		sale_coupon_id,
+		sale_coupon_price,
+		express_type
+	) VALUES (
+		#{userId},
+		#{payNo},
+		#{orderNo},
+		#{productId},
+		#{productEntityId},
+		#{externalProductId},
+		#{productUrl},
+		#{productRebateUrl},
+		#{homeFreight},
+		#{mallId},
+		#{amount},
+		#{num},
+		#{discount},
+		#{discountDesc},
+		#{unitPrice},
+		#{weight},
+		now(),
+		now(),
+		#{tax},
+		#{taxRate},
+		#{forwardFee},
+		#{rate},
+		#{fixedPrice},
+		#{status},
+		#{stockStatus},
+		#{productTitle},
+		#{frozenStatus},
+		#{freeTaxPrice},
+		#{skuAddPrice},
+		#{insurancePrice},
+		#{modeType},
+		#{promotionCodeList},
+		0,
+		#{saleCouponId},
+		#{saleCouponPrice},
+		#{expressType}
+	)
+</insert>
+
+<update id="updateUserTradeDtlPushStatus" parameterType="map">
+    update oversea.user_trade_dtl set push_status=#{pushStatus}, gmt_modified=now() where id=#{id} 
+</update>
+
+<update id="updateUserTradeDTLById"  parameterType="com.oversea.task.domain.UserTradeDTL">
+	update oversea.user_trade_dtl set gmt_modified=now()
+		<if test="userId!= null">
+				,user_id=#{userId}
+		</if>
+		<if test="payNo!= null">
+				,pay_no=#{payNo}
+		</if>
+		<if test="orderNo!= null">
+				,order_no=#{orderNo}
+		</if>
+		<if test="externalProductId!= null">
+				,external_product_id=#{externalProductId}
+		</if>
+		<if test="productUrl!= null">
+				,product_url=#{productUrl}
+		</if>
+				<if test="productRebateUrl!= null">
+				,product_rebate_url=#{productRebateUrl}
+		</if>
+		<if test="homeFreight!= null">
+				,home_freight=#{homeFreight}
+		</if>
+		<if test="mallId!= null">
+				,mall_id=#{mallId}
+		</if>
+		<if test="amount!= null">
+				,amount=#{amount}
+		</if>
+		<if test="num!= null">
+				,num=#{num}
+		</if>
+		<if test="discount!= null">
+				,discount=#{discount}
+		</if>
+		<if test="discountDesc!= null">
+				,discount_desc=#{discountDesc}
+		</if>
+		<if test="unitPrice!= null">
+				,unit_price=#{unitPrice}
+		</if>
+		<if test="weight!= null">
+				,weight=#{weight}
+		</if>
+		<if test="tax!= null">
+				,tax=#{tax}
+		</if>
+		<if test="taxRate!= null">
+				,tax_rate=#{taxRate}
+		</if>
+		<if test="forwardFee!= null">
+				,forward_fee=#{forwardFee}
+		</if>
+		<if test="rate!= null">
+				,rate=#{rate}
+		</if>
+		<if test="fixedPrice!= null">
+				,fixed_price=#{fixedPrice}
+		</if>
+		<if test="status!= null">
+				,status=#{status}
+		</if>	
+		<if test="frozenStatus!= null">
+				,frozen_status=#{frozenStatus}
+		</if>
+		<if test="insurancePrice!= null">
+				,insurance_price=#{insurancePrice}
+		</if>	
+		<if test="modeType!= null">
+				,mode_type=#{modeType}
+		</if>
+		<if test="promotionCodeList!= null">
+				,promotion_code_list=#{promotionCodeList}
+		</if>
+		<if test="afterSaleType!= null">
+				,after_sale_type=#{afterSaleType}
+		</if>
+		<if test="saleCouponId!= null">
+				,sale_coupon_id=#{saleCouponId}
+		</if>	
+		<if test="saleCouponPrice!= null">
+				,sale_coupon_price=#{saleCouponPrice}
+		</if>
+		<if test="expressType!= null">
+				,express_type=#{expressType}
+		</if>				
+	where id=#{id}
+</update>
+
+
+<select id="countUserTradeDTLById"  parameterType="java.lang.Long" resultType="java.lang.Integer">
+	select count(1) from oversea.user_trade_dtl where id=#{id}
+</select>
+
+<select id="getUserTradeDTLById"  parameterType="java.lang.Long" resultMap="UserTradeDTL">
+	select <include refid="UserTradeDTL_Column_List"/>
+ from oversea.user_trade_dtl where id=#{id}
+</select>
+
+<select id="getUserTradeDTLByUserIdAndOrderNo"  parameterType="java.util.Map" resultMap="UserTradeDTL">
+	select <include refid="UserTradeDTL_Column_List"/>
+ from oversea.user_trade_dtl
+ where user_id in (${user_id_list})
+   and order_no=#{orderNo}
+</select>
+
+<select id="getUserTradeDTLByOrderNo" parameterType="java.util.Map" resultMap="UserTradeDTL">
+    select <include refid="UserTradeDTL_Column_List"/>
+    from oversea.user_trade_dtl
+    where order_no=#{orderNo}
+</select>
+
+<select id="getUserTradeDTLByUserIdAndOrderNoAndProductEntityId"  parameterType="java.util.Map" resultMap="UserTradeDTL">
+	select <include refid="UserTradeDTL_Column_List"/>
+ from oversea.user_trade_dtl
+ where user_id in (${user_id_list})
+   and order_no=#{orderNo}
+   and product_entity_id=#{productEntityId}
+</select>
+
+<select id="getUserTradeDTLByOrderNoAndProductEntityId"  parameterType="java.util.Map" resultMap="UserTradeDTL">
+	select <include refid="UserTradeDTL_Column_List"/>
+ from oversea.user_trade_dtl
+ where order_no=#{orderNo}
+   and product_entity_id=#{productEntityId}
+</select>
+
+
+<update id="updateUserTradeDTLUrlById"  parameterType="java.util.Map">
+	update oversea.user_trade_dtl set  product_rebate_url=#{productRebateUrl} , gmt_modified=now() where id=#{id}
+</update>
+
+<select id="getUserTradeDTLByUserIdAndProductIdAndGmtCreate"  parameterType="java.util.Map" resultMap="UserTradeDTL">
+	select <include refid="UserTradeDTL_Column_List"/>
+     from oversea.user_trade_dtl
+     where user_id in (${user_id_list})
+    <![CDATA[  and product_id=#{productId}
+       and gmt_create >=current_date
+       and gmt_create<date_add(current_date, interval 1 DAY)
+    ]]>
+</select>
+
+<update id="partialRefund" parameterType="map">
+    update oversea.user_trade_dtl set status=#{refundStatus}, gmt_modified=now() where id=#{id} 
+</update>
+
+    <update id="updateUserTradeDtlStatus" parameterType="map">
+        update oversea.user_trade_dtl set status=#{toStatus}, gmt_modified=now()
+        where id=#{id}
+        <if test="fromStatus!=null">
+            and status=#{fromStatus}
+        </if>
+    </update>
+    
+    <update id="updateUserTradeDtlStatusAndRemark" parameterType="map">
+        update oversea.user_trade_dtl set  gmt_modified=now()
+		<if test="toStatus!= null">
+				,status=#{toStatus}
+		</if>
+		<if test="expressDesc!= null">
+				,express_desc=#{expressDesc}
+		</if>
+        where id=#{id}
+        <if test="fromStatus!=null">
+            and status=#{fromStatus}
+        </if>
+    </update>
+
+    <update id="updateUserTradeDtlRemark" parameterType="map">
+        update oversea.user_trade_dtl set status=#{toStatus}, gmt_modified=now()
+        where id=#{id}
+        <if test="fromStatus!=null">
+            and status=#{fromStatus}
+        </if>
+        <if test="expressDesc!=null">
+            and express_desc=#{expressDesc}
+        </if>
+    </update>
+    
+    <select id="getUserTradeDtlByStatus" parameterType="map" resultMap="UserTradeDTL">
+        select <include refid="UserTradeDTL_Column_List"/>
+        from oversea.user_trade_dtl
+        where status=#{status}
+        limit #{num}
+    </select>
+    
+	<select id="getUserTradeDtlByPayNo" parameterType="java.lang.String" resultMap="UserTradeDTL">
+        select <include refid="UserTradeDTL_Column_List"/>
+        from oversea.user_trade_dtl where pay_no=#{payNo}
+    </select>
+    
+    <update id="updateUserTradeDtlStockStatus" parameterType="map">
+		update oversea.user_trade_dtl set stock_status=#{stockStatus} where id=#{id}
+	</update>
+	
+	<select id="getTopProductByDate" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select count(ut.id) as count,ut.product_id as product_id
+		from oversea.user_trade_dtl as ut inner join product as pt on ut.product_id = pt.id
+		where ut.status<![CDATA[>=]]>20 and ut.gmt_create between #{startTime} and #{endTime}
+		<if test="category!=null">
+		and pt.root_category_id = #{category}
+		</if>
+		group by ut.product_id
+		order by count(ut.id) desc
+		limit #{limit}
+	</select>
+    
+    
+     <select id="countUserTradeDtlByOrderNoAndStatus" parameterType="map" resultType="java.lang.Integer">
+        select count(1)
+        from oversea.user_trade_dtl
+        where order_no=#{orderNo} and status=#{status}
+    </select>
+
+    <select id="getUserTradeDtlByStatusAndDispatchType"  parameterType="java.util.Map" resultMap="UserTradeDTL">
+        select <include refid="UserTradeDTL_Column_List"/>
+        from oversea.user_trade_dtl d
+        where d.status=#{status}
+        and d.mall_id=#{mallId}
+        and exists (select 1 from user_trade t where t.order_no = d.order_no and t.dispatch_type=#{dispatchType} )
+        and exists (select 1 from biz_pay p where p.pay_no = d.pay_no and (p.real_price !='0.01' and p.inner_code is null) )
+        order by d.gmt_create
+        limit #{num}
+    </select>
+    
+    
+     <update id="updateUserTradeDtlToFrozen" parameterType="map">
+        update oversea.user_trade_dtl set status=#{toStatus}, frozen_status=#{frozenStatus},gmt_modified=now()
+        where id=#{id} and status=#{fromStatus}
+    </update>
+    
+    <update id="updateUserTradeDtlStatusByPayNo" parameterType="map">
+        update oversea.user_trade_dtl set status=#{toStatus}, gmt_modified=now() 
+        where pay_no=#{payNo} and status=#{fromStatus}
+    </update> 
+    
+    <update id="updateUserTradeDtlSaleCouponById" parameterType="map">
+        update oversea.user_trade_dtl set sale_coupon_id=#{saleCouponId},sale_coupon_price=#{saleCouponPrice}, gmt_modified=now() 
+        where id=#{id}
+    </update>
+    
+    <update id="updateUserTradeDtlAfterSaleTypeById" parameterType="map">
+        update oversea.user_trade_dtl set after_sale_type=#{toStatus}, after_sale_msg_time=now(), gmt_modified=now() 
+        where id=#{id} and after_sale_type=#{fromStatus}
+    </update>
+    
+    <update id="updateUserTradeDtlAfterSaleTypeByOrderNo" parameterType="map">
+        update oversea.user_trade_dtl set after_sale_type=#{toStatus}, after_sale_msg_time=now(), gmt_modified=now() 
+        where order_no=#{orderNo} and after_sale_type=#{fromStatus}
+    </update>
+    
+    <select id="getPayTime"  parameterType="java.util.Map" resultType="java.util.Date">
+        select pay_time
+        from oversea.biz_pay where pay_no = #{payNo} 
+        limit 1
+    </select>
+  
+</mapper>

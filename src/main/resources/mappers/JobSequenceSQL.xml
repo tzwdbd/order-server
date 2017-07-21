@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="JobSequenceSQL">
+<resultMap id="JobSequence"	type="com.oversea.task.domain.JobSequence">
+	<result  property="id"  column="id"/>
+	<result  property="name"  column="name"/>
+	<result  property="start"  column="start"/>
+	<result  property="step"  column="step"/>
+	<result  property="remark"  column="remark"/>
+	<result  property="gmtSync"  column="gmt_sync"/>
+	<result  property="gmtCreate"  column="gmt_create"/>
+	<result  property="gmtModified"  column="gmt_modified"/>
+</resultMap>
+
+<sql id="JobSequence_Column_List">
+		id,
+		name,
+		start,
+		step,
+		remark,
+		gmt_sync,
+		gmt_create,
+		gmt_modified
+</sql>
+
+<insert id="addJobSequence"  parameterType="com.oversea.task.domain.JobSequence">
+	INSERT INTO oversea.job_sequence (
+		name,
+		start,
+		step,
+		remark,
+		gmt_sync,
+		gmt_create,
+		gmt_modified
+) VALUES (
+		#{name},
+		#{start},
+		#{step},
+		#{remark},
+		#{gmtSync},
+		#{gmtCreate},
+		#{gmtModified})
+</insert>
+
+<update id="updateJobSequenceById"  parameterType="com.oversea.task.domain.JobSequence">
+	update oversea.job_sequence 
+	  <set> 
+	  	gmt_modified=now(),
+	    gmt_sync=now(),
+		start=#{toStart}
+	  </set>	
+		where id=#{id} and start=#{fromStart}	
+</update>
+
+<update id="updateJobSequenceByDynamic"  parameterType="com.oversea.task.domain.JobSequence">
+	update oversea.job_sequence <set>
+	gmt_modified=now()
+		<if test="name!= null">
+				,name=#{name}
+		</if>
+		<if test="start!= null">
+				,start=#{start}
+		</if>
+		<if test="step!= null">
+				,step=#{step}
+		</if>
+		<if test="remark!= null">
+				,remark=#{remark}
+		</if>
+</set>
+	where id=#{id}
+</update>
+
+
+<select id="countJobSequenceById"  parameterType="java.lang.Long" resultType="java.lang.Integer">
+<![CDATA[
+	select count(1) from oversea.job_sequence where id=#{id}
+]]>
+</select>
+
+<select id="getJobSequenceById"  parameterType="java.lang.Long" resultMap="JobSequence">
+	select <include refid="JobSequence_Column_List"/>
+ from oversea.job_sequence where id=#{id}
+</select>
+
+<select id="getJobSequenceByName"  parameterType="java.util.Map" resultMap="JobSequence">
+	select <include refid="JobSequence_Column_List"/>
+ from oversea.job_sequence where name=#{name}
+</select>
+
+</mapper>

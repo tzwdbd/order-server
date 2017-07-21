@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="HaitaoProductInfo">
+
+    <resultMap id="haitaoProductInfo" type="com.oversea.task.domain.HaitaoProductInfo">
+        <result property="id" column="id"/>
+        <result property="platform" column="platform"/>
+        <result property="itemId" column="item_id"/>
+        <result property="homeUrl" column="home_url"/>
+        <result property="parentAsinCode" column="parent_asin_code"/>
+        <result property="title" column="title"/>
+        <result property="currencyCode" column="currency_code"/>
+        <result property="brand" column="brand"/>
+        <result property="origin" column="origin"/>
+        <result property="price" column="price"/>
+        <result property="introduction" column="introduction"/>
+        <result property="description" column="description"/>
+        <result property="detail" column="detail"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="status" column="status"/>
+        <result property="type" column="type"/>
+        <result property="resultCode" column="result_code"/>
+    </resultMap>
+
+    <update id="updateHaitaoDailiProductInfo" parameterType="com.oversea.task.domain.HaitaoProductInfo">
+		UPDATE  haitao_product_info
+		   SET  
+		    platform=#{platform}
+			,item_id=#{itemId}
+			,home_url=#{homeUrl}
+			,parent_asin_code=#{parentAsinCode}
+			,title=#{title}
+			,currency_code=#{currencyCode}
+			,brand=#{brand}
+			,category=#{category}
+			,dimension=#{dimension}
+			,introduction=#{introduction}
+			,description=#{description}
+			,detail=#{detail}
+			,update_time=now()
+			,status=#{status}
+			,result_code=#{resultCode}
+		 WHERE  id=#{id}
+	</update>
+
+    <insert id="insert" parameterType="com.oversea.task.domain.HaitaoProductInfo">
+        <selectKey resultType="long" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        INSERT INTO haitao_product_info(
+        platform
+        ,item_id
+        ,home_url
+        ,parent_asin_code
+        ,title
+        ,currency_code
+        ,brand
+        ,category
+        ,dimension
+        ,origin
+        ,introduction
+        ,description
+        ,detail
+        ,create_time
+        ,update_time
+        ,status
+        )
+        VALUES(
+        #{platform}
+        ,#{itemId}
+        ,#{homeUrl}
+        ,#{parentAsinCode}
+        ,#{title}
+        ,#{currencyCode}
+        ,#{brand}
+        ,#{category}
+        ,#{dimension}
+        ,#{origin}
+        ,#{introduction}
+        ,#{description}
+        ,#{detail}
+        ,#{createTime}
+        ,now()
+        ,#{status}
+        )
+    </insert>
+
+    <delete id="deleteByPrimaryKey">
+		DELETE FROM  haitao_product_info
+		      WHERE  id = #{id}
+	</delete>
+
+    <select id="getDetailProductInfoByStauts" parameterType="java.util.Map" resultMap="haitaoProductInfo">
+        SELECT  *
+        FROM  haitao_product_info
+        WHERE  status = #{status}
+        ORDER BY type
+        LIMIT #{pageSize}
+    </select>
+
+    <update id="updateHaitaoDailiProductInfoStatus" parameterType="java.util.Map">
+        UPDATE haitao_product_info SET status = #{status},update_time=now() where item_id=#{itemId}
+    </update>
+
+    <delete id="deleteDetailProductInfoByItemId" parameterType="string">
+        DELETE FROM  haitao_product_info WHERE  item_id = #{itemId}
+    </delete>
+    
+    <insert id="addHaitaoProductInfo" parameterType="java.util.Map">
+        INSERT INTO spider.haitao_product_info
+        (platform,
+        item_id,
+        home_url,
+        parent_asin_code,
+        create_time,
+        origin,
+        status,
+        `type`,
+        priority
+        )
+        VALUES (
+        #{platform},
+        #{itemId},
+        #{homeUrl},
+        #{parentAsinCode},
+        now(),
+        #{origin},
+        #{status},
+        #{type},
+        #{priority})
+    </insert>
+    
+    <select id="getHaitaoProductInfoByItemId" parameterType="java.lang.String" resultMap="haitaoProductInfo">
+        SELECT  *
+        FROM  haitao_product_info
+        WHERE  item_id = #{itemId}
+    </select>
+</mapper>

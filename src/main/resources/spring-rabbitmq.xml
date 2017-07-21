@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
+       default-autowire="byName">
+
+    <!-- Rabbitmq -->
+    <bean id="rabbitmqConfig" class="com.oversea.rabbitmq.RabbitmqConfig">
+        <property name="port" value="${rabbit.port}"></property>
+        <property name="serverHost" value="${rabbit.ip}"></property>
+        <property name="username" value="${rabbit.username}"></property>
+        <property name="password" value="${rabbit.password}"></property>
+        <property name="replyTimeout" value="${rabbit.reply.timeout}"></property>
+    </bean>
+
+   <!--  <bean id="rabbitMqMessageReceived" class="com.oversea.rabbitmq.recv.RabbitMqMessageReceived" init-method="init"
+          destroy-method="close">
+        <property name="rabbitmqConfig" ref="rabbitmqConfig"></property>
+        <property name="notIgnore" value="${rabbitmq.ignore:}"></property>
+        <property name="processerList">
+            <list>
+                <bean class="com.oversea.task.listener.ProductFastUpdateListener"></bean>
+                <bean class="com.oversea.task.listener.ProductSkuUpdateListener"></bean>
+            </list>
+        </property>
+    </bean> -->
+
+    <bean id="rabbitMqMessageSender" class="com.oversea.rabbitmq.sender.RabbitMqMessageSender" init-method="init" destroy-method="close"/>
+</beans>

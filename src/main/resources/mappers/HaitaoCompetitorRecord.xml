@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="HaitaoCompetitorRecord">
+
+    <resultMap id="haitaoCompetitorRecord" type="com.oversea.task.domain.HaitaoCompetitorRecord">
+        <result property="id" column="id"/>
+        <result property="siteName" column="site_name"/>
+        <result property="subSiteName" column="sub_site_name"/>
+        <result property="index" column="index"/>
+        <result property="isFinish" column="is_finish"/>
+        <result property="isProcess" column="is_process"/>
+        <result property="gmtCreate" column="gmt_create"/>
+        <result property="gmtModified" column="gmt_modified"/>
+    </resultMap>
+
+
+    <insert id="insert" parameterType="com.oversea.task.domain.HaitaoCompetitorRecord">
+        <selectKey resultType="long" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        INSERT INTO spider.haitao_competitor_record(
+        site_name
+        ,sub_site_name
+        ,index
+        ,is_finish
+        ,is_process
+        ,gmt_create
+        ,gmt_modified
+        )
+        VALUES(
+        #{siteName}
+        ,#{subSiteName}
+        ,#{index}
+        ,#{isFinish}
+        ,#{isProcess}
+        ,now()
+        ,now()
+        )
+    </insert>
+
+    <select id="getUnfinishRecord" resultMap="haitaoCompetitorRecord">
+        SELECT  *
+        FROM  spider.haitao_competitor_record
+        WHERE  is_process='no' and (is_finish='no' or is_finish is null)
+    </select>
+    
+    <update id="update" parameterType="com.oversea.task.domain.HaitaoCompetitorRecord">
+        update spider.haitao_competitor_record set gmt_modified=now()
+        <if test="siteName!= null">
+            ,site_name=#{siteName}
+        </if>
+        <if test="subSiteName!= null">
+            ,sub_site_name=#{subSiteName}
+        </if>
+        <if test="index!= null">
+            ,`index`=#{index}
+        </if>
+        <if test="isFinish!= null">
+            ,is_finish=#{isFinish}
+        </if>
+        <if test="isProcess!= null">
+            ,is_process=#{isProcess}
+        </if>
+        where id=#{id}
+	</update>
+</mapper>

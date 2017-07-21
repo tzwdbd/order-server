@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="HaitaoProductTask">
+
+    <resultMap id="HaitaoProductTask" type="com.oversea.task.domain.HaitaoProductTask">
+        <result property="id" column="id"/>
+        <result property="platform" column="platform"/>
+        <result property="url" column="url"/>
+        <result property="itemId" column="item_id"/>
+        <result property="priority" column="priority"/>
+        <result property="createTime" column="create_time"/>
+        <result property="spiderTime" column="spider_time"/>
+        <result property="spiderTimes" column="spider_times"/>
+    </resultMap>
+
+    <select id="load" resultMap="HaitaoProductTask">
+		SELECT  *
+		  FROM  spider.haitao_product_task_queue
+		 WHERE  id = #{id}
+	</select>
+
+    <select id="findOnePage" parameterType="map" resultMap="HaitaoProductTask">
+        <![CDATA[
+		SELECT	*
+		  FROM	spider.haitao_product_task_queue 
+		 WHERE	platform = #{platform} 
+		   AND	(
+		    spider_time IS NULL OR (spider_times IS NOT NULL and spider_times <#{spiderTimes})
+		    OR (spider_times IS NULL AND spider_time<#{spiderTime})
+		    )
+		 LIMIT	#{pageSize}
+
+        ]]>
+	</select>
+
+    <update id="update" parameterType="com.oversea.task.domain.HaitaoProductTask">
+		UPDATE  spider.haitao_product_task_queue
+		   SET  
+			platform=#{platform}
+			,url=#{url}
+			,item_id=#{itemId}
+			,priority=#{priority}
+			,spider_time=#{spiderTime}
+			,spider_times=#{spiderTimes}
+		 WHERE  id=#{id}
+	</update>
+
+    <insert id="insert" parameterType="com.oversea.task.domain.HaitaoProductTask">
+        <selectKey resultType="long" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        INSERT INTO spider.haitao_product_task_queue(
+        platform
+        ,url
+        ,item_id
+        ,priority
+        ,create_time
+        ,spider_time
+        ,spider_times
+        )
+        VALUES(
+        #{platform}
+        ,#{url}
+        ,#{itemId}
+        ,#{priority}
+        ,#{createTime}
+        ,#{spiderTime}
+        ,#{spiderTimes}
+        )
+    </insert>
+
+    <delete id="deleteByPrimaryKey">
+        DELETE FROM spider.haitao_product_task_queue
+        WHERE id = #{id}
+    </delete>
+</mapper>

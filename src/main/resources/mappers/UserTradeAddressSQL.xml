@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="UserTradeAddressSQL">
+<resultMap id="UserTradeAddress" extends="AddressSQL.Address" type="com.oversea.task.domain.UserTradeAddress">
+	<result  property="payNo"  column="pay_no"/>
+</resultMap>
+
+<sql id="UserTradeAddress_Column_List">
+		id,
+		pay_no,
+		user_id,
+		name,
+		mobile,
+		zip,
+		state,
+		city,
+		district,
+		address,
+		isthemain,
+		gmt_create,
+		gmt_modified,
+		id_card,
+		id_card_front,
+		id_card_back,
+		id_card_status 
+</sql>
+
+<insert id="addUserTradeAddress"  parameterType="com.oversea.task.domain.UserTradeAddress">
+	INSERT INTO oversea.user_trade_address (
+	    id,
+		pay_no,
+		user_id,
+		name,
+		mobile,
+		zip,
+		state,
+		city,
+		district,
+		address,
+		isthemain,
+		gmt_create,
+		gmt_modified,
+		id_card,
+		id_card_front,
+		id_card_back,
+		id_card_status 
+) VALUES (
+		#{id},
+		#{payNo},
+		#{userId},
+		#{name},
+		#{mobile},
+		#{zip},
+		#{state},
+		#{city},
+		#{district},
+		#{address},
+		#{isthemain},
+		now(),
+		now(),
+		#{idCard},
+		#{idCardFront},
+		#{idCardBack},
+		#{idCardStatus}
+)
+</insert>
+
+
+<select id="getUserTradeAddressByUserIdAndPayNo"  parameterType="java.util.Map" resultMap="UserTradeAddress">
+	select <include refid="UserTradeAddress_Column_List"/>
+ from oversea.user_trade_address 
+ where pay_no=#{payNo}
+ limit 1
+</select>
+
+<select id="getUserTradeAddressByUserId"  parameterType="java.util.Map" resultMap="UserTradeAddress">
+	select <include refid="UserTradeAddress_Column_List"/>
+ from  oversea.user_trade_address 
+ where user_id in (${user_id_list})
+</select>
+
+<select id="getUserTradeAddressByMobile"  parameterType="java.util.Map" resultMap="UserTradeAddress">
+	select <include refid="UserTradeAddress_Column_List"/>
+ from  oversea.user_trade_address 
+ where mobile = #{mobile}
+</select>
+
+<select id="getUserTradeAddressByIdCard"  parameterType="java.util.Map" resultMap="UserTradeAddress">
+	select <include refid="UserTradeAddress_Column_List"/>
+ from  oversea.user_trade_address 
+ where id_card = #{idCard}
+</select>
+
+<update id="updateUserTradeAddressByUserIdAndPayNo"  parameterType="com.oversea.task.domain.UserTradeAddress">
+	update  oversea.user_trade_address set gmt_modified=now()
+		<if test="id!= null">
+				,id=#{id}
+		</if>
+		<if test="name!= null">
+				,name=#{name}
+		</if>
+		<if test="mobile!= null">
+				,mobile=#{mobile}
+		</if>
+		<if test="zip!= null">
+				,zip=#{zip}
+		</if>
+		<if test="state!= null">
+				,state=#{state}
+		</if>
+		<if test="city!= null">
+				,city=#{city}
+		</if>
+		<if test="district!= null">
+				,district=#{district}
+		</if>
+		<if test="address!= null">
+				,address=#{address}
+		</if>
+		<if test="idCard!= null">
+				,id_card=#{idCard}
+		</if>
+		<if test="idCardFront!= null">
+				,id_card_front=#{idCardFront}
+		</if>
+		<if test="idCardBack!= null">
+				,id_card_back=#{idCardBack}
+		</if>
+		<if test="idCardStatus!= null">
+				,id_card_status=#{idCardStatus}
+		</if>
+	where user_id=#{userId}
+	and pay_no=#{payNo}
+</update>
+
+<select id="getUserTradeAddressById"  parameterType="java.lang.Long" resultMap="UserTradeAddress">
+	select <include refid="UserTradeAddress_Column_List"/>
+ 	from  oversea.user_trade_address 
+ 	where id = #{id}
+</select>
+
+<select id="getUserTradeAddressByPayNoList"  parameterType="java.util.Map" resultMap="UserTradeAddress">
+	select <include refid="UserTradeAddress_Column_List"/>
+	from  oversea.user_trade_address 
+	where pay_no in (${payNoList})
+</select>
+
+<update id="updateUserTradeAddressIdCardPhotoByPayNo" parameterType="com.oversea.task.domain.UserTradeAddress">
+	update  oversea.user_trade_address set gmt_modified=now()
+		<if test="idCardFront != null">
+			,id_card_front=#{idCardFront}
+		</if>
+		<if test="idCardBack != null">
+			,id_card_back=#{idCardBack}
+		</if>
+	where pay_no=#{payNo}
+</update>
+
+<update id="updateUserTradeAddressIdCardPhotoByPayNoList" parameterType="com.oversea.task.domain.UserTradeAddress">
+	update  oversea.user_trade_address set gmt_modified=now()
+		<if test="idCardFront != null">
+			,id_card_front=#{idCardFront}
+		</if>
+		<if test="idCardBack != null">
+			,id_card_back=#{idCardBack}
+		</if>
+	where pay_no in
+	<foreach item="item" index="index" collection="payNoList" open="(" separator="," close=")">
+		#{item}
+ 	</foreach>
+	and name = #{name}
+	and id_card = #{idCard}
+	and (id_card_front is null or id_card_back is null)
+</update>
+
+</mapper>

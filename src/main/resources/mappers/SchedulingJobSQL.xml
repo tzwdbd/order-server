@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="SchedulingJobSQL">
+<resultMap id="SchedulingJob"    type="com.oversea.task.domain.SchedulingJob">
+	<result  property="id"  column="id"/>
+	<result  property="jobClass"  column="job_class"/>
+	<result  property="jobMethod"  column="job_method"/>
+	<result  property="jobName"  column="job_name"/>
+	<result  property="jobGroup"  column="job_group"/>
+	<result  property="jobStatus"  column="job_status"/>
+	<result  property="cronExpression"  column="cron_expression"/>
+	<result  property="description"  column="description"/>
+	<result  property="methodArgs"  column="method_args"/>
+</resultMap>
+
+<sql id="SchedulingJob_Column_List">
+		id,job_class,job_method,method_args,job_name,job_group,job_status,cron_expression,description
+</sql>
+
+<insert id="addSchedulingJob"  parameterType="com.oversea.task.domain.SchedulingJob">
+INSERT INTO oversea.quartz_job_order
+	(job_class,
+		job_method,
+		method_args,
+		job_name,
+		job_group,
+		job_status,
+		cron_expression,
+		description) 
+VALUES (#{jobClass},
+		#{jobMethod},
+		#{methodArgs},
+		#{jobName},
+		#{jobGroup},
+		#{jobStatus},
+		#{cronExpression},
+		#{description})
+</insert>
+
+<update id="updateSchedulingJob"  parameterType="com.oversea.task.domain.SchedulingJob">
+	update oversea.quartz_job_order set 
+			job_class=#{jobClass}, 
+			job_method=#{jobMethod}, 
+			method_args=#{methodArgs}, 
+			job_name=#{jobName},
+			job_group=#{jobGroup}, 
+			job_status=#{jobStatus}, 
+			cron_expression=#{cronExpression}, 
+			description=#{description}
+			where id=#{id}
+</update>
+
+<delete id="deleteSchedulingJob"  parameterType="java.lang.Integer">
+		delete from oversea.quartz_job_order where id=#{id}
+</delete> 
+
+<select id="getSchedulingJob" resultMap="SchedulingJob" parameterType="java.lang.Integer">
+		select <include refid="SchedulingJob_Column_List"/>
+		from oversea.quartz_job_order 
+		where id=#{id}
+</select>
+
+<select id="getSchedulingJobList" resultMap="SchedulingJob" parameterType="java.lang.String">
+		select <include refid="SchedulingJob_Column_List"/>
+		from oversea.quartz_job_order
+		<if test="_parameter!=null">
+			where job_name = #{_parameter}
+		</if>
+</select>
+</mapper>

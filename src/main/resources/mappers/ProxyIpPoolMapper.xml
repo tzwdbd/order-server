@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ProxyIpPoolMapper">
+
+    <resultMap type="com.oversea.task.domain.ProxyIpPool" id="ProxyIpPool">
+        <result column="id" property="id"/>
+        <result column="ip" property="ip"/>
+        <result column="port" property="port"/>
+        <result column="remark" property="remark"/>
+        <result column="status" property="status"/>
+        <result column="location" property="location"/>
+        <result column="country" property="country"/>
+        <result column="hidden" property="hidden"/>
+        <result column="vaild_time" property="vaildTime"/>
+        <result column="vaild_cnt" property="vaildCnt"/>
+        <result column="type" property="type"/>
+        <result column="oversea" property="oversea"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+    <insert id="addProxyIpPool" parameterType="com.oversea.task.domain.ProxyIpPool">
+        insert into proxy_ip_pool
+        (ip,port,remark,status,location,country,hidden,vaild_cnt,type,oversea,create_time)
+        values
+        (#{ip},#{port},#{remark},#{status},#{location},#{country},#{hidden},0,#{type},#{oversea},now())
+        <selectKey resultType="long" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+    <select id="findById" resultMap="ProxyIpPool" parameterType="map">
+        select * from proxy_ip_pool where id > #{id} and status >=0 order by id limit #{limit}
+    </select>
+
+    <cache eviction="FIFO" flushInterval="60000" size="1000" readOnly="true"/>
+
+    <select id="findActiveIp" resultMap="ProxyIpPool" parameterType="map" useCache="true">
+        select * from proxy_ip_pool where status= 1 and vaild_cnt >1 and vaild_time>=#{activeTime} and
+        oversea=#{oversea}
+    </select>
+
+    <delete id="deleteById" parameterType="long">
+        delete from proxy_ip_pool where id = #{value}
+    </delete>
+
+    <select id="getById" parameterType="long" resultMap="ProxyIpPool">
+        select * from proxy_ip_pool where id = #{value}
+    </select>
+
+    <update id="updateProxyIpPool" parameterType="com.oversea.task.domain.ProxyIpPool">
+        update proxy_ip_pool set
+        <if test="ip!=null">ip=#{ip},</if>
+        <if test="port!=null">port=#{port},</if>
+        <if test="remark!=null">remark=#{remark},</if>
+        <if test="status!=null">status=#{status},</if>
+        <if test="location!=null">location=#{location},</if>
+        <if test="country!=null">country=#{country},</if>
+        <if test="hidden!=null">hidden=#{hidden},</if>
+        <if test="vaildTime!=null">vaild_time=#{vaildTime},</if>
+        <if test="vaildCnt!=null">vaild_cnt=vaild_cnt+1,</if>
+        <if test="type!=null">type=#{type},</if>
+        <if test="oversea!=null">oversea=#{oversea},</if>
+        <if test="createTime!=null">create_time=#{createTime}</if>
+        where id = #{id}
+    </update>
+
+    <select id="getProxyIPByIPAndPort" parameterType="map" resultMap="ProxyIpPool">
+        select * from proxy_ip_pool where ip=#{ip} and port=#{port}
+    </select>
+
+    <update id="updateExpireIpStatus" parameterType="map">
+        update proxy_ip_pool
+        set status=-1
+        where
+          status=2
+          <![CDATA[
+            and vaild_time<=#{expireTime}
+            and vaild_cnt=0
+            or (vaild_time is null and status=2)
+        ]]>
+    </update>
+</mapper>

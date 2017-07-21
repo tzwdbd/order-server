@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="GiftCardConfigMapper">
+
+    <resultMap id="GiftCardConfig" type="com.oversea.task.domain.GiftCardConfig">
+        <result property="id" column="id"/>
+        <result property="siteName" column="site_name"/>
+        <result property="balance" column="balance"/>
+        <result property="isPrime" column="is_prime"/>
+        <result property="percent" column="percent"/>
+        <result property="remarks" column="remarks"/>
+        <result property="gmtCreate" column="gmt_create"/>
+        <result property="gmtModified" column="gmt_modified"/>
+    </resultMap>
+
+
+    <select id="getGiftCardConfig" resultMap="GiftCardConfig">
+		select * from automan.gift_card_config order by balance
+	</select>
+
+
+</mapper>

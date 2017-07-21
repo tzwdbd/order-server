@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="OrderCreditCardMapper">
+	<resultMap id="OrderCreditCard" type="com.oversea.task.domain.OrderCreditCard">
+		<result property="id" column="id" />
+		<result property="cardNo" column="card_no" />
+		<result property="bankName" column="bank_name" />
+		<result property="bindPhone" column="bind_phone" />
+		<result property="payThresh" column="pay_thresh" />
+		<result property="cardAddress" column="card_address" />
+		<result property="cardPassword" column="card_password" />
+		<result property="suffixNo" column="suffix_no" />
+		<result property="expiryDate" column="expiry_date" />
+		<result property="currentThresh" column="current_thresh" />
+		<result property="owner" column="owner" />
+		<result property="ownerChn" column="owner_chn" />
+		<result property="createTime" column="create_time" />
+		<result property="modifyTime" column="modify_time" />
+		<result property="lastPayTime" column="last_pay_time" />
+	</resultMap>
+
+	<sql id="OrderCreditCard_Column_List">
+		id
+		,card_no
+		,bank_name
+		,bind_phone
+		,pay_thresh
+		,card_address
+		,card_password
+		,suffix_no
+		,expiry_date
+		,current_thresh
+		,owner
+		,owner_chn
+		,create_time
+		,modify_time
+		,last_pay_time
+	</sql>
+
+
+	<insert id="addOrderCreditCard" parameterType="java.util.HashMap">
+		INSERT INTO automan.order_credit_card (
+		<trim suffix="" suffixOverrides=",">
+			<if test="cardNo!= null">card_no,</if>
+			<if test="bankName!= null">bank_name,</if>
+			<if test="bindPhone!= null">bind_phone,</if>
+			<if test="payThresh!= null">pay_thresh,</if>
+			<if test="cardAddress!= null">card_address,</if>
+			<if test="cardPassword!= null">card_password,</if>
+			<if test="suffixNo!= null">suffix_no,</if>
+			<if test="expiryDate!= null">expiry_date,</if>
+			<if test="currentThresh!= null">current_thresh,</if>
+			<if test="owner!= null">owner,</if>
+			<if test="ownerChn!= null">owner_chn,</if>
+			<if test="createTime== null">create_time,</if>
+			<if test="modifyTime== null">modify_time,</if>
+			<if test="modifyTime== null">modify_time,</if>
+			<if test="lastPayTime== null">last_pay_time,</if>
+		</trim>
+		) VALUES (
+		<trim suffix="" suffixOverrides=",">
+			<if test="cardNo!= null">#{cardNo},</if>
+			<if test="bankName!= null">#{bankName},</if>
+			<if test="bindPhone!= null">#{bindPhone},</if>
+			<if test="payThresh!= null">#{payThresh},</if>
+			<if test="cardAddress!= null">#{cardAddress},</if>
+			<if test="cardPassword!= null">#{cardPassword},</if>
+			<if test="suffixNo!= null">#{suffixNo},</if>
+			<if test="expiryDate!= null">#{expiryDate},</if>
+			<if test="currentThresh!= null">#{currentThresh},</if>
+			<if test="owner!= null">#{owner},</if>
+			<if test="ownerChn!= null">#{ownerChn},</if>
+			<if test="createTime== null">now(),</if>
+			<if test="modifyTime== null">now(),</if>
+			<if test="lastPayTime== null">now(),</if>
+		</trim>
+		)
+		<selectKey resultType="java.lang.Long" keyProperty="id">SELECT LAST_INSERT_ID()</selectKey>
+	</insert>
+
+
+	<update id="updateOrderCreditCard" parameterType="java.util.HashMap">
+		update automan.order_credit_card set modify_time=now()
+			<if test="cardNo!=null">
+				,card_no=#{cardNo}
+			</if>
+			<if test="bankName!=null">
+				,bank_name=#{bankName}
+			</if>
+			<if test="bindPhone!=null">
+				,bind_phone=#{bindPhone}
+			</if>
+			<if test="payThresh!=null">
+				,pay_thresh=#{payThresh}
+			</if>
+			<if test="cardAddress!=null">
+				,card_address=#{cardAddress}
+			</if>
+			<if test="cardPassword!=null">
+				,card_password=#{cardPassword}
+			</if>
+			<if test="suffixNo!=null">
+				,suffix_no=#{suffixNo}
+			</if>
+			<if test="expiryDate!=null">
+				,expiry_date=#{expiryDate}
+			</if>
+			<if test="currentThresh!=null">
+				,current_thresh=#{currentThresh}
+			</if>
+			<if test="owner!=null">
+				,owner=#{owner}
+			</if>
+			<if test="ownerChn!=null">
+				,owner_chn=#{ownerChn}
+			</if>
+		where id=#{id}
+	</update>
+
+
+	<select id="countOrderCreditCardByCondition" parameterType="java.util.HashMap"
+		resultType="java.lang.Integer">
+		select count(1) from automan.order_credit_card
+		<where>
+			<if test="id!=null">
+				and id=#{id}
+			</if>
+			<if test="cardNo!=null">
+				and card_no=#{cardNo}
+			</if>
+			<if test="bankName!=null">
+				and bank_name=#{bankName}
+			</if>
+			<if test="bindPhone!=null">
+				and bind_phone=#{bindPhone}
+			</if>
+			<if test="payThresh!=null">
+				and pay_thresh=#{payThresh}
+			</if>
+			<if test="cardAddress!=null">
+				and card_address=#{cardAddress}
+			</if>
+			<if test="cardPassword!=null">
+				and card_password=#{cardPassword}
+			</if>
+			<if test="suffixNo!=null">
+				and suffix_no=#{suffixNo}
+			</if>
+			<if test="expiryDate!=null">
+				and expiry_date=#{expiryDate}
+			</if>
+			<if test="currentThresh!=null">
+				and current_thresh=#{currentThresh}
+			</if>
+			<if test="owner!=null">
+				and owner=#{owner}
+			</if>
+			<if test="ownerChn!=null">
+				and owner_chn=#{ownerChn}
+			</if>
+			<if test="createTime!=null">
+				and create_time=#{createTime}
+			</if>
+			<if test="modifyTime!=null">
+				and modify_time=#{modifyTime}
+			</if>
+			<if test="lastPayTime!=null">
+				and last_pay_time=#{lastPayTime}
+			</if>
+		</where>
+	</select>
+
+
+	<select id="getOrderCreditCardByCondition" parameterType="java.util.HashMap"
+		resultMap="OrderCreditCard">
+		select id
+		,card_no
+		,bank_name
+		,bind_phone
+		,pay_thresh
+		,card_address
+		,card_password
+		,suffix_no
+		,expiry_date
+		,current_thresh
+		,owner
+		,owner_chn
+		,create_time
+		,modify_time
+		,last_pay_time
+		from automan.order_credit_card
+		<where>
+			<if test="id!=null">
+				and id=#{id}
+			</if>
+			<if test="cardNo!=null">
+				and card_no=#{cardNo}
+			</if>
+			<if test="bankName!=null">
+				and bank_name=#{bankName}
+			</if>
+			<if test="bindPhone!=null">
+				and bind_phone=#{bindPhone}
+			</if>
+			<if test="payThresh!=null">
+				and pay_thresh=#{payThresh}
+			</if>
+			<if test="cardAddress!=null">
+				and card_address=#{cardAddress}
+			</if>
+			<if test="cardPassword!=null">
+				and card_password=#{cardPassword}
+			</if>
+			<if test="suffixNo!=null">
+				and suffix_no=#{suffixNo}
+			</if>
+			<if test="expiryDate!=null">
+				and expiry_date=#{expiryDate}
+			</if>
+			<if test="currentThresh!=null">
+				and current_thresh=#{currentThresh}
+			</if>
+			<if test="owner!=null">
+				and owner=#{owner}
+			</if>
+			<if test="ownerChn!=null">
+				and owner_chn=#{ownerChn}
+			</if>
+			<if test="createTime!=null">
+				and create_time=#{createTime}
+			</if>
+			<if test="modifyTime!=null">
+				and modify_time=#{modifyTime}
+			</if>
+			<if test="lastPayTime!=null">
+				and last_pay_time=#{lastPayTime}
+			</if>
+		</where>
+		<if test="sidx!= null">
+			order by ${sidx} ${sord}
+		</if>
+		limit #{start}, #{end}
+	</select>
+
+	<select id="getOrderCreditCardById" parameterType="java.lang.Long"
+		resultMap="OrderCreditCard">
+		select
+		<include refid="OrderCreditCard_Column_List" />
+		from automan.order_credit_card where id=#{creditId}
+	</select>
+	
+	<select id="getAvailableOrderCreditCardById" parameterType="java.util.HashMap"
+		resultMap="OrderCreditCard">
+		select
+		<include refid="OrderCreditCard_Column_List" />
+		from automan.order_credit_card 
+		where id=#{creditId} 
+		<![CDATA[ and pay_thresh-current_thresh >0 and pay_thresh-current_thresh >= #{totalFee} ]]>
+	</select>
+
+	<update id="updateOrderCreditCardNew" parameterType="com.oversea.task.domain.OrderCreditCard">
+		update automan.order_credit_card set modify_time=now()
+			<if test="cardNo!=null">
+				,card_no=#{cardNo}
+			</if>
+			<if test="bankName!=null">
+				,bank_name=#{bankName}
+			</if>
+			<if test="bindPhone!=null">
+				,bind_phone=#{bindPhone}
+			</if>
+			<if test="payThresh!=null">
+				,pay_thresh=#{payThresh}
+			</if>
+			<if test="cardAddress!=null">
+				,card_address=#{cardAddress}
+			</if>
+			<if test="cardPassword!=null">
+				,card_password=#{cardPassword}
+			</if>
+			<if test="suffixNo!=null">
+				,suffix_no=#{suffixNo}
+			</if>
+			<if test="expiryDate!=null">
+				,expiry_date=#{expiryDate}
+			</if>
+			<if test="currentThresh!=null">
+				,current_thresh=#{currentThresh}
+			</if>
+			<if test="owner!=null">
+				,owner=#{owner}
+			</if>
+			<if test="ownerChn!=null">
+				,owner_chn=#{ownerChn}
+			</if>
+		where id=#{id}
+	</update>
+
+</mapper>

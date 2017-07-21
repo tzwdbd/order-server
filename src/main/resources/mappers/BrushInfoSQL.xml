@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="BrushInfoSQL">
+<resultMap id="BrushInfo"	type="com.oversea.task.domain.BrushInfo">
+	<result  property="id"  column="id"/>
+	<result  property="brushUserId"  column="brush_user_id"/>
+	<result  property="haitaoItemId"  column="haitao_item_id"/>
+	<result  property="status"  column="status"/>
+	<result  property="startTime"  column="start_time"/>
+	<result  property="endTime"  column="end_time"/>
+	<result  property="keyWord"  column="key_word"/>
+	<result  property="productLocate"  column="product_locate"/>
+	<result  property="daySaleNum"  column="day_sale_num"/>
+	<result  property="totalSaleNum"  column="total_sale_num"/>
+	<result  property="brushNum"  column="brush_num"/>
+	<result  property="feedbackNum"  column="feedback_num"/>
+	<result  property="reviewNum"  column="review_num"/>
+	<result  property="totalReviewNum"  column="total_review_num"/>
+	<result  property="returnAddress"  column="return_address"/>
+	<result  property="totalPrice"  column="total_price"/>
+	<result  property="gmtCreate"  column="gmt_create"/>
+	<result  property="gmtModified"  column="gmt_modified"/>
+	<result  property="operatorId"  column="operator_id"/>
+	<result  property="productName"  column="product_name"/>
+	
+</resultMap>
+
+<sql id="BrushInfo_Column_List">
+		id,
+		brush_user_id,
+		haitao_item_id,
+		status,
+		start_time,
+		end_time,
+		key_word,
+		product_locate,
+		day_sale_num,
+		total_sale_num,
+		brush_num,
+		feedback_num,
+		review_num,
+		total_review_num,
+		return_address,
+		total_price,
+		gmt_create,
+		gmt_modified,
+		operator_id,
+		product_name
+</sql>
+
+<insert id="addBrushInfo"  parameterType="com.oversea.task.domain.BrushInfo">
+	INSERT INTO brush_info (
+		brush_user_id,
+		haitao_item_id,
+		status,
+		start_time,
+		end_time,
+		key_word,
+		product_locate,
+		day_sale_num,
+		total_sale_num,
+		brush_num,
+		feedback_num,
+		review_num,
+		total_review_num,
+		return_address,
+		total_price,
+		gmt_create,
+		gmt_modified,
+		operator_id,
+		product_name
+) VALUES (
+		#{brushUserId},
+		#{haitaoItemId},
+		#{status},
+		#{startTime},
+		#{endTime},
+		#{keyWord},
+		#{productLocate},
+		#{daySaleNum},
+		#{totalSaleNum},
+		#{brushNum},
+		#{feedbackNum},
+		#{reviewNum},
+		#{totalReviewNum},
+		#{returnAddress},
+		#{totalPrice},
+		#{gmtCreate},
+		#{gmtModified},
+		#{operatorId},
+		#{productName})
+</insert>
+
+
+<update id="updateBrushInfoById"  parameterType="com.oversea.task.domain.BrushInfo">
+	update brush_info set
+		brush_user_id=#{brushUserId},
+		haitao_item_id=#{haitaoItemId},
+		status=#{status},
+		start_time=#{startTime},
+		end_time=#{endTime},
+		product_id=#{productId},
+		product_entity_id=#{productEntityId},
+		key_word=#{keyWord},
+		product_locate=#{productLocate},
+		day_sale_num=#{daySaleNum},
+		total_sale_num=#{totalSaleNum},
+		brush_num=#{brushNum},
+		feedback_num=#{feedbackNum},
+		review_num=#{reviewNum},
+		total_review_num=#{totalReviewNum},
+		return_address=#{returnAddress},
+		total_price=#{totalPrice},
+		gmt_create=#{gmtCreate},
+		gmt_modified=#{gmtModified},
+		operator_id=#{operatorId}
+	where id=#{id}
+</update>
+
+
+<update id="updateBrushInfoByDynamic"  parameterType="com.oversea.task.domain.BrushInfo">
+	update brush_info <set>
+		<if test="brushUserId!= null">
+				brush_user_id=#{brushUserId},
+		</if>
+		<if test="haitaoItemId!= null">
+				haitao_item_id=#{haitaoItemId},
+		</if>
+		<if test="status!= null">
+				status=#{status},
+		</if>
+		<if test="startTime!= null">
+				start_time=#{startTime},
+		</if>
+		<if test="endTime!= null">
+				end_time=#{endTime},
+		</if>
+		<if test="productId!= null">
+				product_id=#{productId},
+		</if>
+		<if test="productEntityId!= null">
+				product_entity_id=#{productEntityId},
+		</if>
+		<if test="keyWord!= null">
+				key_word=#{keyWord},
+		</if>
+		<if test="productLocate!= null">
+				product_locate=#{productLocate},
+		</if>
+		<if test="daySaleNum!= null">
+				day_sale_num=#{daySaleNum},
+		</if>
+		<if test="totalSaleNum!= null">
+				total_sale_num=#{totalSaleNum},
+		</if>
+		<if test="brushNum!= null">
+				brush_num=#{brushNum},
+		</if>
+		<if test="feedbackNum!= null">
+				feedback_num=#{feedbackNum},
+		</if>
+		<if test="reviewNum!= null">
+				review_num=#{reviewNum},
+		</if>
+		<if test="totalReviewNum!= null">
+				total_review_num=#{totalReviewNum},
+		</if>
+		<if test="returnAddress!= null">
+				return_address=#{returnAddress},
+		</if>
+		<if test="totalPrice!= null">
+				total_price=#{totalPrice},
+		</if>
+		<if test="gmtCreate!= null">
+				gmt_create=#{gmtCreate},
+		</if>
+		<if test="gmtModified!= null">
+				gmt_modified=#{gmtModified},
+		</if>
+		<if test="operatorId!= null">
+				operator_id=#{operatorId}
+		</if>
+</set>
+
+	where id=#{id}
+</update>
+
+
+<select id="countBrushInfoById"  parameterType="java.lang.Long" resultType="java.lang.Integer">
+<![CDATA[
+	select count(1) from brush_info where id=#{id}
+]]>
+</select>
+
+<select id="getBrushInfoById"  parameterType="java.lang.Long" resultMap="BrushInfo">
+	select <include refid="BrushInfo_Column_List"/>
+ from brush_info where id=#{id}
+</select>
+
+</mapper>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="OrderAccountMapper">
+
+    <resultMap id="OrderAccount" type="com.oversea.task.domain.OrderAccount">
+        <result property="accountId" column="account_id"/>
+        <result property="accountType" column="account_type"/>
+        <result property="creditCardId" column="credit_card_id"/>
+        <result property="payAccount" column="pay_account"/>
+        <result property="deviceId" column="device_id"/>
+        <result property="loginPwd" column="login_pwd"/>
+        <result property="status" column="status"/>
+        <result property="modifyTime" column="modify_time"/>
+        <result property="isPrime" column="is_prime"/>
+        <result property="payAccountId" column="pay_account_id"/>
+        <result property="rechargeMoney" column="recharge_money"/>
+        <result property="balanceWb" column="balance_wb"/>
+    </resultMap>
+
+    <select id="findById" resultMap="OrderAccount" parameterType="long">
+		select * from automan.order_account_new where account_id = #{id}
+	</select>
+
+    <update id="updateOrderAccountStatus" parameterType="map">
+        update automan.order_account_new set status=#{status},recharge_money=#{rechargeMoney} where account_id=#{id} and status!=99
+    </update>
+    
+    <update id="updateOrderAccountStatusTemp" parameterType="map">
+        update automan.order_account_new set status=#{status} where account_id=#{id}
+    </update>
+
+    <select id="getOrderCreditCardNoByCardId" parameterType="long" resultType="string">
+        select card_no from automan.order_credit_card where id=#{value} limit 1
+    </select>
+
+    <select id="getNeedRechargeAccounts" parameterType="java.lang.Integer" resultMap="OrderAccount">
+        select * from automan.order_account_new where status=#{status}
+    </select>
+    
+     <select id="getOrderCreditSuffixNoByCardId" parameterType="long" resultType="string">
+        select suffix_no from automan.order_credit_card where id=#{value} limit 1
+    </select>
+    
+    <update id="updateOrderAccountBalanceWb" parameterType="map">
+        update automan.order_account_new set balance_wb=#{balanceWb} where account_id=#{id}
+    </update>
+    <update id="updateOrderAccountStatusAndBalanceWb" parameterType="map">
+        update automan.order_account_new set balance_wb=#{balanceWb},status=#{status},recharge_money='0' where account_id=#{id}
+    </update>
+    
+    <select id="getNeedRechargeAccountByStatus"  parameterType="map" resultMap="OrderAccount">
+        select * from automan.order_account_new where status in (${status}) and express_company_id  in (${expressCompanyIds}) and account_type in (${siteNames}) ORDER BY effective_time ;
+    </select>
+    
+
+</mapper>

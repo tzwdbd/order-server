@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="HaitaoProductImg">
+
+    <resultMap id="haitaoProductImg" type="com.oversea.task.domain.HaitaoProductImg">
+        <result property="id" column="id"/>
+        <result property="platform" column="platform"/>
+        <result property="asinCode" column="asin_code"/>
+        <result property="imgUrl" column="large_img_url"/>
+        <result property="mediumImgUrl" column="medium_img_url"/>
+        <result property="tinyImgUrl" column="tiny_img_url"/>
+        <result property="smallImgUrl" column="small_img_url"/>
+        <result property="largeImgLocalPath" column="large_img_local_path"/>
+        <result property="largeImgCdnUrl" column="large_img_cdn_url"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="deleteFlag" column="delete_flag"/>
+        <result property="idx" column="idx"/>
+        <result property="itemId" column="item_id"/>
+    </resultMap>
+
+    <update id="updateHaitaoProductImg" parameterType="com.oversea.task.domain.HaitaoProductImg">
+		UPDATE  haitao_product_img
+		   SET  
+		    platform=#{platform}
+			,asin_code=#{asinCode}
+			,large_img_url=#{imgUrl}
+			,medium_img_url=#{mediumImgUrl}
+			,tiny_img_url=#{tinyImgUrl}
+			,small_img_url=#{smallImgUrl}
+			,large_img_local_path=#{largeImgLocalPath}
+			,large_img_cdn_url=#{largeImgCdnUrl}
+			,update_time=#{updateTime}
+			,delete_flag=#{deleteFlag}
+		 WHERE  id=#{id}
+	</update>
+
+
+    <insert id="addHaitaoProductImg" parameterType="com.oversea.task.domain.HaitaoProductImg">
+        <selectKey resultType="long" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        INSERT INTO haitao_product_img(
+        platform
+        ,asin_code
+        ,item_id
+        ,large_img_url
+        ,medium_img_url
+        ,tiny_img_url
+        ,small_img_url
+        ,create_time
+        ,update_time
+        ,delete_flag
+        ,idx
+        )
+        VALUES(
+        #{platform}
+        ,#{asinCode}
+        ,#{itemId}
+        ,#{imgUrl}
+        ,#{mediumImgUrl}
+        ,#{tinyImgUrl}
+        ,#{smallImgUrl}
+        ,now()
+        ,#{updateTime}
+        ,#{deleteFlag}
+        ,#{idx}
+        )
+    </insert>
+
+    <delete id="deleteByPrimaryKey">
+		DELETE FROM  haitao_product_img
+		      WHERE  id = #{id}
+	</delete>
+
+    <select id="getHaitaoProductImgByAsinCode" parameterType="java.util.Map" resultMap="haitaoProductImg">
+        SELECT *
+          FROM haitao_product_img
+        WHERE  asin_code = #{asinCode}
+          AND  item_id = #{itemId}
+        ORDER BY idx
+    </select>
+
+    <delete id="deleteProductImgByItemId" parameterType="string">
+        DELETE FROM  haitao_product_img WHERE  item_id = #{itemId}
+    </delete>
+</mapper>

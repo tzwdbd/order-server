@@ -6,7 +6,6 @@
 <resultMap id="BrushInfo"	type="com.oversea.task.domain.BrushInfo">
 	<result  property="id"  column="id"/>
 	<result  property="brushUserId"  column="brush_user_id"/>
-	<result  property="haitaoItemId"  column="haitao_item_id"/>
 	<result  property="status"  column="status"/>
 	<result  property="startTime"  column="start_time"/>
 	<result  property="endTime"  column="end_time"/>
@@ -30,7 +29,6 @@
 <sql id="BrushInfo_Column_List">
 		id,
 		brush_user_id,
-		haitao_item_id,
 		status,
 		start_time,
 		end_time,
@@ -53,7 +51,6 @@
 <insert id="addBrushInfo"  parameterType="com.oversea.task.domain.BrushInfo">
 	INSERT INTO brush_info (
 		brush_user_id,
-		haitao_item_id,
 		status,
 		start_time,
 		end_time,
@@ -73,7 +70,6 @@
 		product_name
 ) VALUES (
 		#{brushUserId},
-		#{haitaoItemId},
 		#{status},
 		#{startTime},
 		#{endTime},
@@ -97,7 +93,6 @@
 <update id="updateBrushInfoById"  parameterType="com.oversea.task.domain.BrushInfo">
 	update brush_info set
 		brush_user_id=#{brushUserId},
-		haitao_item_id=#{haitaoItemId},
 		status=#{status},
 		start_time=#{startTime},
 		end_time=#{endTime},
@@ -124,9 +119,6 @@
 	update brush_info <set>
 		<if test="brushUserId!= null">
 				brush_user_id=#{brushUserId},
-		</if>
-		<if test="haitaoItemId!= null">
-				haitao_item_id=#{haitaoItemId},
 		</if>
 		<if test="status!= null">
 				status=#{status},

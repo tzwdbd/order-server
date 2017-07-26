@@ -155,10 +155,7 @@ public class OrderServiceJob implements RpcCallback{
                 	}
                 }
                 
-                for (RobotOrderDetail orderDetail : orderList) {
-                    orderDetail.setStatus(AutoBuyStatus.AUTO_ORDER_ING.getValue());
-                    robotOrderDetailDAO.updateRobotOrderDetailStatusById(AutoBuyStatus.AUTO_ORDER_ING.getValue(),orderDetail.getId());
-                }
+                
                 task.addParam("robotOrderDetails", orderList);
                 task.addParam("account", acc);
                 task.addParam("isPay", true);
@@ -182,6 +179,10 @@ public class OrderServiceJob implements RpcCallback{
                     	}
                 		task.addParam("giftCardList", giftCardList);
                 	}
+                }
+                for (RobotOrderDetail orderDetail : orderList) {
+                    orderDetail.setStatus(AutoBuyStatus.AUTO_ORDER_ING.getValue());
+                    robotOrderDetailDAO.updateRobotOrderDetailStatusById(AutoBuyStatus.AUTO_ORDER_ING.getValue(),orderDetail.getId());
                 }
 
                 //获取当前账户在当天下的第几单

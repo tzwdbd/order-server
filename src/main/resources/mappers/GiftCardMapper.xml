@@ -69,7 +69,7 @@
 	</select>
 	
 	<select id="getPassWordCard" parameterType="map" resultMap="GiftCard">
-		select * from automan.gift_card where is_process='no' and is_suspect is null and real_balance>0 and site_name=#{siteName} order by gmt_modified 
+		select * from automan.gift_card where is_process='no' and is_suspect is null and real_balance>10 and site_name=#{siteName} order by gmt_modified 
 	</select>
 
 </mapper>

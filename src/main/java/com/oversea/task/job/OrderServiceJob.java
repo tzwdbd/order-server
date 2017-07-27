@@ -438,9 +438,7 @@ public class OrderServiceJob implements RpcCallback{
            		List<GiftCard> giftCardList = (List<GiftCard>) taskResult.getParam("giftCardList");
            		if(giftCardList!=null){
                		for(GiftCard giftCard : giftCardList){
-               			if(!"yes".equalsIgnoreCase(giftCard.getIsUsed())){
-               				giftCardDAO.updateGiftCardProcessStatus(giftCard.getId(), "no");
-               			}
+           				giftCardDAO.updateGiftCardProcessStatus(giftCard.getId(), "no");
                    	}
            		}
                 	
@@ -478,9 +476,8 @@ public class OrderServiceJob implements RpcCallback{
                 		List<GiftCard> giftCardList = (List<GiftCard>) taskResult.getParam("giftCardList");
                 		if(giftCardList!=null){
 	                		for(GiftCard giftCard : giftCardList){
-	                			if("yes".equalsIgnoreCase(giftCard.getIsUsed())){
-	                   				giftCardDAO.updateGiftCard(giftCard);
-	                   			}
+                				giftCard.setIsProcess("no");
+                   				giftCardDAO.updateGiftCard(giftCard);
 	                    	}
                 		}
                      	

@@ -479,7 +479,6 @@ public class OrderServiceJob implements RpcCallback{
                 		if(giftCardList!=null){
 	                		for(GiftCard giftCard : giftCardList){
 	                			if("yes".equalsIgnoreCase(giftCard.getIsUsed())){
-	                				giftCard.setIsUsed("no");
 	                   				giftCardDAO.updateGiftCard(giftCard);
 	                   			}
 	                    	}

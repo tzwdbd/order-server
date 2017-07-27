@@ -43,6 +43,8 @@
         <result property="isDirect" column="is_direct"/>
         <result property="groupNumber" column="group_number"/>
         <result property="dispatchTime" column="dispatch_time"/>
+        <result property="total_promotion" column="totalPromotion"/>
+        
     </resultMap>
     
     <resultMap id="TransferClearInfo" type="com.oversea.task.domain.TransferClearInfo">
@@ -92,7 +94,8 @@
         is_auto_express,
         order_img,
         group_number,
-        dispatch_time
+        dispatch_time,
+        total_promotion
     </sql>
 
     <insert id="addRobotOrderDetail" parameterType="com.oversea.task.domain.RobotOrderDetail">
@@ -130,7 +133,8 @@
         express_status,
         mall_express_fee,
         promotion_fee,
-        is_auto_express
+        is_auto_express,
+        total_promotion
         ) VALUES (
         #{orderNo},
         #{productId},
@@ -165,7 +169,8 @@
         #{expressStatus},
         #{mallExpressFee},
         #{promotionFee},
-        #{isAutoExpress})
+        #{isAutoExpress},
+        #{totalPromotion})
     </insert>
 
 

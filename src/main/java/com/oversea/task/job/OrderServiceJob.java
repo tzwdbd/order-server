@@ -405,7 +405,7 @@ public class OrderServiceJob implements RpcCallback{
             		List<String> mobileList = new ArrayList<String>();
             		mobileList.add("18750206531");
             		mobileList.add("15657106651");
-            		mobileList.add("18930835990");
+            		mobileList.add("18606521817");
             		String msg = String.format("商品id:%s,entity_id:%s金额溢价", productIds,prouctEntityIds);
             		log.error(msg);
             		for(String mobile : mobileList){

@@ -476,8 +476,11 @@ public class OrderServiceJob implements RpcCallback{
                 		List<GiftCard> giftCardList = (List<GiftCard>) taskResult.getParam("giftCardList");
                 		if(giftCardList!=null){
 	                		for(GiftCard giftCard : giftCardList){
-                				giftCard.setIsProcess("no");
-                   				giftCardDAO.updateGiftCard(giftCard);
+	                			if("yes".equals(giftCard.getIsUsed())){
+	                				giftCard.setIsUsed("no");
+	                				giftCard.setIsProcess("no");
+	                   				giftCardDAO.updateGiftCard(giftCard);
+	                			}
 	                    	}
                 		}
                      	

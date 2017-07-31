@@ -43,7 +43,7 @@
         <result property="isDirect" column="is_direct"/>
         <result property="groupNumber" column="group_number"/>
         <result property="dispatchTime" column="dispatch_time"/>
-        <result property="total_promotion" column="totalPromotion"/>
+        <result property="totalPromotion" column="total_promotion"/>
         
     </resultMap>
     

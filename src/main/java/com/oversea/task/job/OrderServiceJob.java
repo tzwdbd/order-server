@@ -1,6 +1,7 @@
 package com.oversea.task.job;
 
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -154,8 +155,12 @@ public class OrderServiceJob implements RpcCallback{
                          acc.setSuffixNo(orderCreditCard.getSuffixNo());
                 	}
                 }
-                
-                
+                MoneyUnits moneyUnits = MoneyUnits.getMoneyUnitsByCode(firstOrderDetail.getUnits());
+    			ExchangeDefinition exchangeDefinition = exchangeDefinitionDAO.getExchangeDefinitionByUnits(moneyUnits.getValue());
+    			BigDecimal rmb = new BigDecimal(exchangeDefinition.getRmb());
+    			BigDecimal source = new BigDecimal(exchangeDefinition.getSource());
+    			BigDecimal rate =  (rmb.divide(source));
+    			task.addParam("rate", rate.floatValue());
                 task.addParam("robotOrderDetails", orderList);
                 task.addParam("account", acc);
                 task.addParam("isPay", true);

@@ -2,11 +2,8 @@ package com.oversea.task.job;
 
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -16,22 +13,17 @@ import com.haihu.rpc.common.RpcCallback;
 import com.haihu.rpc.server.RpcServerProxy;
 import com.oversea.rabbitmq.utils.StringUtil;
 import com.oversea.task.common.TaskService;
-import com.oversea.task.domain.BrushOrderDetail;
 import com.oversea.task.domain.ExchangeBankDefinition;
-import com.oversea.task.domain.ExpressNode;
 import com.oversea.task.domain.GiftCard;
 import com.oversea.task.domain.GiftCardCheck;
 import com.oversea.task.domain.OrderAccount;
 import com.oversea.task.domain.OrderPayDetail;
-import com.oversea.task.domain.RobotOrderDetail;
 import com.oversea.task.enums.AccountStatus;
-import com.oversea.task.mapper.BrushOrderDetailDAO;
 import com.oversea.task.mapper.ExchangeBankDefinitionDAO;
 import com.oversea.task.mapper.GiftCardDAO;
 import com.oversea.task.mapper.OrderAccountDAO;
 import com.oversea.task.mapper.OrderDeviceDAO;
 import com.oversea.task.mapper.OrderPayDetailDAO;
-import com.oversea.task.mapper.RobotOrderDetailDAO;
 import com.oversea.task.obj.Task;
 import com.oversea.task.obj.TaskDetail;
 import com.oversea.task.obj.TaskResult;

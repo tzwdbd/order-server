@@ -54,7 +54,7 @@
     
     <bean id="schedulingJobManager" class="com.oversea.task.manager.impl.SchedulingJobManagerImpl"></bean>
     <bean id="quartzJob" class="com.oversea.task.controller.QuartzJobController" init-method="init"></bean>
-    
+    <bean id="giftCardCheckJob" class="com.oversea.task.job.GiftCardCheckJob"/>
 	<bean id="brushOrderServiceJob" class="com.oversea.task.job.BrushOrderServiceJob"/>
 	<bean id="burshShipDetailServiceJob" class="com.oversea.task.job.BurshShipDetailServiceJob"/>
 	<bean id="brushShipServiceJob" class="com.oversea.task.job.BrushShipServiceJob"/>

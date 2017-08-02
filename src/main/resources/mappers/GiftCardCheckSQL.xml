@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="GiftCardCheckSQL">
+<resultMap id="GiftCardCheck"	type="com.oversea.task.domain.GiftCardCheck">
+	<result  property="id"  column="id"/>
+	<result  property="cardType"  column="card_type"/>
+	<result  property="siteName"  column="site_name"/>
+	<result  property="currentBalance"  column="current_balance"/>
+	<result  property="recharge"  column="recharge"/>
+	<result  property="refund"  column="refund"/>
+	<result  property="rmb"  column="rmb"/>
+	<result  property="accountId"  column="account_id"/>
+	<result  property="payAccount"  column="pay_account"/>
+	<result  property="gmtCreate"  column="gmt_create"/>
+	<result  property="date"  column="date"/>
+</resultMap>
+
+<sql id="GiftCardCheck_Column_List">
+		id,
+		card_type,
+		site_name,
+		current_balance,
+		recharge,
+		refund,
+		rmb,
+		account_id,
+		pay_account,
+		gmt_create,
+		date
+</sql>
+
+<insert id="addGiftCardCheck"  parameterType="com.oversea.task.domain.GiftCardCheck">
+	INSERT INTO gift_card_check (
+		card_type,
+		site_name,
+		current_balance,
+		recharge,
+		refund,
+		rmb,
+		account_id,
+		pay_account,
+		gmt_create,
+		date
+) VALUES (
+		#{cardType},
+		#{siteName},
+		#{currentBalance},
+		#{recharge},
+		#{refund},
+		#{rmb},
+		#{accountId},
+		#{payAccount},
+		#{gmtCreate},
+		#{date})
+</insert>
+
+
+<update id="updateGiftCardCheckById"  parameterType="com.oversea.task.domain.GiftCardCheck">
+	update gift_card_check set
+		card_type=#{cardType},
+		site_name=#{siteName},
+		current_balance=#{currentBalance},
+		recharge=#{recharge},
+		refund=#{refund},
+		rmb=#{rmb},
+		account_id=#{accountId},
+		pay_account=#{payAccount},
+		gmt_create=#{gmtCreate},
+		date=#{date}
+	where id=#{id}
+</update>
+
+
+<update id="updateGiftCardCheckByDynamic"  parameterType="com.oversea.task.domain.GiftCardCheck">
+	update gift_card_check <set>
+		<if test="cardType!= null">
+				card_type=#{cardType},
+		</if>
+		<if test="siteName!= null">
+				site_name=#{siteName},
+		</if>
+		<if test="currentBalance!= null">
+				current_balance=#{currentBalance},
+		</if>
+		<if test="recharge!= null">
+				recharge=#{recharge},
+		</if>
+		<if test="refund!= null">
+				refund=#{refund},
+		</if>
+		<if test="rmb!= null">
+				rmb=#{rmb},
+		</if>
+		<if test="accountId!= null">
+				account_id=#{accountId},
+		</if>
+		<if test="payAccount!= null">
+				pay_account=#{payAccount},
+		</if>
+		<if test="gmtCreate!= null">
+				gmt_create=#{gmtCreate},
+		</if>
+		<if test="date!= null">
+				date=#{date}
+		</if>
+</set>
+
+	where id=#{id}
+</update>
+
+
+<select id="countGiftCardCheckById"  parameterType="java.lang.Long" resultType="java.lang.Integer">
+<![CDATA[
+	select count(1) from gift_card_check where id=#{id}
+]]>
+</select>
+
+<select id="getGiftCardCheckById"  parameterType="java.lang.Long" resultMap="GiftCardCheck">
+	select <include refid="GiftCardCheck_Column_List"/>
+ from gift_card_check where id=#{id}
+</select>
+
+</mapper>

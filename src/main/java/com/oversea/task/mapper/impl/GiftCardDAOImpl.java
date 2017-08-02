@@ -1,5 +1,6 @@
 package com.oversea.task.mapper.impl;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,6 +53,14 @@ public class GiftCardDAOImpl extends BaseDao implements GiftCardDAO {
 		Map<String, Object> map = new HashMap<String, Object>();
         map.put("siteName", siteName);
 		return getSqlSession().selectList("GiftCardMapper.getPassWordCard",map);
+	}
+
+	@Override
+	public List<GiftCard> getGiftCardAccount(int accountId, Date time) {
+		Map<String, Object> map = new HashMap<String, Object>();
+        map.put("accountId", accountId);
+        map.put("time", time);
+		return getSqlSession().selectList("GiftCardMapper.getGiftCardAccount",map);
 	}
 
 }

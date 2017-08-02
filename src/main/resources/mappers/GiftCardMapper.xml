@@ -71,5 +71,8 @@
 	<select id="getPassWordCard" parameterType="map" resultMap="GiftCard">
 		select * from automan.gift_card where is_process='no' and is_suspect is null and real_balance>0 and site_name=#{siteName} order by gmt_modified 
 	</select>
+	<select id="getGiftCardAccount" parameterType="map" resultMap="GiftCard">
+		select * from automan.gift_card where account_id=#{accountId} and gmt_modified>#{time}
+	</select>
 
 </mapper>

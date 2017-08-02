@@ -176,7 +176,7 @@ public class RechargeBatchServiceJob implements RpcCallback{
                     List<GiftCard> list = giftCardDAO.getUnusedGiftCard(orderAccount.getAccountType(),limitNum,num);
                     if(list.size() > 0){
                     	log.debug("orderAccount.getAccountType() = " + orderAccount.getAccountType());
-                        OrderDevice orderDevice = orderDeviceDAO.findById(Long.parseLong(orderAccount.getDeviceId()));
+                        OrderDevice orderDevice = orderDeviceDAO.findById(orderAccount.getDeviceId());
                         if (orderDevice != null) {
                         	Task task = new TaskDetail();
                             task.addParam("account", orderAccount);

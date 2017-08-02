@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="ExchangeBankDefinitionSQL">
+<resultMap id="ExchangeBankDefinition"	type="com.oversea.task.domain.ExchangeBankDefinition">
+	<result  property="id"  column="id"/>
+	<result  property="units"  column="units"/>
+	<result  property="bankName"  column="bank_name"/>
+	<result  property="description"  column="description"/>
+	<result  property="source"  column="source"/>
+	<result  property="rmb"  column="rmb"/>
+	<result  property="gmtCreate"  column="gmt_create"/>
+</resultMap>
+
+<sql id="ExchangeBankDefinition_Column_List">
+		id,
+		units,
+		bank_name,
+		description,
+		source,
+		rmb,
+		gmt_create
+</sql>
+
+<insert id="addExchangeBankDefinition"  parameterType="com.oversea.task.domain.ExchangeBankDefinition">
+	INSERT INTO oversea._exchange_bank_definition (
+		units,
+		bank_name,
+		description,
+		source,
+		rmb,
+		gmt_create
+) VALUES (
+		#{units},
+		#{bankName},
+		#{description},
+		#{source},
+		#{rmb},
+		#{gmtCreate})
+</insert>
+
+
+<update id="updateExchangeBankDefinitionById"  parameterType="com.oversea.task.domain.ExchangeBankDefinition">
+	update oversea._exchange_bank_definition set
+		units=#{units},
+		bank_name=#{bankName},
+		description=#{description},
+		source=#{source},
+		rmb=#{rmb},
+		gmt_create=#{gmtCreate}
+	where id=#{id}
+</update>
+
+
+<update id="updateExchangeBankDefinitionByDynamic"  parameterType="com.oversea.task.domain.ExchangeBankDefinition">
+	update oversea._exchange_bank_definition <set>
+		<if test="units!= null">
+				units=#{units},
+		</if>
+		<if test="bankName!= null">
+				bank_name=#{bankName},
+		</if>
+		<if test="description!= null">
+				description=#{description},
+		</if>
+		<if test="source!= null">
+				source=#{source},
+		</if>
+		<if test="rmb!= null">
+				rmb=#{rmb},
+		</if>
+		<if test="gmtCreate!= null">
+				gmt_create=#{gmtCreate}
+		</if>
+</set>
+
+	where id=#{id}
+</update>
+
+
+<select id="countExchangeBankDefinitionById"  parameterType="java.lang.Long" resultType="java.lang.Integer">
+<![CDATA[
+	select count(1) from oversea._exchange_bank_definition where id=#{id}
+]]>
+</select>
+
+<select id="getExchangeBankDefinitionById"  parameterType="java.lang.Long" resultMap="ExchangeBankDefinition">
+	select <include refid="ExchangeBankDefinition_Column_List"/>
+ from oversea._exchange_bank_definition where id=#{id}
+</select>
+
+<select id="getExchangeBankDefinitionByUnit"  parameterType="map" resultMap="ExchangeBankDefinition">
+	select <include refid="ExchangeBankDefinition_Column_List"/>
+ from oversea._exchange_bank_definition where units=#{units} order by gmt_create desc limit 1
+</select>
+
+</mapper>

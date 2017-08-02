@@ -1,5 +1,6 @@
 package com.oversea.task.mapper;
 
+import java.util.Date;
 import java.util.List;
 
 import com.oversea.task.domain.GiftCard;
@@ -16,5 +17,7 @@ public interface GiftCardDAO {
 	
 	public List<GiftCard> getNowRechargeGiftCard(String siteName,int num);
 	public List<GiftCard> getPassWordCard(String siteName);
+	
+	public List<GiftCard> getGiftCardAccount(int accountId,Date time);
 	
 }

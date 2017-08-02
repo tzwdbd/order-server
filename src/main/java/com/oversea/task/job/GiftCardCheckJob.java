@@ -89,25 +89,15 @@ public class GiftCardCheckJob implements RpcCallback{
 		}else{
 			if(objs != null){
 				Task task = (Task)objs[0];
-				OrderAccount account = (OrderAccount) task.getParam("account");
-				try {
-					Thread.sleep(1000*60);
-				} catch (InterruptedException e) {
-				}
-				Task tasks = new TaskDetail();
-                Integer deviceId = account.getDeviceId();
-                String ip = orderDeviceDAO.findById(deviceId).getDeviceIp();
-                tasks.addParam("account", account);
-                tasks.setGroup(ip);
-                
-                TaskService taskService = (TaskService)rpcServerProxy.wrapProxy(TaskService.class, ip, this);
-                taskService.CheckGiftCard(tasks);
+				OrderAccount orderAccount = (OrderAccount) task.getParam("account");
+				log.error("爬取礼品卡失败账号id:"+orderAccount.getAccountId()+"提交爬取礼品卡"+"ip:"+task.getGroup());
 			}
 		}
 	}
 
 	@Override
 	public void callbackResult(Object result, Method method, Object[] objs) {
+		log.error("爬取礼品卡回来了");
 		// TODO Auto-generated method stub
 		TaskResult taskResult = (TaskResult)result;
 		if(taskResult == null){

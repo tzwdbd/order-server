@@ -4,12 +4,6 @@
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
-        <dependent-module archiveName="rpc-1.0.1067.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rpc/rpc">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="haitao-cloud-interface-10.0.0.100.023.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/haitao-cloud-interface/haitao-cloud-interface">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <property name="context-root" value="order"/>
         <property name="java-output-path" value="/haitao-cloud-server/target/classes"/>
     </wb-module>

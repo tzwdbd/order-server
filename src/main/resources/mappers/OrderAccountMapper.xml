@@ -53,7 +53,7 @@
         select * from automan.order_account_new where status in (${status}) and express_company_id  in (${expressCompanyIds}) and account_type in (${siteNames}) ORDER BY effective_time ;
     </select>
     
-    <update id="updateOrderAccountStatus" parameterType="map">
+    <update id="updateOrderAccountStatusByExpressIds" parameterType="map">
         update automan.order_account_new set status=4 where express_company_id  in (${expressCompanyIds}) and account_type in (${siteNames})
     </update>
     

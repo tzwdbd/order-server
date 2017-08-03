@@ -22,7 +22,7 @@ public class AccountStatusUpdateJob {
 	
 	public void run(){
 		log.error("============AccountStatusUpdateJob begin============");
-		//orderAccountDAO.updateOrderAccountStatus(companyIdStatus, siteNames);
+		orderAccountDAO.updateOrderAccountStatusByExpressIds(companyIdStatus, siteNames);
         
 		log.error("============AccountStatusUpdateJob end=================");
 	}

@@ -67,4 +67,6 @@ public interface OrderAccountDAO {
      * @return
      */
 	public List<OrderAccount> getNeedRechargeAccountByStatus(String status,String expressCompanyIds,String siteNames);
+	
+	public int updateOrderAccountStatus(String expressCompanyIds,String siteNames);
 }

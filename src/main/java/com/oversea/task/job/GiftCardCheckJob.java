@@ -20,6 +20,7 @@ import com.oversea.task.domain.OrderAccount;
 import com.oversea.task.domain.OrderPayDetail;
 import com.oversea.task.enums.AccountStatus;
 import com.oversea.task.mapper.ExchangeBankDefinitionDAO;
+import com.oversea.task.mapper.GiftCardCheckDAO;
 import com.oversea.task.mapper.GiftCardDAO;
 import com.oversea.task.mapper.OrderAccountDAO;
 import com.oversea.task.mapper.OrderDeviceDAO;
@@ -49,8 +50,10 @@ public class GiftCardCheckJob implements RpcCallback{
     
     @Resource
     private OrderPayDetailDAO orderPayDetailDao;
+    @Resource
+    private GiftCardCheckDAO giftCardCheckDAO;
     
-    private static final String acountStatus = "0,4";
+    private static final String acountStatus = "4";
     private static final String companyIdStatus = "3,4,8,9";
     private static final String siteNames = "'amazon','amazon.jp'";
     
@@ -60,6 +63,7 @@ public class GiftCardCheckJob implements RpcCallback{
 		log.error("============GiftCardCheckJob begin============");
 		try{
 			List<OrderAccount> orderAccounts = orderAccountDAO.getNeedRechargeAccountByStatus(acountStatus, companyIdStatus,siteNames);
+			log.error("GiftCardCheckJob orderAccounts size:"+orderAccounts.size());
 	    	for(OrderAccount account : orderAccounts){
     			Task task = new TaskDetail();
                 Integer deviceId = account.getDeviceId();
@@ -84,6 +88,7 @@ public class GiftCardCheckJob implements RpcCallback{
 			if(objs != null){
 				Task task = (Task)objs[0];
 				OrderAccount orderAccount = (OrderAccount) task.getParam("account");
+				orderAccountDAO.updateOrderAccountStatusTemp(orderAccount.getAccountId(), 0);
 				log.error("账号id:"+orderAccount.getAccountId()+"提交爬取礼品卡"+"ip:"+task.getGroup());
 			}
 		}else{
@@ -145,6 +150,7 @@ public class GiftCardCheckJob implements RpcCallback{
 		BigDecimal rate =  (rmb.divide(source));
 		String rmbs = MathUtil.mul(String.valueOf(orderAccount.getBalanceWb()), String.valueOf(rate));
 		giftCardCheck.setRmb(rmbs);
+		giftCardCheckDAO.addGiftCardCheck(giftCardCheck);
 		orderAccountDAO.updateOrderAccountStatusAndBalanceWb(orderAccount.getAccountId(), AccountStatus.Init.getValue(), orderAccount.getBalanceWb());
 	}
 }

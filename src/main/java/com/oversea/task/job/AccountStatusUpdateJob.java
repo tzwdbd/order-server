@@ -3,9 +3,10 @@ package com.oversea.task.job;
 import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
 
 import com.oversea.task.mapper.OrderAccountDAO;
-
+@Component
 public class AccountStatusUpdateJob {
 	
 	private Logger log = Logger.getLogger(getClass());
@@ -21,7 +22,7 @@ public class AccountStatusUpdateJob {
 	
 	public void run(){
 		log.error("============AccountStatusUpdateJob begin============");
-		orderAccountDAO.updateOrderAccountStatus(companyIdStatus, siteNames);
+		//orderAccountDAO.updateOrderAccountStatus(companyIdStatus, siteNames);
         
 		log.error("============AccountStatusUpdateJob end=================");
 	}

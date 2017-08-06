@@ -54,7 +54,7 @@
     </select>
     
     <update id="updateOrderAccountStatusByExpressIds" parameterType="map">
-        update automan.order_account_new set status=4 where express_company_id  in (${expressCompanyIds}) and account_type in (${siteNames})
+        update automan.order_account_new set status=4 where express_company_id  in (${expressCompanyIds}) and account_type in (${siteNames}) and status =0
     </update>
     
 

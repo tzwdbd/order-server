@@ -338,7 +338,7 @@
 </select>
 
 <update id="updateStatus" parameterType="map">
-        update automan.order_detail set status=#{status},gmt_modified=now() where id=#{id}
+        update automan.brush_order_detail set status=#{status},gmt_modified=now() where id=#{id}
 </update>
 
 <select id="getBrushOrderDetailListBystatus"  parameterType="map" resultMap="BrushOrderDetail">

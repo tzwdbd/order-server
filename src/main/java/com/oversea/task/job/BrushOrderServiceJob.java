@@ -152,18 +152,18 @@ public class BrushOrderServiceJob implements RpcCallback{
 	            //固定4个地址
 	            task.addParam("count", "1");
 	            
-	        	TransferClearInfo transferClearInfo = robotOrderDetailDAO.getExpressAddress((long)brushOrderDetail.getCompany());
-	        	if(transferClearInfo!=null){
-	            	task.addParam("expressAddress", transferClearInfo.getRecipientName());
-	            	UserTradeAddress userTradeAddress = new UserTradeAddress();
-	            	userTradeAddress.setAddress(transferClearInfo.getRecipientAddress());
-	            	userTradeAddress.setCity(transferClearInfo.getRecipientCity());
-	            	userTradeAddress.setName(transferClearInfo.getRecipientName());
-	            	userTradeAddress.setState(transferClearInfo.getRecipientProvince());
-	            	userTradeAddress.setZip(transferClearInfo.getRecipientZipCode());
-	            	userTradeAddress.setMobile(transferClearInfo.getRecipientTel());
-	            	task.addParam("address", userTradeAddress);
-	        	}
+//	        	TransferClearInfo transferClearInfo = robotOrderDetailDAO.getExpressAddress((long)brushOrderDetail.getCompany());
+//	        	if(transferClearInfo!=null){
+//	            	task.addParam("expressAddress", transferClearInfo.getRecipientName());
+//	            	UserTradeAddress userTradeAddress = new UserTradeAddress();
+//	            	userTradeAddress.setAddress(transferClearInfo.getRecipientAddress());
+//	            	userTradeAddress.setCity(transferClearInfo.getRecipientCity());
+//	            	userTradeAddress.setName(transferClearInfo.getRecipientName());
+//	            	userTradeAddress.setState(transferClearInfo.getRecipientProvince());
+//	            	userTradeAddress.setZip(transferClearInfo.getRecipientZipCode());
+//	            	userTradeAddress.setMobile(transferClearInfo.getRecipientTel());
+//	            	task.addParam("address", userTradeAddress);
+//	        	}
 	        	brushOrderDetailDAO.updateStatus(brushOrderDetail.getId(),AutoBuyStatus.AUTO_ORDER_ING.getValue());
 	            TaskService taskService = (TaskService)rpcServerProxy.wrapProxy(TaskService.class, ip, this);
 	            taskService.burshOrderService(task);

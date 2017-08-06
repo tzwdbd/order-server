@@ -22,9 +22,9 @@ public class AccountStatusUpdateJob {
 	
 	public void run(){
 		log.error("============AccountStatusUpdateJob begin============");
-		orderAccountDAO.updateOrderAccountStatusByExpressIds(companyIdStatus, siteNames);
+		int count = orderAccountDAO.updateOrderAccountStatusByExpressIds(companyIdStatus, siteNames);
         
-		log.error("============AccountStatusUpdateJob end=================");
+		log.error("============AccountStatusUpdateJob end"+count+"=================");
 	}
 
 }

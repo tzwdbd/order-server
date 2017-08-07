@@ -92,7 +92,7 @@
 
 <select id="getExchangeBankDefinitionByUnit"  parameterType="map" resultMap="ExchangeBankDefinition">
 	select <include refid="ExchangeBankDefinition_Column_List"/>
- from oversea._exchange_bank_definition where units=#{units} order by gmt_create desc limit 1
+ from oversea._exchange_bank_definition where units=#{units} order by id desc limit 1
 </select>
 
 </mapper>

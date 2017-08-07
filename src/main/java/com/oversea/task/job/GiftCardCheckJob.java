@@ -70,7 +70,7 @@ public class GiftCardCheckJob implements RpcCallback{
                 String ip = orderDeviceDAO.findById(deviceId).getDeviceIp();
                 task.addParam("account", account);
                 task.setGroup(ip);
-                
+                orderAccountDAO.updateOrderAccountStatusTemp(account.getAccountId(), 0);
                 TaskService taskService = (TaskService)rpcServerProxy.wrapProxy(TaskService.class, ip, this);
                 taskService.CheckGiftCard(task);
 	    	}
@@ -88,13 +88,13 @@ public class GiftCardCheckJob implements RpcCallback{
 			if(objs != null){
 				Task task = (Task)objs[0];
 				OrderAccount orderAccount = (OrderAccount) task.getParam("account");
-				orderAccountDAO.updateOrderAccountStatusTemp(orderAccount.getAccountId(), 0);
 				log.error("账号id:"+orderAccount.getAccountId()+"提交爬取礼品卡"+"ip:"+task.getGroup());
 			}
 		}else{
 			if(objs != null){
 				Task task = (Task)objs[0];
 				OrderAccount orderAccount = (OrderAccount) task.getParam("account");
+				orderAccountDAO.updateOrderAccountStatusTemp(orderAccount.getAccountId(), 4);
 				log.error("爬取礼品卡失败账号id:"+orderAccount.getAccountId()+"提交爬取礼品卡"+"ip:"+task.getGroup());
 			}
 		}

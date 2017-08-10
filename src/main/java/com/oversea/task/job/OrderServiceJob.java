@@ -20,6 +20,7 @@ import com.haihu.rpc.server.RpcServerProxy;
 import com.oversea.cdn.service.CdnService;
 import com.oversea.rabbitmq.sender.MessageSender;
 import com.oversea.task.common.TaskService;
+import com.oversea.task.domain.ExchangeBankDefinition;
 import com.oversea.task.domain.ExchangeDefinition;
 import com.oversea.task.domain.GiftCard;
 import com.oversea.task.domain.OrderAccount;
@@ -35,6 +36,7 @@ import com.oversea.task.domain.Zipcode;
 import com.oversea.task.enums.AccountStatus;
 import com.oversea.task.enums.AutoBuyStatus;
 import com.oversea.task.enums.MoneyUnits;
+import com.oversea.task.mapper.ExchangeBankDefinitionDAO;
 import com.oversea.task.mapper.ExchangeDefinitionDAO;
 import com.oversea.task.mapper.GiftCardDAO;
 import com.oversea.task.mapper.OrderAccountDAO;
@@ -96,6 +98,8 @@ public class OrderServiceJob implements RpcCallback{
     private GiftCardDAO giftCardDAO;
     @Resource
     private OrderPayDetailDAO orderPayDetailDao;
+    @Resource
+    private ExchangeBankDefinitionDAO exchangeBankDefinitionDAO;
     
     private ExecutorService fixedThreadPool = Executors.newFixedThreadPool(2);
     
@@ -524,18 +528,16 @@ public class OrderServiceJob implements RpcCallback{
     				return;
     			}
     			
-    			MoneyUnits moneyUnits = MoneyUnits.getMoneyUnitsByCode(orderDetail.getUnits());
-    			ExchangeDefinition exchangeDefinition = exchangeDefinitionDAO.getExchangeDefinitionByUnits(moneyUnits.getValue());
-    			if (exchangeDefinition ==null) {
-    				log.error("查询不到相应的汇率"+ orderDetail.getUnits());
-    				return;
-    			}
-    			
     			if(orderDetail.getTotalPrice() == null){
     				log.error("支付总价不能为空");
     				return;
     			}
-    			Double exchangeMoney = MathUtil.divCelling(Double.valueOf(orderDetail.getTotalPrice()) * exchangeDefinition.getRmb(), Double.valueOf(exchangeDefinition.getSource()));
+    			ExchangeBankDefinition exchangeBankDefinition = exchangeBankDefinitionDAO.getExchangeBankDefinitionByUnit(orderDetail.getUnits());
+    			BigDecimal rmb = new BigDecimal(exchangeBankDefinition.getRmb());
+    			BigDecimal source = new BigDecimal(exchangeBankDefinition.getSource());
+    			BigDecimal rate =  (rmb.divide(source));
+    			
+    			String exchangeMoney = MathUtil.mul(String.valueOf(orderDetail.getTotalPrice()), String.valueOf(rate));
     			log.info("商品总价===="+orderDetail.getTotalPrice()+",汇率转换成功后的金额，money====="+ exchangeMoney);
     			
     			if(exchangeMoney == null){
@@ -549,7 +551,7 @@ public class OrderServiceJob implements RpcCallback{
      			} else {
      				currentThresh = orderCreditCard.getCurrentThresh().toString();
      			}
-    			Double newMoney = Double.parseDouble(MathUtil.add(currentThresh, exchangeMoney.toString()));
+    			Double newMoney = Double.parseDouble(MathUtil.add(currentThresh, exchangeMoney));
     			OrderCreditCard update = new OrderCreditCard();
     			update.setId(orderCreditCard.getId());
     			update.setCurrentThresh(newMoney);
@@ -646,10 +648,13 @@ public class OrderServiceJob implements RpcCallback{
 	
 	private String getRmbPrice(String units, String totalPrice) {
 		try {
-			MoneyUnits moneyUnits = MoneyUnits.getMoneyUnitsByCode(units);
-			ExchangeDefinition exchangeDefinition = exchangeDefinitionDAO.getExchangeDefinitionByUnits(moneyUnits.getValue());
-			Double exchangeMoney = MathUtil.divCelling(Double.valueOf(totalPrice) * exchangeDefinition.getRmb(), Double.valueOf(exchangeDefinition.getSource()));
-			return String.valueOf(exchangeMoney);
+			ExchangeBankDefinition exchangeBankDefinition = exchangeBankDefinitionDAO.getExchangeBankDefinitionByUnit(units);
+			BigDecimal rmb = new BigDecimal(exchangeBankDefinition.getRmb());
+			BigDecimal source = new BigDecimal(exchangeBankDefinition.getSource());
+			BigDecimal rate =  (rmb.divide(source));
+			
+			String exchangeMoney = MathUtil.mul(String.valueOf(totalPrice), String.valueOf(rate));
+			return exchangeMoney;
 		} catch (Exception e) {
 			log.error("获取rmb出错");
 		}

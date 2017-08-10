@@ -532,12 +532,8 @@ public class OrderServiceJob implements RpcCallback{
     				log.error("支付总价不能为空");
     				return;
     			}
-    			ExchangeBankDefinition exchangeBankDefinition = exchangeBankDefinitionDAO.getExchangeBankDefinitionByUnit(orderDetail.getUnits());
-    			BigDecimal rmb = new BigDecimal(exchangeBankDefinition.getRmb());
-    			BigDecimal source = new BigDecimal(exchangeBankDefinition.getSource());
-    			BigDecimal rate =  (rmb.divide(source));
+    			String exchangeMoney = getRmbPrice(orderDetail.getUnits(), orderDetail.getTotalPrice());
     			
-    			String exchangeMoney = MathUtil.mul(String.valueOf(orderDetail.getTotalPrice()), String.valueOf(rate));
     			log.info("商品总价===="+orderDetail.getTotalPrice()+",汇率转换成功后的金额，money====="+ exchangeMoney);
     			
     			if(exchangeMoney == null){

@@ -176,14 +176,15 @@ public class OrderServiceJob implements RpcCallback{
                 	}
                 }
                 String units = MoneyUnits.getMoneyUnitsByCode(firstOrderDetail.getUnits()).getValue();
-                ExchangeBankDefinition exchangeBankDefinition = exchangeBankDefinitionDAO.getExchangeBankDefinitionByUnit(units);
-    			BigDecimal rmb = new BigDecimal(exchangeBankDefinition.getRmb());
-    			BigDecimal source = new BigDecimal(exchangeBankDefinition.getSource());
-    			BigDecimal rate =  (rmb.divide(source));
-    			
-    			
-    			
-    			task.addParam("rate", rate.floatValue());
+                if(!"¥".equals(units)){
+	                ExchangeBankDefinition exchangeBankDefinition = exchangeBankDefinitionDAO.getExchangeBankDefinitionByUnit(units);
+	    			BigDecimal rmb = new BigDecimal(exchangeBankDefinition.getRmb());
+	    			BigDecimal source = new BigDecimal(exchangeBankDefinition.getSource());
+	    			BigDecimal rate =  (rmb.divide(source));
+	    			task.addParam("rate", rate.floatValue());
+                }else{
+                	task.addParam("rate", 1.0);
+                }
                 task.addParam("robotOrderDetails", orderList);
                 task.addParam("account", acc);
                 task.addParam("isPay", true);
@@ -664,13 +665,16 @@ public class OrderServiceJob implements RpcCallback{
 	
 	private String getRmbPrice(String units, String totalPrice) {
 		try {
+			String exchangeMoney = totalPrice;
 			units = MoneyUnits.getMoneyUnitsByCode(units).getValue();
-			ExchangeBankDefinition exchangeBankDefinition = exchangeBankDefinitionDAO.getExchangeBankDefinitionByUnit(units);
-			BigDecimal rmb = new BigDecimal(exchangeBankDefinition.getRmb());
-			BigDecimal source = new BigDecimal(exchangeBankDefinition.getSource());
-			BigDecimal rate =  (rmb.divide(source));
-			
-			String exchangeMoney = MathUtil.mul(String.valueOf(totalPrice), String.valueOf(rate));
+			if(!"¥".equals(units)){
+				ExchangeBankDefinition exchangeBankDefinition = exchangeBankDefinitionDAO.getExchangeBankDefinitionByUnit(units);
+				BigDecimal rmb = new BigDecimal(exchangeBankDefinition.getRmb());
+				BigDecimal source = new BigDecimal(exchangeBankDefinition.getSource());
+				BigDecimal rate =  (rmb.divide(source));
+				
+				MathUtil.mul(String.valueOf(totalPrice), String.valueOf(rate));
+			}
 			return exchangeMoney;
 		} catch (Exception e) {
 			log.error("获取rmb出错");

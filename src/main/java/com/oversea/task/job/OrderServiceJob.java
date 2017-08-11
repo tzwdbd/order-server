@@ -173,7 +173,8 @@ public class OrderServiceJob implements RpcCallback{
                          acc.setSuffixNo(orderCreditCard.getSuffixNo());
                 	}
                 }
-                ExchangeBankDefinition exchangeBankDefinition = exchangeBankDefinitionDAO.getExchangeBankDefinitionByUnit(firstOrderDetail.getUnits());
+                String units = MoneyUnits.getMoneyUnitsByCode(firstOrderDetail.getUnits()).getValue();
+                ExchangeBankDefinition exchangeBankDefinition = exchangeBankDefinitionDAO.getExchangeBankDefinitionByUnit(units);
     			BigDecimal rmb = new BigDecimal(exchangeBankDefinition.getRmb());
     			BigDecimal source = new BigDecimal(exchangeBankDefinition.getSource());
     			BigDecimal rate =  (rmb.divide(source));
@@ -548,6 +549,7 @@ public class OrderServiceJob implements RpcCallback{
     				log.error("支付总价不能为空");
     				return;
     			}
+    			
     			String exchangeMoney = getRmbPrice(orderDetail.getUnits(), orderDetail.getTotalPrice());
     			
     			log.info("商品总价===="+orderDetail.getTotalPrice()+",汇率转换成功后的金额，money====="+ exchangeMoney);
@@ -660,6 +662,7 @@ public class OrderServiceJob implements RpcCallback{
 	
 	private String getRmbPrice(String units, String totalPrice) {
 		try {
+			units = MoneyUnits.getMoneyUnitsByCode(units).getValue();
 			ExchangeBankDefinition exchangeBankDefinition = exchangeBankDefinitionDAO.getExchangeBankDefinitionByUnit(units);
 			BigDecimal rmb = new BigDecimal(exchangeBankDefinition.getRmb());
 			BigDecimal source = new BigDecimal(exchangeBankDefinition.getSource());

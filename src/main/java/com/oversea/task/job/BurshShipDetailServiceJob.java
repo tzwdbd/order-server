@@ -121,10 +121,10 @@ public class BurshShipDetailServiceJob implements RpcCallback{
         
         BrushOrderDetail _brushOrderDetail = brushOrderDetailDAO.getBrushOrderDetailById(brushOrderDetail.getId());
         _brushOrderDetail.setGmtModified(new Date());
-        if(AutoBuyStatus.AUTO_FEED_BACK_SUCCESS.equals(brushOrderDetail.getStatus())){
+        if(AutoBuyStatus.AUTO_FEED_BACK_SUCCESS.getValue()==brushOrderDetail.getStatus()){
         	_brushOrderDetail.setExpressStatus(6);
         }
-        if(AutoBuyStatus.AUTO_REVIEW_SUCCESS.equals(brushOrderDetail.getStatus())){
+        if(AutoBuyStatus.AUTO_REVIEW_SUCCESS.getValue()==brushOrderDetail.getStatus()){
         	_brushOrderDetail.setExpressStatus(14);
         }
         

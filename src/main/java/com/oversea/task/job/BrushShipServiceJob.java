@@ -49,7 +49,7 @@ public class BrushShipServiceJob implements RpcCallback{
     
 	
 	public void run(){
-		log.error("============BurshShipDetailServiceJob begin============");
+		log.error("============BrushShipServiceJob begin============");
 		try{
 			List<BrushOrderDetail> brushOrderDetails = brushOrderDetailDAO.getBrushOrderDetailListBystatus("1000,100,99");
 	    	for(BrushOrderDetail brushOrderDetail : brushOrderDetails){
@@ -104,7 +104,7 @@ public class BrushShipServiceJob implements RpcCallback{
 		}catch(Exception e){
 			log.error(e);
 		}
-		log.error("============BurshShipDetailServiceJob end=================");
+		log.error("============BrushShipServiceJob end=================");
 	}
 
 	@Override

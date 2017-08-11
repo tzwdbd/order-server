@@ -44,6 +44,7 @@
         <result property="groupNumber" column="group_number"/>
         <result property="dispatchTime" column="dispatch_time"/>
         <result property="totalPromotion" column="total_promotion"/>
+        <result property="fromId" column="from_id"/>
         
     </resultMap>
     
@@ -95,7 +96,8 @@
         order_img,
         group_number,
         dispatch_time,
-        total_promotion
+        total_promotion,
+        from_id
     </sql>
 
     <insert id="addRobotOrderDetail" parameterType="com.oversea.task.domain.RobotOrderDetail">

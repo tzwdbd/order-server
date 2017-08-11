@@ -126,6 +126,20 @@ public class OrderServiceJob implements RpcCallback{
             	continue;
             }
             
+            List<RobotOrderDetail> stockOrderList = new ArrayList<RobotOrderDetail>();
+            
+            for (RobotOrderDetail o: orderList){
+            	if(o.getFromId()!=null && o.getFromId()>0){
+            		stockOrderList.add(o);
+            		log.error("囤货匹配订单orderNo = "+o.getOrderNo()+"remove掉 list size＝"+orderList.size());
+            	}
+            }
+            orderList.removeAll(stockOrderList);
+            if (orderList == null || orderList.size() == 0) {
+                log.error("RobotOrderDetail对应的订单为空...");
+                continue;
+            }
+            
             try {
                 String ip = orderDeviceDAO.findById(firstOrderDetail.getDeviceId()).getDeviceIp();
                 OrderAccount acc = orderAccountDAO.findById(firstOrderDetail.getAccountId());
@@ -163,6 +177,8 @@ public class OrderServiceJob implements RpcCallback{
     			BigDecimal rmb = new BigDecimal(exchangeBankDefinition.getRmb());
     			BigDecimal source = new BigDecimal(exchangeBankDefinition.getSource());
     			BigDecimal rate =  (rmb.divide(source));
+    			
+    			
     			
     			task.addParam("rate", rate.floatValue());
                 task.addParam("robotOrderDetails", orderList);

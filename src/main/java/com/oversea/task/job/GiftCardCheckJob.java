@@ -62,7 +62,7 @@ public class GiftCardCheckJob implements RpcCallback{
 	public void run(){
 		log.error("============GiftCardCheckJob begin============");
 		try{
-			List<OrderAccount> orderAccounts = orderAccountDAO.getNeedRechargeAccountByStatus(acountStatus, companyIdStatus,siteNames);
+			List<OrderAccount> orderAccounts = orderAccountDAO.getNeedRechargeAccountByStatusByGroup(acountStatus, companyIdStatus,siteNames);
 			log.error("GiftCardCheckJob orderAccounts size:"+orderAccounts.size());
 	    	for(OrderAccount account : orderAccounts){
     			Task task = new TaskDetail();

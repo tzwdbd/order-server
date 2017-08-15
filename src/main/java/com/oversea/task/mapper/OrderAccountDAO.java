@@ -69,4 +69,10 @@ public interface OrderAccountDAO {
 	public List<OrderAccount> getNeedRechargeAccountByStatus(String status,String expressCompanyIds,String siteNames);
 	
 	public int updateOrderAccountStatusByExpressIds(String expressCompanyIds,String siteNames);
+	
+	/**
+     * 获取分组需要充值的账号
+     * @return
+     */
+	public List<OrderAccount> getNeedRechargeAccountByStatusByGroup(String status,String expressCompanyIds,String siteNames);
 }

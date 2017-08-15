@@ -50,12 +50,16 @@
     </update>
     
     <select id="getNeedRechargeAccountByStatus"  parameterType="map" resultMap="OrderAccount">
-        select * from automan.order_account_new where status in (${status}) and express_company_id  in (${expressCompanyIds}) and account_type in (${siteNames}) group by device_id ORDER BY effective_time ;
+        select * from automan.order_account_new where status in (${status}) and express_company_id  in (${expressCompanyIds}) and account_type in (${siteNames}) ORDER BY effective_time ;
     </select>
     
     <update id="updateOrderAccountStatusByExpressIds" parameterType="map">
         update automan.order_account_new set status=4 where express_company_id  in (${expressCompanyIds}) and account_type in (${siteNames}) and status =0
     </update>
+    
+     <select id="getNeedRechargeAccountByStatusByGroup"  parameterType="map" resultMap="OrderAccount">
+        select * from automan.order_account_new where status in (${status}) and express_company_id  in (${expressCompanyIds}) and account_type in (${siteNames}) group by device_id ORDER BY effective_time ;
+    </select>
     
 
 </mapper>

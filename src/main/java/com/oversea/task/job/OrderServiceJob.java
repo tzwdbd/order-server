@@ -103,7 +103,7 @@ public class OrderServiceJob implements RpcCallback{
     private ExecutorService fixedThreadPool = Executors.newFixedThreadPool(2);
     
     private static final int VICTORIASSECRET = 1;//1礼品卡
-    private static final int NORDSTROM = 0;//0信用卡
+    private static final int NORDSTROM = 1;//0信用卡
     
     public void run(){
     	log.error("==========OrderServiceJob begin============");

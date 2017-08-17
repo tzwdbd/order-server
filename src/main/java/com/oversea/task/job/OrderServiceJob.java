@@ -175,17 +175,12 @@ public class OrderServiceJob implements RpcCallback{
                          acc.setSuffixNo(orderCreditCard.getSuffixNo());
                 	}
                 }
-                String units = MoneyUnits.getMoneyUnitsByCode(firstOrderDetail.getUnits()).getValue();
-                if(!"¥".equals(units)){
-	                ExchangeBankDefinition exchangeBankDefinition = exchangeBankDefinitionDAO.getExchangeBankDefinitionByUnit(units);
-	    			BigDecimal rmb = new BigDecimal(exchangeBankDefinition.getRmb());
-	    			BigDecimal source = new BigDecimal(exchangeBankDefinition.getSource());
-	    			BigDecimal rate =  (rmb.divide(source));
-	    			task.addParam("rate", rate.floatValue());
-                }else{
-                	BigDecimal rate =  new BigDecimal(1);
-                	task.addParam("rate", rate.floatValue());
-                }
+                ExchangeBankDefinition exchangeBankDefinition = exchangeBankDefinitionDAO.getExchangeBankDefinitionByUnit(firstOrderDetail.getUnits());
+    			BigDecimal rmb = new BigDecimal(exchangeBankDefinition.getRmb());
+    			BigDecimal source = new BigDecimal(exchangeBankDefinition.getSource());
+    			BigDecimal rate =  (rmb.divide(source));
+    			
+    			task.addParam("rate", rate.floatValue());
                 task.addParam("robotOrderDetails", orderList);
                 task.addParam("account", acc);
                 task.addParam("isPay", true);

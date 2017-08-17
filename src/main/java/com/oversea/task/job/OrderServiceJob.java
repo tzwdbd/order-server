@@ -21,6 +21,7 @@ import com.oversea.cdn.service.CdnService;
 import com.oversea.rabbitmq.sender.MessageSender;
 import com.oversea.task.common.TaskService;
 import com.oversea.task.domain.ExchangeBankDefinition;
+import com.oversea.task.domain.ExchangeDefinition;
 import com.oversea.task.domain.GiftCard;
 import com.oversea.task.domain.OrderAccount;
 import com.oversea.task.domain.OrderCreditCard;
@@ -175,11 +176,11 @@ public class OrderServiceJob implements RpcCallback{
                          acc.setSuffixNo(orderCreditCard.getSuffixNo());
                 	}
                 }
-                ExchangeBankDefinition exchangeBankDefinition = exchangeBankDefinitionDAO.getExchangeBankDefinitionByUnit(firstOrderDetail.getUnits());
-    			BigDecimal rmb = new BigDecimal(exchangeBankDefinition.getRmb());
-    			BigDecimal source = new BigDecimal(exchangeBankDefinition.getSource());
+                MoneyUnits moneyUnits = MoneyUnits.getMoneyUnitsByCode(firstOrderDetail.getUnits());
+    			ExchangeDefinition exchangeDefinition = exchangeDefinitionDAO.getExchangeDefinitionByUnits(moneyUnits.getValue());
+    			BigDecimal rmb = new BigDecimal(exchangeDefinition.getRmb());
+    			BigDecimal source = new BigDecimal(exchangeDefinition.getSource());
     			BigDecimal rate =  (rmb.divide(source));
-    			
     			task.addParam("rate", rate.floatValue());
                 task.addParam("robotOrderDetails", orderList);
                 task.addParam("account", acc);

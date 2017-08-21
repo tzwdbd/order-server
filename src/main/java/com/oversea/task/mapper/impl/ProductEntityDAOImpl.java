@@ -26,4 +26,9 @@ public class ProductEntityDAOImpl extends BaseDao implements ProductEntityDAO{
         return getSqlSession().selectList("getProductEntityByProductIdAndStatus", param);
         
     }
+
+	@Override
+	public List<String> getProductIdListByExternalIds(String externalIds) {
+		return getSqlSession().selectList("getProductIdListByExternalIds", externalIds);
+	}
 }

@@ -12,4 +12,7 @@ public interface ProductDAO {
 	
 	public List<Product> getProductByAmazon(Long fromId,Integer step) ;
 	
+	public List<Product> getCheckProductByCondition(Long id , Long mallId);
+	
+	public int updateProductStatusByIds(String productIds);
 }

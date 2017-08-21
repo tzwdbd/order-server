@@ -1131,4 +1131,15 @@ public class DateUtil {
         DateFormat ymdhmsFormat = new SimpleDateFormat(format);
         return ymdhmsFormat.format(date);
     }
+    
+    public static void main(String[] args) throws ParseException {
+		Date today = DateUtil.ymdString2Date(DateUtil.ymdFormat(new Date()));
+		System.out.println(today);
+		Date yesToday = DateUtil.ymdString2Date("2017-08-14");
+		System.out.println(yesToday);
+		Date temp = DateUtil.increaseDate(today , 1);
+		if(today.getTime() <= yesToday.getTime() ){
+			System.out.println("已经超过一天");
+		}
+	}
 }

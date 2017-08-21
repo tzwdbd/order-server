@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="ResourcesSQL">
+<resultMap id="Resources"	type="com.oversea.task.domain.Resources">
+	<result  property="id"  column="id"/>
+	<result  property="name"  column="name"/>
+	<result  property="resValue"  column="res_value"/>
+	<result  property="type"  column="type"/>
+	<result  property="priority"  column="priority"/>
+	<result  property="value1"  column="value_1"/>
+	<result  property="value2"  column="value_2"/>
+	<result  property="creator"  column="creator"/>
+	<result  property="createTime"  column="create_time"/>
+	<result  property="value3"  column="value_3"/>
+</resultMap>
+
+<sql id="Resources_Column_List">
+		id,
+		name,
+		res_value,
+		type,
+		priority,
+		value_1,
+		value_2,
+		creator,
+		create_time,
+		value_3
+</sql>
+
+
+<update id="updateResourcesByDynamic"  parameterType="com.oversea.task.domain.Resources">
+	update resources <set>
+		<if test="name!= null">
+				name=#{name},
+		</if>
+		<if test="resValue!= null">
+				res_value=#{resValue},
+		</if>
+		<if test="type!= null">
+				type=#{type},
+		</if>
+		<if test="priority!= null">
+				priority=#{priority},
+		</if>
+		<if test="value1!= null">
+				value_1=#{value1},
+		</if>
+		<if test="value2!= null">
+				value_2=#{value2},
+		</if>
+		<if test="creator!= null">
+				creator=#{creator},
+		</if>
+		<if test="createTime!= null">
+				create_time=#{createTime},
+		</if>
+		<if test="value3!= null">
+				value_3=#{value3}
+		</if>
+</set>
+	where id=#{id}
+</update>
+
+
+<select id="getResourcesByName"  parameterType="java.lang.String" resultMap="Resources">
+	select <include refid="Resources_Column_List"/>
+ 	from automan.resources where name=#{name}
+ 	limit 1
+</select>
+
+<select id="getSaleResourceByType" parameterType="java.lang.String" resultMap="Resources">
+	select  <include refid="Resources_Column_List"/>
+ 	from automan.resources where type=#{type}
+</select>
+
+</mapper>

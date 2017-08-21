@@ -30,5 +30,18 @@ public class ProductDAOImpl extends BaseDao implements ProductDAO{
 		param.put("step", step);
 		return getSqlSession().selectList("getProductByAmazon", param);
 	}
+
+	@Override
+	public List<Product> getCheckProductByCondition(Long id, Long mallId) {
+		Map<String,Object> param = new HashMap<String,Object>();
+		param.put("id", id);
+		param.put("mallId", mallId);
+		return getSqlSession().selectList("getProductByAmazon", param);
+	}
+
+	@Override
+	public int updateProductStatusByIds(String productIds) {
+		return getSqlSession().update("updateProductStatusByIds", productIds);
+	}
 	
 }

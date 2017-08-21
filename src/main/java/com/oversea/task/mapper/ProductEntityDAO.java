@@ -16,4 +16,5 @@ public interface ProductEntityDAO {
 	 */
 	public List<ProductEntity> getProductEntityByProductIdAndStatus(Long productId,Integer status);
 	
+	public List<String> getProductIdListByExternalIds(String externalIds);
 }

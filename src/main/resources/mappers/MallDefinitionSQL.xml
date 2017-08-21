@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="MallDefinitionSQL">
+<resultMap id="MallDefinition"	type="com.oversea.task.domain.MallDefinition">
+	<result  property="id"  column="id"/>
+	<result  property="name"  column="name"/>
+	<result  property="logo"  column="logo"/>
+	<result  property="icon"  column="icon"/>
+	<result  property="countryId"  column="country_id"/>
+	<result  property="country"  column="country"/>
+	<result  property="countryIcon"  column="country_icon"/>
+	<result  property="website"  column="website"/>
+	<result  property="commissionRate"  column="commission_rate"/>
+	<result  property="firstWeight"  column="first_weight"/>
+	<result  property="firstWeightFee"  column="first_weight_fee"/>
+	<result  property="secondWeight"  column="second_weight"/>
+	<result  property="secondWeightFee"  column="second_weight_fee"/>
+	<result  property="leastFee"  column="least_fee"/>
+	<result  property="gmtCreate"  column="gmt_create"/>
+	<result  property="gmtModified"  column="gmt_modified"/>
+	<result  property="insurancePercent"  column="insurance_percent"/>
+	<result  property="explainFeeUrl"  column="explain_fee_url"/>
+	<result  property="pcCountryIcon"  column="pc_country_icon"/>
+	<result  property="description"  column="description"/>
+	<result  property="expressCycle"  column="express_cycle"/>
+	<result  property="expressType"  column="express_type"/>
+	<result  property="expressFee"  column="express_fee"/>
+	<result  property="mallFee"  column="mall_fee"/>
+	<result  property="mallFeeCondition"  column="mall_fee_condition"/>
+	<result  property="useExpress100"  column="use_express100"/>
+	<result  property="spiderWebsite"  column="spider_website"/>
+	<result  property="spiderName"  column="spider_name"/>
+	<result  property="spiderSwitch"  column="spider_switch"/>
+	<result  property="needIdCard"  column="need_id_card"/>
+	<result  property="priceChangeRate"  column="price_change_rate"/>
+	<result  property="priceChangeRemind"  column="price_change_remind"/>
+	<result  property="mailRemind"  column="mail_remind"/>
+	<result  property="needInsurance"  column="need_insurance"/>
+	<result  property="isAutoOrder"  column="is_auto_order"/>
+	<result  property="isAutoOrderSupportPromoCode"  column="is_auto_order_support_promo_code"/>
+	<result  property="buyToExpressTime"  column="buy_to_express_time"/>
+	<result  property="expressToSignTime"  column="express_to_sign_time"/>
+	<result  property="expressToFlightTime"  column="express_to_flight_time"/>
+	<result  property="clearFinishTime"  column="clear_finish_time"/>
+	<result  property="status"  column="status"/>
+	<result  property="operatorStatus"  column="operator_status"/>
+	<result  property="operVersion"  column="oper_version"/>
+	<result  property="isAutoExpress"  column="is_auto_express"/>
+	<result  property="tags"  column="tags"/>
+	<result  property="isBatchSpider"  column="is_batch_spider"/>
+	<result  property="isOpSupport"  column="is_op_support"/>
+	<result  property="limitNum"  column="limit_num"/>
+	<result  property="orderStatus"  column="order_status"/>
+	<result  property="reduceMallFee"  column="reduce_mall_fee"/>
+	<result  property="mallFeeCode"  column="mall_fee_code"/>
+</resultMap>
+
+<sql id="MallDefinition_Column_List">
+		id,
+		name,
+		logo,
+		icon,
+		country_id,
+		country,
+		country_icon,
+		website,
+		commission_rate,
+		first_weight,
+		first_weight_fee,
+		second_weight,
+		second_weight_fee,
+		least_fee,
+		gmt_create,
+		gmt_modified,
+		insurance_percent,
+		explain_fee_url,
+		pc_country_icon,
+		description,
+		express_cycle,
+		express_type,
+		express_fee,
+		mall_fee,
+		mall_fee_condition,
+		use_express100,
+		spider_website,
+		spider_name,
+		spider_switch,
+		need_id_card,
+		price_change_rate,
+		price_change_remind,
+		mail_remind,
+		need_insurance,
+		is_auto_order,
+		is_auto_order_support_promo_code,
+		buy_to_express_time,
+		express_to_sign_time,
+		express_to_flight_time,
+		clear_finish_time,
+		status,
+		operator_status,
+		oper_version,
+		is_auto_express,
+		tags,
+		is_batch_spider,
+		is_op_support,
+		limit_num,
+		order_status,
+		reduce_mall_fee,
+		mall_fee_code
+</sql>
+
+<select id="getMallDefinitionById"  parameterType="java.lang.Long" resultMap="MallDefinition">
+	select <include refid="MallDefinition_Column_List"/>
+ 	from oversea.mall_definition where name=#{name}
+ 	limit 1
+</select>
+
+</mapper>

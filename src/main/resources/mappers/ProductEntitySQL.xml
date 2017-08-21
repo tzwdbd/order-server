@@ -259,4 +259,8 @@
     <update id="updateStoreOwnAndStatus" parameterType="java.lang.Long">
         update oversea.product_entity set store_own=null,status=2 where id=#{id} 
     </update>
+    
+    <select id="getProductIdListByExternalIds" parameterType="java.lang.String" resultMap="ProductEntity">
+    	select product_id from oversea.product_entity where `external_product_entity_id` in (externalIds) group by external_product_entity_id
+    </select>
 </mapper>

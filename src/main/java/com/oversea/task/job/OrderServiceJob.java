@@ -21,6 +21,7 @@ import com.oversea.cdn.service.CdnService;
 import com.oversea.rabbitmq.sender.MessageSender;
 import com.oversea.task.common.TaskService;
 import com.oversea.task.domain.ExchangeBankDefinition;
+import com.oversea.task.domain.ExchangeDefinition;
 import com.oversea.task.domain.GiftCard;
 import com.oversea.task.domain.OrderAccount;
 import com.oversea.task.domain.OrderCreditCard;
@@ -103,7 +104,7 @@ public class OrderServiceJob implements RpcCallback{
     private ExecutorService fixedThreadPool = Executors.newFixedThreadPool(2);
     
     private static final int VICTORIASSECRET = 1;//1礼品卡
-    private static final int NORDSTROM = 0;//0信用卡
+    private static final int NORDSTROM = 1;//0信用卡
     
     public void run(){
     	log.error("==========OrderServiceJob begin============");
@@ -175,17 +176,12 @@ public class OrderServiceJob implements RpcCallback{
                          acc.setSuffixNo(orderCreditCard.getSuffixNo());
                 	}
                 }
-                String units = MoneyUnits.getMoneyUnitsByCode(firstOrderDetail.getUnits()).getValue();
-                if(!"¥".equals(units)){
-	                ExchangeBankDefinition exchangeBankDefinition = exchangeBankDefinitionDAO.getExchangeBankDefinitionByUnit(units);
-	    			BigDecimal rmb = new BigDecimal(exchangeBankDefinition.getRmb());
-	    			BigDecimal source = new BigDecimal(exchangeBankDefinition.getSource());
-	    			BigDecimal rate =  (rmb.divide(source));
-	    			task.addParam("rate", rate.floatValue());
-                }else{
-                	BigDecimal rate =  new BigDecimal(1);
-                	task.addParam("rate", rate.floatValue());
-                }
+                MoneyUnits moneyUnits = MoneyUnits.getMoneyUnitsByCode(firstOrderDetail.getUnits());
+    			ExchangeDefinition exchangeDefinition = exchangeDefinitionDAO.getExchangeDefinitionByUnits(moneyUnits.getValue());
+    			BigDecimal rmb = new BigDecimal(exchangeDefinition.getRmb());
+    			BigDecimal source = new BigDecimal(exchangeDefinition.getSource());
+    			BigDecimal rate =  (rmb.divide(source));
+    			task.addParam("rate", rate.floatValue());
                 task.addParam("robotOrderDetails", orderList);
                 task.addParam("account", acc);
                 task.addParam("isPay", true);

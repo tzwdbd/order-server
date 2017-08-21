@@ -1,6 +1,7 @@
 package com.oversea.task.job;
 
 import java.lang.reflect.Method;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -63,11 +64,13 @@ public class ProductOrderCheckServiceJob implements RpcCallback {
 	public void run(){
 		try{
 			log.error("==========ProductOrderCheckServiceJob begin============");
-			// 先检查 hksasa 网站 , 再检查 skinstore
-			Map<String, Resources> resourceMap = resourcesDAO.getSaleResourceByMap("productOrderCheckType");
 			
-			excu(SITE_NAME_BY_SASA, resourceMap);  // hksasa
-			excu(SITE_NAME_BY_SKIN, resourceMap); // slinstore
+			String time = DateUtil.ymdFormat(DateUtil.zerolizedTime(new Date()));
+			List<Resources> resources = resourcesDAO.getSiteResourcesByTime(time);
+			if(resources!=null && resources.size()>0){
+				Resources resource = resources.get(0);
+				excu(resource);
+			}
 			
 			log.error("==========ProductOrderCheckServiceJob end============");
 		}catch(Exception e){
@@ -75,43 +78,44 @@ public class ProductOrderCheckServiceJob implements RpcCallback {
 		}
 	}
 	
-	private void excu(String siteName ,Map<String, Resources> resourceMap){
-		
-		Resources siteResource = resourceMap.get(siteName);
+	private void excu(Resources siteResource) throws ParseException{
 		if(siteResource == null){
-			log.error("ProductOrderCheckServiceJob error : resource for " + siteName + " is null");
+			log.error("ProductOrderCheckServiceJob error : siteResource is null");
 			return;
 		}
 		
-		Date endTime = DateUtil.ymdhmsString2DateTime(siteResource.getValue1());  // 判断是否符合条件
+		Resources resourceByOper = new Resources();
+		resourceByOper.setId(siteResource.getId());
+		
+		Date endTime = DateUtil.ymdString2Date(siteResource.getValue1());  // 判断是否符合条件
 		String status = siteResource.getValue2();
-		Date now = new Date();
+		String dateStr = DateUtil.ymdFormat(new Date());
 		if("1".equals(status)){
-			Date temp = DateUtil.increaseDay(endTime , 1);
-			if(now.getTime() < temp.getTime()){
+			Date now = DateUtil.ymdString2Date(dateStr);
+			if(now.getTime() < endTime.getTime()){
 				log.error("ProductOrderCheckServiceJob error : 未到第二天 endTime - " + endTime + " , currTime - " + now);
 				return;
 			}
 		}else{
-			MallDefinition mall = mallDefinitionDAO.getMallDefinitionByName(siteName);
+			MallDefinition mall = mallDefinitionDAO.getMallDefinitionByName(siteResource.getName());
 			if(mall == null){
-				log.error("ProductOrderCheckServiceJob error : 商城不存在-" + siteName);
+				log.error("ProductOrderCheckServiceJob error : 商城不存在-" + siteResource.getName());
 				return; 
 			}
 			
 			List<Product> productList = productDAO.getCheckProductByCondition(Long.valueOf(siteResource.getResValue().trim()), mall.getId());
 			if(productList.size() == 0 || productList.size() < CHECK_PRODUCT_MAX_NUM){ // 最后一批 , 状态改为1、ID更为0、时间更新为当前时间
-				siteResource.setResValue("0");
-				siteResource.setValue1(DateUtil.ymdhmsFormat(now));
-				siteResource.setValue2("1");
-				resourcesDAO.updateResourcesByDynamic(siteResource);
+				resourceByOper.setResValue("0");
+				resourceByOper.setValue1(dateStr);
+				resourceByOper.setValue2("1");
+				resourcesDAO.updateResourcesByDynamic(resourceByOper);
 				
 				if(productList.size() == 0){ 
 					return;
 				}
 			}else{
-				siteResource.setResValue(productList.get(CHECK_PRODUCT_MAX_NUM - 1).getId().toString()); // 更新资源表中商品id
-				resourcesDAO.updateResourcesByDynamic(siteResource);
+				resourceByOper.setResValue(productList.get(CHECK_PRODUCT_MAX_NUM - 1).getId().toString()); // 更新资源表中商品id
+				resourcesDAO.updateResourcesByDynamic(resourceByOper);
 			}
 			
 			Map<Long,String> skuMap = new HashMap<>();
@@ -121,20 +125,20 @@ public class ProductOrderCheckServiceJob implements RpcCallback {
 				skuMap.put(product.getId(), sku);
 			}
 			
-			Resources hksasaAccount =resourceMap.get("hksasaOrderAccount");
-			OrderAccount acc = orderAccountDAO.findById(Long.valueOf(hksasaAccount.getResValue()));
+			String account = siteResource.getValue3();
+			OrderAccount acc = orderAccountDAO.findById(Long.valueOf(account));
 			if (acc == null) {
-				log.error("ProductOrderCheckServiceJob error :" + hksasaAccount.getResValue() + "找不到对应的账号信息");
+				log.error("ProductOrderCheckServiceJob error :" + account + "找不到对应的账号信息");
 				return;
 			}
 			
-			Resources deviceResource =resourceMap.get("deviceId");
-			String ip = orderDeviceDAO.findById(Long.valueOf(deviceResource.getResValue().trim())).getDeviceIp();
+			Resources deviceResource = resourcesDAO.getResourcesByName("deviceId");
+			String ip = orderDeviceDAO.findById(Long.valueOf(deviceResource.getResValue())).getDeviceIp();
 			
 			Task task = new TaskDetail();
 			task.addParam("robotOrderDetails", productList);
 			task.addParam("account", acc);
-			task.addParam("mallName", SITE_NAME_BY_SASA);
+			task.addParam("mallName", siteResource.getName());
 			task.addParam("skuMap", skuMap);
 			task.addParam("originStatus", siteResource);
 			task.setGroup(ip);

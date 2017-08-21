@@ -39,4 +39,9 @@ public class ResourcesDAOImpl extends BaseDao implements ResourcesDAO {
 		}
 		return resourcesMap;
 	}
+
+	@Override
+	public List<Resources> getSiteResourcesByTime(String time) {
+		return getSqlSession().selectList(NAMESPACE + "getSiteResourcesByTime", time);
+	}
 }

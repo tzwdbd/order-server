@@ -75,4 +75,8 @@
  	from automan.resources where type=#{type}
 </select>
 
+<select id='getSiteResourcesByTime' parameterType="java.lang.String" resultMap="Resources">
+	<![CDATA[select * from resources where type = 'productOrderCheckType' and (value_2 = 0 or (value_2 = 1 and`value_1`< #{time})) ]]>
+</select>
+
 </mapper>

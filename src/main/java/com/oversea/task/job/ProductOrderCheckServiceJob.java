@@ -37,9 +37,6 @@ public class ProductOrderCheckServiceJob implements RpcCallback {
 
 	private Logger log = Logger.getLogger(getClass());
 	
-	private final String SITE_NAME_BY_SASA = "hksasa";
-	private final String SITE_NAME_BY_SKIN = "skinstore";
-	
 	private final Integer CHECK_PRODUCT_MAX_NUM = 5; // 每次检查商品的数量
 	
 	@Resource
@@ -132,8 +129,7 @@ public class ProductOrderCheckServiceJob implements RpcCallback {
 				return;
 			}
 			
-			Resources deviceResource = resourcesDAO.getResourcesByName("deviceId");
-			String ip = orderDeviceDAO.findById(Long.valueOf(deviceResource.getResValue())).getDeviceIp();
+			String ip = siteResource.getPriority().toString();
 			
 			Task task = new TaskDetail();
 			task.addParam("robotOrderDetails", productList);

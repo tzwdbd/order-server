@@ -17,6 +17,7 @@ import com.haihu.rpc.server.RpcServerProxy;
 import com.oversea.task.common.TaskService;
 import com.oversea.task.domain.MallDefinition;
 import com.oversea.task.domain.OrderAccount;
+import com.oversea.task.domain.OrderDevice;
 import com.oversea.task.domain.Product;
 import com.oversea.task.domain.ProductEntity;
 import com.oversea.task.domain.Resources;
@@ -129,7 +130,13 @@ public class ProductOrderCheckServiceJob implements RpcCallback {
 				return;
 			}
 			
-			String ip = siteResource.getPriority().toString();
+			Integer deviceId = siteResource.getPriority();
+			OrderDevice device = orderDeviceDAO.findById(deviceId.longValue());
+			if(device == null){
+				log.error("ProductOrderCheckServiceJob error :" + deviceId + "找不到对应的设备");
+				return;
+			}
+			
 			
 			Task task = new TaskDetail();
 			task.addParam("robotOrderDetails", productList);
@@ -137,9 +144,9 @@ public class ProductOrderCheckServiceJob implements RpcCallback {
 			task.addParam("mallName", siteResource.getName());
 			task.addParam("skuMap", skuMap);
 			task.addParam("originStatus", siteResource);
-			task.setGroup(ip);
+			task.setGroup(device.getDeviceIp());
 			
-			TaskService taskService = (TaskService)rpcServerProxy.wrapProxy(TaskService.class, ip, this);
+			TaskService taskService = (TaskService)rpcServerProxy.wrapProxy(TaskService.class, device.getDeviceIp(), this);
 			taskService.productOrderCheckService(task);
 		}
 	}

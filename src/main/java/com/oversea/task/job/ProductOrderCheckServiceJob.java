@@ -129,8 +129,7 @@ public class ProductOrderCheckServiceJob implements RpcCallback {
 				return;
 			}
 			
-			String ip = siteResource.getPriority().toString();
-			
+			String ip = orderDeviceDAO.findById(siteResource.getPriority()).getDeviceIp();
 			Task task = new TaskDetail();
 			task.addParam("robotOrderDetails", productList);
 			task.addParam("account", acc);

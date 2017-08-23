@@ -83,63 +83,53 @@ public class ProductOrderCheckServiceJob implements RpcCallback {
 		Resources resourceByOper = new Resources();
 		resourceByOper.setId(siteResource.getId());
 		
-		Date endTime = DateUtil.ymdString2Date(siteResource.getValue1());  // 判断是否符合条件
-		String status = siteResource.getValue2();
 		String dateStr = DateUtil.ymdFormat(new Date());
-		if("1".equals(status)){
-			Date now = DateUtil.ymdString2Date(dateStr);
-			if(now.getTime() < endTime.getTime()){
-				log.error("ProductOrderCheckServiceJob error : 未到第二天 endTime - " + endTime + " , currTime - " + now);
+		MallDefinition mall = mallDefinitionDAO.getMallDefinitionByName(siteResource.getName());
+		if(mall == null){
+			log.error("ProductOrderCheckServiceJob error : 商城不存在-" + siteResource.getName());
+			return; 
+		}
+		
+		List<Product> productList = productDAO.getCheckProductByCondition(Long.valueOf(siteResource.getResValue().trim()), mall.getId());
+		if(productList.size() == 0 || productList.size() < CHECK_PRODUCT_MAX_NUM){ // 最后一批 , 状态改为1、ID更为0、时间更新为当前时间
+			resourceByOper.setResValue("0");
+			resourceByOper.setValue1(dateStr);
+			resourceByOper.setValue2("1");
+			resourcesDAO.updateResourcesByDynamic(resourceByOper);
+			
+			if(productList.size() == 0){ 
 				return;
 			}
 		}else{
-			MallDefinition mall = mallDefinitionDAO.getMallDefinitionByName(siteResource.getName());
-			if(mall == null){
-				log.error("ProductOrderCheckServiceJob error : 商城不存在-" + siteResource.getName());
-				return; 
-			}
-			
-			List<Product> productList = productDAO.getCheckProductByCondition(Long.valueOf(siteResource.getResValue().trim()), mall.getId());
-			if(productList.size() == 0 || productList.size() < CHECK_PRODUCT_MAX_NUM){ // 最后一批 , 状态改为1、ID更为0、时间更新为当前时间
-				resourceByOper.setResValue("0");
-				resourceByOper.setValue1(dateStr);
-				resourceByOper.setValue2("1");
-				resourcesDAO.updateResourcesByDynamic(resourceByOper);
-				
-				if(productList.size() == 0){ 
-					return;
-				}
-			}else{
-				resourceByOper.setResValue(productList.get(CHECK_PRODUCT_MAX_NUM - 1).getId().toString()); // 更新资源表中商品id
-				resourcesDAO.updateResourcesByDynamic(resourceByOper);
-			}
-			
-			Map<Long,String> skuMap = new HashMap<>();
-			for(Product product : productList){
-				ProductEntity entity = productEntityDAO.getProductEntityById(product.getDefaultEntityId());
-				String sku = dispatchManager.getProductSkuStr(entity);
-				skuMap.put(product.getId(), sku);
-			}
-			
-			String account = siteResource.getValue3();
-			OrderAccount acc = orderAccountDAO.findById(Long.valueOf(account));
-			if (acc == null) {
-				log.error("ProductOrderCheckServiceJob error :" + account + "找不到对应的账号信息");
-				return;
-			}
-			
-			String ip = orderDeviceDAO.findById(siteResource.getPriority()).getDeviceIp();
-			Task task = new TaskDetail();
-			task.addParam("robotOrderDetails", productList);
-			task.addParam("account", acc);
-			task.addParam("mallName", siteResource.getName());
-			task.addParam("skuMap", skuMap);
-			task.addParam("originStatus", siteResource);
-			task.setGroup(ip);
-			
-			TaskService taskService = (TaskService)rpcServerProxy.wrapProxy(TaskService.class, ip, this);
-			taskService.productOrderCheckService(task);
+			resourceByOper.setResValue(productList.get(CHECK_PRODUCT_MAX_NUM - 1).getId().toString()); // 更新资源表中商品id
+			resourcesDAO.updateResourcesByDynamic(resourceByOper);
 		}
+		
+		Map<Long,String> skuMap = new HashMap<>();
+		for(Product product : productList){
+			ProductEntity entity = productEntityDAO.getProductEntityById(product.getDefaultEntityId());
+			String sku = dispatchManager.getProductSkuStr(entity);
+			skuMap.put(product.getId(), sku);
+		}
+		
+		String account = siteResource.getValue3();
+		OrderAccount acc = orderAccountDAO.findById(Long.valueOf(account));
+		if (acc == null) {
+			log.error("ProductOrderCheckServiceJob error :" + account + "找不到对应的账号信息");
+			return;
+		}
+		
+		String ip = orderDeviceDAO.findById(siteResource.getPriority()).getDeviceIp();
+		Task task = new TaskDetail();
+		task.addParam("robotOrderDetails", productList);
+		task.addParam("account", acc);
+		task.addParam("mallName", siteResource.getName());
+		task.addParam("skuMap", skuMap);
+		task.addParam("originStatus", siteResource);
+		task.setGroup(ip);
+		
+		TaskService taskService = (TaskService)rpcServerProxy.wrapProxy(TaskService.class, ip, this);
+		taskService.productOrderCheckService(task);
 	}
 	
 	@Override

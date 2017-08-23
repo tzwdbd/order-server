@@ -99,7 +99,6 @@
 		express_to_flight_time,
 		clear_finish_time,
 		status,
-		operator_status,
 		oper_version,
 		is_auto_express,
 		tags,
@@ -112,7 +111,7 @@
 </sql>
 
 <select id="getMallDefinitionByName"  parameterType="java.lang.String" resultMap="MallDefinition">
-	select <include refid="MallDefinition_Column_List"/>
+	select *
  	from oversea.mall_definition where name=#{name}
  	limit 1
 </select>

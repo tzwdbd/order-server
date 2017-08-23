@@ -17,7 +17,6 @@ import com.haihu.rpc.server.RpcServerProxy;
 import com.oversea.task.common.TaskService;
 import com.oversea.task.domain.MallDefinition;
 import com.oversea.task.domain.OrderAccount;
-import com.oversea.task.domain.OrderDevice;
 import com.oversea.task.domain.Product;
 import com.oversea.task.domain.ProductEntity;
 import com.oversea.task.domain.Resources;

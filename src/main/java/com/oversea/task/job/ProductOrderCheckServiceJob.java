@@ -11,7 +11,6 @@ import javax.annotation.Resource;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.springframework.stereotype.Component;
 
 import com.haihu.rpc.common.RpcCallback;
 import com.haihu.rpc.server.RpcServerProxy;
@@ -33,7 +32,6 @@ import com.oversea.task.obj.Task;
 import com.oversea.task.obj.TaskDetail;
 import com.oversea.task.obj.TaskResult;
 import com.oversea.task.util.DateUtil;
-@Component
 public class ProductOrderCheckServiceJob implements RpcCallback {
 
 	private Logger log = Logger.getLogger(getClass());

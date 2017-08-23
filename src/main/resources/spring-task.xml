@@ -59,6 +59,7 @@
 	<bean id="burshShipDetailServiceJob" class="com.oversea.task.job.BurshShipDetailServiceJob"/>
 	<bean id="brushShipServiceJob" class="com.oversea.task.job.BrushShipServiceJob"/>
 	
+	<bean id="productOrderCheckServiceJob" class="com.oversea.task.job.ProductOrderCheckServiceJob"/>
 	<bean id="orderServiceJob" class="com.oversea.task.job.OrderServiceJob"/>
 	
 	<bean id="rechargeServiceJob" class="com.oversea.task.job.RechargeServiceJob"/>

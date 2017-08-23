@@ -17,6 +17,7 @@ import com.haihu.rpc.server.RpcServerProxy;
 import com.oversea.task.common.TaskService;
 import com.oversea.task.domain.MallDefinition;
 import com.oversea.task.domain.OrderAccount;
+import com.oversea.task.domain.OrderDevice;
 import com.oversea.task.domain.Product;
 import com.oversea.task.domain.ProductEntity;
 import com.oversea.task.domain.Resources;
@@ -103,33 +104,34 @@ public class ProductOrderCheckServiceJob implements RpcCallback {
 		}else{
 			resourceByOper.setResValue(productList.get(CHECK_PRODUCT_MAX_NUM - 1).getId().toString()); // 更新资源表中商品id
 			resourcesDAO.updateResourcesByDynamic(resourceByOper);
+			
+		
+			Map<Long,String> skuMap = new HashMap<>();
+			for(Product product : productList){
+				ProductEntity entity = productEntityDAO.getProductEntityById(product.getDefaultEntityId());
+				String sku = dispatchManager.getProductSkuStr(entity);
+				skuMap.put(product.getId(), sku);
+			}
+			
+			String account = siteResource.getValue3();
+			OrderAccount acc = orderAccountDAO.findById(Long.valueOf(account));
+			if (acc == null) {
+				log.error("ProductOrderCheckServiceJob error :" + account + "找不到对应的账号信息");
+				return;
+			}
+			
+			String ip = orderDeviceDAO.findById(siteResource.getPriority()).getDeviceIp();
+			Task task = new TaskDetail();
+			task.addParam("robotOrderDetails", productList);
+			task.addParam("account", acc);
+			task.addParam("mallName", siteResource.getName());
+			task.addParam("skuMap", skuMap);
+			task.addParam("originStatus", siteResource);
+			task.setGroup(ip);
+			
+			TaskService taskService = (TaskService)rpcServerProxy.wrapProxy(TaskService.class, ip, this);
+			taskService.productOrderCheckService(task);
 		}
-		
-		Map<Long,String> skuMap = new HashMap<>();
-		for(Product product : productList){
-			ProductEntity entity = productEntityDAO.getProductEntityById(product.getDefaultEntityId());
-			String sku = dispatchManager.getProductSkuStr(entity);
-			skuMap.put(product.getId(), sku);
-		}
-		
-		String account = siteResource.getValue3();
-		OrderAccount acc = orderAccountDAO.findById(Long.valueOf(account));
-		if (acc == null) {
-			log.error("ProductOrderCheckServiceJob error :" + account + "找不到对应的账号信息");
-			return;
-		}
-		
-		String ip = orderDeviceDAO.findById(siteResource.getPriority()).getDeviceIp();
-		Task task = new TaskDetail();
-		task.addParam("robotOrderDetails", productList);
-		task.addParam("account", acc);
-		task.addParam("mallName", siteResource.getName());
-		task.addParam("skuMap", skuMap);
-		task.addParam("originStatus", siteResource);
-		task.setGroup(ip);
-		
-		TaskService taskService = (TaskService)rpcServerProxy.wrapProxy(TaskService.class, ip, this);
-		taskService.productOrderCheckService(task);
 	}
 	
 	@Override

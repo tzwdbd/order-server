@@ -16,11 +16,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.oversea.rabbitmq.utils.StringUtil;
 import com.oversea.task.domain.BrushOrderDetail;
 import com.oversea.task.domain.ExchangeDefinition;
+import com.oversea.task.domain.MallDefinition;
 import com.oversea.task.domain.OrderAccount;
 import com.oversea.task.domain.OrderCreditCard;
 import com.oversea.task.domain.OrderDevice;
 import com.oversea.task.domain.OrderPayAccount;
 import com.oversea.task.domain.OrderPayDetail;
+import com.oversea.task.domain.Resources;
 import com.oversea.task.domain.RobotOrderDetail;
 import com.oversea.task.enums.AutoBuyStatus;
 import com.oversea.task.enums.MoneyUnits;
@@ -30,14 +32,17 @@ import com.oversea.task.job.ShipServiceSingleJob;
 import com.oversea.task.mapper.BrushOrderDetailDAO;
 import com.oversea.task.mapper.ExchangeDefinitionDAO;
 import com.oversea.task.mapper.MachineDAO;
+import com.oversea.task.mapper.MallDefinitionDAO;
 import com.oversea.task.mapper.OrderAccountDAO;
 import com.oversea.task.mapper.OrderCreditCardDAO;
 import com.oversea.task.mapper.OrderDeviceDAO;
 import com.oversea.task.mapper.OrderPayAccountDAO;
 import com.oversea.task.mapper.OrderPayDetailDAO;
+import com.oversea.task.mapper.ResourcesDAO;
 import com.oversea.task.mapper.RobotOrderDetailDAO;
 import com.oversea.task.mapper.UserTradeDTLDAO;
 import com.oversea.task.obj.Machine;
+import com.oversea.task.util.DateUtil;
 import com.oversea.task.util.MathUtil;
 
 /**
@@ -95,7 +100,10 @@ public class TestJunit {
 	
 	@Resource
 	UserTradeDTLDAO userTradeDTLDAO;
-	
+	@Resource
+	private ResourcesDAO resourcesDAO;
+	@Resource
+	private MallDefinitionDAO mallDefinitionDAO;
 	@Test
 	public void testRechargeBootstrasp()throws Exception {
 		//System.out.println(robotOrderDetailDAO.updateRobotOrderDetailExpressStatusById(15, 132358l));
@@ -189,7 +197,12 @@ public class TestJunit {
 //    			}
 //    		}
 //    	}
-		System.out.println(userTradeDTLDAO.getPayTime("15072010190500P076"));
+		System.out.println("start");
+		String time = DateUtil.ymdFormat(DateUtil.zerolizedTime(new Date()));
+		List<Resources> resources = resourcesDAO.getSiteResourcesByTime(time);
+		MallDefinition mall = mallDefinitionDAO.getMallDefinitionByName(resources.get(0).getName());
+		System.out.println(mall.getName());
+		//System.out.println(userTradeDTLDAO.getPayTime("15072010190500P076"));
 	}
 	
 	private void addOrderPayDetailLog(List<RobotOrderDetail> orderDetailList) {

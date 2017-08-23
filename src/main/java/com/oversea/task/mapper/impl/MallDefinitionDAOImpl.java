@@ -9,7 +9,7 @@ import com.oversea.task.mapper.MallDefinitionDAO;
 @Repository("mallDefinitionDAO")
 public class MallDefinitionDAOImpl extends BaseDao implements MallDefinitionDAO {
 
-	private static final String NAMESPACE = " MallDefinitionSQL.";
+	private static final String NAMESPACE = "MallDefinitionSQL.";
 	
 	@Override
 	public MallDefinition getMallDefinitionByName(String name) {

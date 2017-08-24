@@ -147,11 +147,13 @@ public class ProductOrderCheckServiceJob implements RpcCallback {
 
 	@Override
 	public void callbackResult(Object result, Method method, Object[] objs) {
+		log.error("ProductOrderCheckServiceJob 返回");
 		if(result == null){
 			return;
 		}
 		TaskResult taskResult = (TaskResult)result;
 		Boolean checkStatus = (Boolean)taskResult.getParam("checkStatus");
+		log.error("ProductOrderCheckServiceJob checkStatus="+checkStatus);
 		if(checkStatus){
 			@SuppressWarnings("unchecked")
 			List<String> errorExternalEntityIdList  = (List<String>)taskResult.getParam("errorExternalId");

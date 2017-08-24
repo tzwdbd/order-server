@@ -158,14 +158,19 @@ public class ProductOrderCheckServiceJob implements RpcCallback {
 			@SuppressWarnings("unchecked")
 			List<String> errorExternalEntityIdList  = (List<String>)taskResult.getParam("errorExternalId");
 			if(errorExternalEntityIdList!=null && errorExternalEntityIdList.size()>0){
-				String externalIds = StringUtils.join(errorExternalEntityIdList, ",");
-				List<String> productIdList = productEntityDAO.getProductIdListByExternalIds(externalIds);
-				String productIds = StringUtils.join(productIdList, ",");
-				int row = productDAO.updateProductStatusByIds(productIds);
+				StringBuffer productIds = new StringBuffer();
+				for(String externalEntityId : errorExternalEntityIdList){
+					String productId = productEntityDAO.getProductIdListByExternalId(externalEntityId);
+					if(productIds.length() > 1){
+						productIds.append(",");
+					}
+					productIds.append(productId);
+				}
+				int row = productDAO.updateProductStatusByIds(productIds.toString());
 				if(row == errorExternalEntityIdList.size()){
-					log.error("ProductOrderCheckServiceJob success : 更新成功，总共更新" + row + "条 , entityIds :" + externalIds);
+					log.error("ProductOrderCheckServiceJob success : 更新成功，总共更新" + row + "条 , entityIds :" + StringUtils.join(errorExternalEntityIdList, ","));
 				}else{
-					log.error("ProductOrderCheckServiceJob success : 更新成功，小于应更新数 ，总共更新" + row + "条 ,实际应更新" + errorExternalEntityIdList.size()+ "条, entityIds :" + externalIds);
+					log.error("ProductOrderCheckServiceJob success : 更新成功，小于应更新数 ，总共更新" + row + "条 ,实际应更新" + errorExternalEntityIdList.size()+ "条, entityIds :" + StringUtils.join(errorExternalEntityIdList, ","));
 				}
 			}
 			log.error("ProductOrderCheckServiceJob success : 无更新商品");

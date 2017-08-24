@@ -41,7 +41,9 @@ public class ProductDAOImpl extends BaseDao implements ProductDAO{
 
 	@Override
 	public int updateProductStatusByIds(String productIds) {
-		return getSqlSession().update("updateProductStatusByIds", productIds);
+		Map<String,Object> param = new HashMap<String,Object>();
+		param.put("productIds", productIds);
+		return getSqlSession().update("updateProductStatusByIds", param);
 	}
 	
 }

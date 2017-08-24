@@ -590,7 +590,7 @@
 		limit 5
 	</select>
 	
-	<update id="updateProductStatusByIds" parameterType="java.lang.String">
-    	update oversea.product set status=3 where id in (#{productIds})
+	<update id="updateProductStatusByIds" parameterType="java.util.Map">
+    	update oversea.product set status=3 where id in (${productIds})
     </update>
 </mapper>

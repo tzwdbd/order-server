@@ -26,18 +26,8 @@ public class ResourcesDAOImpl extends BaseDao implements ResourcesDAO {
 	}
 	
 	
-	public Map<String, Resources> getSaleResourceByMap(String type) {
-		List<Resources> list = getSqlSession().selectList(NAMESPACE + "getSaleResourceByType", type);
-		Map<String, Resources> resourcesMap=new HashMap<String, Resources>();
-		try {
-			for (Resources resources : list) {
-				String name=resources.getName();
-				resourcesMap.put(name, resources);
-			}	
-		} catch (Exception e) {
-			logger.error("ERROR IN ResourcesManagerImpl ===> getSaleResourceByMap",e);
-		}
-		return resourcesMap;
+	public List<Resources> getSaleResourceByType(String type) {
+		return getSqlSession().selectList(NAMESPACE + "getSaleResourceByType", type);
 	}
 
 	@Override

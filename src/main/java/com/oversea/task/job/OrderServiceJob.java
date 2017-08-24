@@ -28,6 +28,7 @@ import com.oversea.task.domain.OrderCreditCard;
 import com.oversea.task.domain.OrderDevice;
 import com.oversea.task.domain.OrderPayAccount;
 import com.oversea.task.domain.OrderPayDetail;
+import com.oversea.task.domain.Resources;
 import com.oversea.task.domain.RobotOrderDetail;
 import com.oversea.task.domain.TransferClearInfo;
 import com.oversea.task.domain.UserTradeAddress;
@@ -44,6 +45,7 @@ import com.oversea.task.mapper.OrderCreditCardDAO;
 import com.oversea.task.mapper.OrderDeviceDAO;
 import com.oversea.task.mapper.OrderPayAccountDAO;
 import com.oversea.task.mapper.OrderPayDetailDAO;
+import com.oversea.task.mapper.ResourcesDAO;
 import com.oversea.task.mapper.RobotOrderDetailDAO;
 import com.oversea.task.mapper.UserTradeAddressDAO;
 import com.oversea.task.mapper.UserTradeDTLDAO;
@@ -100,11 +102,12 @@ public class OrderServiceJob implements RpcCallback{
     private OrderPayDetailDAO orderPayDetailDao;
     @Resource
     private ExchangeBankDefinitionDAO exchangeBankDefinitionDAO;
+    @Resource
+	private ResourcesDAO resourcesDAO;
     
     private ExecutorService fixedThreadPool = Executors.newFixedThreadPool(2);
     
-    private static final int VICTORIASSECRET = 1;//1礼品卡
-    private static final int NORDSTROM = 1;//0信用卡
+    private static final String PAYTYPE = "payType";//0信用卡
     
     public void run(){
     	log.error("==========OrderServiceJob begin============");
@@ -192,20 +195,26 @@ public class OrderServiceJob implements RpcCallback{
                 }
                 task.addParam("expiryDate", expiryDate);
                 task.setGroup(ip);
-                
-                
-                //victoriassecret下发礼品卡
-                if((firstOrderDetail.getSiteName().equalsIgnoreCase("victoriassecret") && VICTORIASSECRET==1) || (firstOrderDetail.getSiteName().equalsIgnoreCase("nordstrom") && NORDSTROM==1)){
-                	task.addParam("type", "1");
-                	List<GiftCard> giftCardList = giftCardDAO.getPassWordCard(firstOrderDetail.getSiteName());
-                	if(giftCardList.size()==0){
-                		continue;
-                	}else{
-                		for(GiftCard giftCard : giftCardList){
-                    		giftCardDAO.updateGiftCardProcessStatus(giftCard.getId(), "yes");
+                boolean mark = false;
+                List<Resources> resourcesList = resourcesDAO.getSaleResourceByType(PAYTYPE);
+                for(Resources r:resourcesList){
+                	if(firstOrderDetail.getSiteName().equalsIgnoreCase(r.getName()) && "1".equals(r.getResValue())){
+                		task.addParam("type", "1");
+                    	List<GiftCard> giftCardList = giftCardDAO.getPassWordCard(firstOrderDetail.getSiteName());
+                    	if(giftCardList.size()==0){
+                    		mark = true;
+                    		break;
+                    	}else{
+                    		for(GiftCard giftCard : giftCardList){
+                        		giftCardDAO.updateGiftCardProcessStatus(giftCard.getId(), "yes");
+                        	}
+                    		task.addParam("giftCardList", giftCardList);
                     	}
-                		task.addParam("giftCardList", giftCardList);
+                    	break;
                 	}
+                }
+                if(mark){
+                	continue;
                 }
                 for (RobotOrderDetail orderDetail : orderList) {
                     orderDetail.setStatus(AutoBuyStatus.AUTO_ORDER_ING.getValue());
@@ -460,20 +469,23 @@ public class OrderServiceJob implements RpcCallback{
         try {
         	RobotOrderDetail orderDetail = orderDetailList.get(0);
         	//处理victoriassecret
-        	if((orderDetail.getSiteName().equalsIgnoreCase("victoriassecret") && VICTORIASSECRET==1) || (orderDetail.getSiteName().equalsIgnoreCase("nordstrom") && NORDSTROM==1)){
-           	 try{
-           		List<GiftCard> giftCardList = (List<GiftCard>) taskResult.getParam("giftCardList");
-           		if(giftCardList!=null){
-               		for(GiftCard giftCard : giftCardList){
-           				giftCardDAO.updateGiftCardProcessStatus(giftCard.getId(), "no");
-                   	}
-           		}
-                	
-                }catch (Exception e) {
-        			log.error("giftCardList",e);
-        		}
-           	
-           }
+        	List<Resources> resourcesList = resourcesDAO.getSaleResourceByType(PAYTYPE);
+             for(Resources r:resourcesList){
+             	if(orderDetail.getSiteName().equalsIgnoreCase(r.getName()) && "1".equals(r.getResValue())){
+		           	 try{
+		           		List<GiftCard> giftCardList = (List<GiftCard>) taskResult.getParam("giftCardList");
+		           		if(giftCardList!=null){
+		               		for(GiftCard giftCard : giftCardList){
+		           				giftCardDAO.updateGiftCardProcessStatus(giftCard.getId(), "no");
+		                   	}
+		           		}
+		                	
+		                }catch (Exception e) {
+		        			log.error("giftCardList",e);
+		        		}
+	           	 break;
+             	}
+             }
         	
         	if (orderDetail.getStatus() == AutoBuyStatus.AUTO_PAY_SUCCESS.getValue()) {
         		
@@ -498,23 +510,25 @@ public class OrderServiceJob implements RpcCallback{
                 	return;
                 }
                 
-                if((orderDetail.getSiteName().equalsIgnoreCase("victoriassecret") && VICTORIASSECRET==1) || (orderDetail.getSiteName().equalsIgnoreCase("nordstrom") && NORDSTROM==1)){
-                	 try{
-                		List<GiftCard> giftCardList = (List<GiftCard>) taskResult.getParam("giftCardList");
-                		if(giftCardList!=null){
-	                		for(GiftCard giftCard : giftCardList){
-	                			if("yes".equals(giftCard.getIsUsed())){
-	                				giftCard.setIsUsed("no");
-	                				giftCard.setIsProcess("no");
-	                   				giftCardDAO.updateGiftCard(giftCard);
-	                			}
-	                    	}
-                		}
-                     	
-                     }catch (Exception e) {
-             			log.error("giftCardList",e);
-             		}
-                	
+                for(Resources r:resourcesList){
+                 	if(orderDetail.getSiteName().equalsIgnoreCase(r.getName()) && "1".equals(r.getResValue())){
+	                	 try{
+	                		List<GiftCard> giftCardList = (List<GiftCard>) taskResult.getParam("giftCardList");
+	                		if(giftCardList!=null){
+		                		for(GiftCard giftCard : giftCardList){
+		                			if("yes".equals(giftCard.getIsUsed())){
+		                				giftCard.setIsUsed("no");
+		                				giftCard.setIsProcess("no");
+		                   				giftCardDAO.updateGiftCard(giftCard);
+		                			}
+		                    	}
+	                		}
+	                     	
+	                     }catch (Exception e) {
+	             			log.error("giftCardList",e);
+	             		}
+	                	break;
+                 	}
                 }
                 
                 OrderCreditCard orderCreditCard  = null;
@@ -640,8 +654,12 @@ public class OrderServiceJob implements RpcCallback{
 				orderPayDetail.setEndBalance(String.valueOf(_orderDetail.getBalanceWb()));
 				orderPayDetail.setPayType("giftcard");
 	        }
-			if((orderDetail.getSiteName().equalsIgnoreCase("victoriassecret") && VICTORIASSECRET==1) || (orderDetail.getSiteName().equalsIgnoreCase("nordstrom") && NORDSTROM==1)){
-				orderPayDetail.setPayType("giftcard");
+			List<Resources> resourcesList = resourcesDAO.getSaleResourceByType(PAYTYPE);
+			for(Resources r:resourcesList){
+             	if(orderDetail.getSiteName().equalsIgnoreCase(r.getName()) && "1".equals(r.getResValue())){
+             		orderPayDetail.setPayType("giftcard");;
+             		break;
+             	}
 			}
 			List<UserTradeDTL> userTrades = userTradeDTLDAO.getUserTradeDTLByOrderNo(orderDetail.getOrderNo());
 			if(userTrades!=null && userTrades.size()>0){

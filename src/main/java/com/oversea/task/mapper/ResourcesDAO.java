@@ -11,7 +11,7 @@ public interface ResourcesDAO {
 	
 	public Resources getResourcesByName(String name);
 	
-	public Map<String, Resources> getSaleResourceByMap(String type);
+	public List<Resources> getSaleResourceByType(String type);
 	
 	public List<Resources> getSiteResourcesByTime(String time);
 	

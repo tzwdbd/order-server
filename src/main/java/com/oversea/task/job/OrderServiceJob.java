@@ -688,7 +688,7 @@ public class OrderServiceJob implements RpcCallback{
 				BigDecimal source = new BigDecimal(exchangeBankDefinition.getSource());
 				BigDecimal rate =  (rmb.divide(source));
 				
-				MathUtil.mul(String.valueOf(totalPrice), String.valueOf(rate));
+				exchangeMoney = MathUtil.mul(String.valueOf(totalPrice), String.valueOf(rate));
 			}
 			return exchangeMoney;
 		} catch (Exception e) {

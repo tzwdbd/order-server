@@ -243,7 +243,19 @@
             <artifactId>spring-security-web</artifactId>
             <version>3.0.3.RELEASE</version>
         </dependency>
-
+        
+        <dependency>
+            <groupId>net.sf.json-lib</groupId>
+            <artifactId>json-lib</artifactId>
+            <classifier>jdk15</classifier>
+            <version>2.3</version>
+        </dependency>
+        
+         <dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.2.8</version>
+		</dependency>
     </dependencies>
 
     <build>

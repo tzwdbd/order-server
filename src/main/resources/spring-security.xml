@@ -21,7 +21,8 @@
         <intercept-url pattern="/haidaibao/**"  filters="none"/> 
         <intercept-url pattern="/kuaidi100/**" filters="none"/> 
         <intercept-url pattern="/upgrade_jar*" filters="none"/>
-        <intercept-url pattern="/versionCheck*" filters="none"/>  
+        <intercept-url pattern="/versionCheck*" filters="none"/>
+        <intercept-url pattern="/handleAutoOrderOperByType*" filters="none"/>  
         <intercept-url pattern="/**" access="ROLE_ADMIN" />
 	</http>
 	<authentication-manager alias="authenticationManager">

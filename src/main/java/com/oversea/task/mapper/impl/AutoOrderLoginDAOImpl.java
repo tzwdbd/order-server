@@ -6,9 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Repository;
+
 import com.oversea.task.mapper.AutoOrderLoginDAO;
 import com.oversea.task.mapper.BaseDao;
-
+@Repository
 public class AutoOrderLoginDAOImpl extends BaseDao implements AutoOrderLoginDAO {
 	public void addAutoOrderLogin(AutoOrderLogin autoOrderLogin) {
 		getSqlSession().insert("addAutoOrderLogin",autoOrderLogin);

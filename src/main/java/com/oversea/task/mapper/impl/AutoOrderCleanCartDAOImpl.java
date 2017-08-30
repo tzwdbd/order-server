@@ -6,9 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Repository;
+
 import com.oversea.task.mapper.AutoOrderCleanCartDAO;
 import com.oversea.task.mapper.BaseDao;
-
+@Repository
 public class AutoOrderCleanCartDAOImpl extends BaseDao implements AutoOrderCleanCartDAO {
 	public void addAutoOrderCleanCart(AutoOrderCleanCart autoOrderCleanCart) {
 		getSqlSession().insert("addAutoOrderCleanCart",autoOrderCleanCart);

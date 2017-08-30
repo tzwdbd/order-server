@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="AutoOrderLoginSQL">
+<resultMap id="AutoOrderLogin"	type="com.oversea.task.domain.AutoOrderLogin">
+	<result  property="id"  column="id"/>
+	<result  property="mallName"  column="mall_name"/>
+	<result  property="loginUrl"  column="login_url"/>
+	<result  property="usernameCode"  column="username_code"/>
+	<result  property="passwordCode"  column="password_code"/>
+	<result  property="submitCode"  column="submit_code"/>
+	<result  property="confirmCode"  column="confirm_code"/>
+	<result  property="gmtCreate"  column="gmt_create"/>
+	<result  property="gmtModified"  column="gmt_modified"/>
+	<result  property="operator"  column="operator"/>
+</resultMap>
+
+<sql id="AutoOrderLogin_Column_List">
+		id,
+		mall_name,
+		login_url,
+		username_code,
+		password_code,
+		submit_code,
+		confirm_code,
+		gmt_create,
+		gmt_modified,
+		operator
+</sql>
+
+<insert id="addAutoOrderLogin"  parameterType="com.oversea.task.domain.AutoOrderLogin">
+	INSERT INTO auto_order_login (
+		mall_name,
+		login_url,
+		username_code,
+		password_code,
+		submit_code,
+		confirm_code,
+		gmt_create,
+		gmt_modified,
+		operator
+) VALUES (
+		#{mallName},
+		#{loginUrl},
+		#{usernameCode},
+		#{passwordCode},
+		#{submitCode},
+		#{confirmCode},
+		#{gmtCreate},
+		#{gmtModified},
+		#{operator})
+</insert>
+
+
+<update id="updateAutoOrderLoginById"  parameterType="com.oversea.task.domain.AutoOrderLogin">
+	update auto_order_login set
+		mall_name=#{mallName},
+		login_url=#{loginUrl},
+		username_code=#{usernameCode},
+		password_code=#{passwordCode},
+		submit_code=#{submitCode},
+		confirm_code=#{confirmCode},
+		gmt_create=#{gmtCreate},
+		gmt_modified=#{gmtModified},
+		operator=#{operator}
+	where id=#{id}
+</update>
+
+
+<update id="updateAutoOrderLoginByDynamic"  parameterType="com.oversea.task.domain.AutoOrderLogin">
+	update auto_order_login <set>
+		<if test="mallName!= null">
+				mall_name=#{mallName},
+		</if>
+		<if test="loginUrl!= null">
+				login_url=#{loginUrl},
+		</if>
+		<if test="usernameCode!= null">
+				username_code=#{usernameCode},
+		</if>
+		<if test="passwordCode!= null">
+				password_code=#{passwordCode},
+		</if>
+		<if test="submitCode!= null">
+				submit_code=#{submitCode},
+		</if>
+		<if test="confirmCode!= null">
+				confirm_code=#{confirmCode},
+		</if>
+		<if test="gmtCreate!= null">
+				gmt_create=#{gmtCreate},
+		</if>
+		<if test="gmtModified!= null">
+				gmt_modified=#{gmtModified},
+		</if>
+		<if test="operator!= null">
+				operator=#{operator}
+		</if>
+</set>
+
+	where id=#{id}
+</update>
+
+
+<select id="countAutoOrderLoginById"  parameterType="java.lang.Long" resultType="java.lang.Integer">
+<![CDATA[
+	select count(1) from auto_order_login where id=#{id}
+]]>
+</select>
+
+<select id="getAutoOrderLoginById"  parameterType="java.lang.Long" resultMap="AutoOrderLogin">
+	select <include refid="AutoOrderLogin_Column_List"/>
+ from auto_order_login where id=#{id}
+</select>
+
+<select id="getOrderLoginBySiteName"  parameterType="map" resultMap="AutoOrderLogin">
+	select <include refid="AutoOrderLogin_Column_List"/>
+ from auto_order_login where mall_name=#{mallName} limit 1
+</select>
+
+</mapper>

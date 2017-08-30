@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="AutoOrderCleanCartSQL">
+<resultMap id="AutoOrderCleanCart"	type="com.oversea.task.domain.AutoOrderCleanCart">
+	<result  property="id"  column="id"/>
+	<result  property="cleanType"  column="clean_type"/>
+	<result  property="siteName"  column="site_name"/>
+	<result  property="cartUrl"  column="cart_url"/>
+	<result  property="cartLoadedCode"  column="cart_loaded_code"/>
+	<result  property="removeCode"  column="remove_code"/>
+	<result  property="confirmCode"  column="confirm_code"/>
+	<result  property="cleanEndCode"  column="clean_end_code"/>
+	<result  property="gmtCreate"  column="gmt_create"/>
+	<result  property="gmtModified"  column="gmt_modified"/>
+	<result  property="operator"  column="operator"/>
+</resultMap>
+
+<sql id="AutoOrderCleanCart_Column_List">
+		id,
+		clean_type,
+		site_name,
+		cart_url,
+		cart_loaded_code,
+		remove_code,
+		confirm_code,
+		clean_end_code,
+		gmt_create,
+		gmt_modified,
+		operator
+</sql>
+
+<insert id="addAutoOrderCleanCart"  parameterType="com.oversea.task.domain.AutoOrderCleanCart">
+	INSERT INTO auto_order_clean_cart (
+		clean_type,
+		site_name,
+		cart_url,
+		cart_loaded_code,
+		remove_code,
+		confirm_code,
+		clean_end_code,
+		gmt_create,
+		gmt_modified,
+		operator
+) VALUES (
+		#{cleanType},
+		#{siteName},
+		#{cartUrl},
+		#{cartLoadedCode},
+		#{removeCode},
+		#{confirmCode},
+		#{cleanEndCode},
+		#{gmtCreate},
+		#{gmtModified},
+		#{operator})
+</insert>
+
+
+<update id="updateAutoOrderCleanCartById"  parameterType="com.oversea.task.domain.AutoOrderCleanCart">
+	update auto_order_clean_cart set
+		clean_type=#{cleanType},
+		site_name=#{siteName},
+		cart_url=#{cartUrl},
+		cart_loaded_code=#{cartLoadedCode},
+		remove_code=#{removeCode},
+		confirm_code=#{confirmCode},
+		clean_end_code=#{cleanEndCode},
+		gmt_create=#{gmtCreate},
+		gmt_modified=#{gmtModified},
+		operator=#{operator}
+	where id=#{id}
+</update>
+
+
+<update id="updateAutoOrderCleanCartByDynamic"  parameterType="com.oversea.task.domain.AutoOrderCleanCart">
+	update auto_order_clean_cart <set>
+		<if test="cleanType!= null">
+				clean_type=#{cleanType},
+		</if>
+		<if test="siteName!= null">
+				site_name=#{siteName},
+		</if>
+		<if test="cartUrl!= null">
+				cart_url=#{cartUrl},
+		</if>
+		<if test="cartLoadedCode!= null">
+				cart_loaded_code=#{cartLoadedCode},
+		</if>
+		<if test="removeCode!= null">
+				remove_code=#{removeCode},
+		</if>
+		<if test="confirmCode!= null">
+				confirm_code=#{confirmCode},
+		</if>
+		<if test="cleanEndCode!= null">
+				clean_end_code=#{cleanEndCode},
+		</if>
+		<if test="gmtCreate!= null">
+				gmt_create=#{gmtCreate},
+		</if>
+		<if test="gmtModified!= null">
+				gmt_modified=#{gmtModified},
+		</if>
+		<if test="operator!= null">
+				operator=#{operator}
+		</if>
+</set>
+
+	where id=#{id}
+</update>
+
+
+<select id="countAutoOrderCleanCartById"  parameterType="java.lang.Long" resultType="java.lang.Integer">
+<![CDATA[
+	select count(1) from auto_order_clean_cart where id=#{id}
+]]>
+</select>
+
+<select id="getAutoOrderCleanCartById"  parameterType="java.lang.Long" resultMap="AutoOrderCleanCart">
+	select <include refid="AutoOrderCleanCart_Column_List"/>
+ from auto_order_clean_cart where id=#{id}
+</select>
+
+<select id="getAutoOrderCleanCartBySiteName"  parameterType="java.lang.Long" resultMap="AutoOrderCleanCart">
+	select <include refid="AutoOrderCleanCart_Column_List"/>
+ from auto_order_clean_cart where site_name=#{siteName} limit 1
+</select>
+
+</mapper>

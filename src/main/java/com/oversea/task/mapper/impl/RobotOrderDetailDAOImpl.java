@@ -131,4 +131,13 @@ public class RobotOrderDetailDAOImpl extends BaseDao implements RobotOrderDetail
         map.put("orderTime", orderTime);
         return getSqlSession().selectList("findOrderDetailsByOrderTime", map);
 	}
+
+	@Override
+	public List<RobotOrderDetail> getOrderDetailByOrderNoGroupNumber(
+			String orderNo, int groupNumber) {
+		Map<String, Object> map = new HashMap<String, Object>();
+        map.put("orderNo", orderNo);
+        map.put("groupNumber", groupNumber);
+        return getSqlSession().selectList("getOrderDetailByOrderNoGroupNumber", map);
+	}
 }

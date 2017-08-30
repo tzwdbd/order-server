@@ -458,4 +458,10 @@
         from automan.order_detail where status=100 and site_name='amazon' and order_time>#{orderTime} and express_status=14;
     </select>
     
+    <select id="getOrderDetailByOrderNoGroupNumber" parameterType="map" resultMap="RobotOrderDetail">
+    	 select
+        <include refid="RobotOrderDetail_Column_List"/>
+        from automan.order_detail where order_no=#{orderNo} and group_number=#{groupNumber};
+    </select>
+    
 </mapper>

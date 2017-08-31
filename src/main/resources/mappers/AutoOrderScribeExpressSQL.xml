@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="AutoOrderScribeExpressSQL">
+<resultMap id="AutoOrderScribeExpress"	type="com.oversea.task.domain.AutoOrderScribeExpress">
+	<result  property="id"  column="id"/>
+	<result  property="siteName"  column="site_name"/>
+	<result  property="orderListUrl"  column="order_list_url"/>
+	<result  property="orderListLoadedCode"  column="order_list_loaded_code"/>
+	<result  property="orderListCode"  column="order_list_code"/>
+	<result  property="orderNumberCode"  column="order_number_code"/>
+	<result  property="orderStatusCode"  column="order_status_code"/>
+	<result  property="orderDetailJump"  column="order_detail_jump"/>
+	<result  property="gmtCreate"  column="gmt_create"/>
+	<result  property="gmtModified"  column="gmt_modified"/>
+	<result  property="operator"  column="operator"/>
+	<result  property="nextPageUrl"  column="next_page_url"/>
+	<result  property="notShipingStr"  column="not_shiping_str"/>
+	<result  property="shipingStr"  column="shiping_str"/>
+	<result  property="cancelledStr"  column="cancelled_str"/>
+	
+</resultMap>
+
+<sql id="AutoOrderScribeExpress_Column_List">
+		id,
+		site_name,
+		order_list_url,
+		order_list_loaded_code,
+		order_list_code,
+		order_number_code,
+		order_status_code,
+		order_detail_jump,
+		gmt_create,
+		gmt_modified,
+		operator,
+		next_page_url
+</sql>
+
+<insert id="addAutoOrderScribeExpress"  parameterType="com.oversea.task.domain.AutoOrderScribeExpress">
+	INSERT INTO auto_order_scribe_express (
+		site_name,
+		order_list_url,
+		order_list_loaded_code,
+		order_list_code,
+		order_number_code,
+		order_status_code,
+		order_detail_jump,
+		gmt_create,
+		gmt_modified,
+		operator,
+		next_page_url
+) VALUES (
+		#{siteName},
+		#{orderListUrl},
+		#{orderListLoadedCode},
+		#{orderListCode},
+		#{orderNumberCode},
+		#{orderStatusCode},
+		#{orderDetailJump},
+		#{gmtCreate},
+		#{gmtModified},
+		#{operator},
+		#{nextPageUrl})
+</insert>
+
+
+<update id="updateAutoOrderScribeExpressById"  parameterType="com.oversea.task.domain.AutoOrderScribeExpress">
+	update auto_order_scribe_express set
+		site_name=#{siteName},
+		order_list_url=#{orderListUrl},
+		order_list_loaded_code=#{orderListLoadedCode},
+		order_list_code=#{orderListCode},
+		order_number_code=#{orderNumberCode},
+		order_status_code=#{orderStatusCode},
+		order_detail_jump=#{orderDetailJump},
+		gmt_create=#{gmtCreate},
+		gmt_modified=#{gmtModified},
+		operator=#{operator}
+	where id=#{id}
+</update>
+
+
+<update id="updateAutoOrderScribeExpressByDynamic"  parameterType="com.oversea.task.domain.AutoOrderScribeExpress">
+	update auto_order_scribe_express <set>
+		<if test="siteName!= null">
+				site_name=#{siteName},
+		</if>
+		<if test="orderListUrl!= null">
+				order_list_url=#{orderListUrl},
+		</if>
+		<if test="orderListLoadedCode!= null">
+				order_list_loaded_code=#{orderListLoadedCode},
+		</if>
+		<if test="orderListCode!= null">
+				order_list_code=#{orderListCode},
+		</if>
+		<if test="orderNumberCode!= null">
+				order_number_code=#{orderNumberCode},
+		</if>
+		<if test="orderStatusCode!= null">
+				order_status_code=#{orderStatusCode},
+		</if>
+		<if test="orderDetailJump!= null">
+				order_detail_jump=#{orderDetailJump},
+		</if>
+		<if test="gmtCreate!= null">
+				gmt_create=#{gmtCreate},
+		</if>
+		<if test="gmtModified!= null">
+				gmt_modified=#{gmtModified},
+		</if>
+		<if test="operator!= null">
+				operator=#{operator}
+		</if>
+</set>
+
+	where id=#{id}
+</update>
+
+
+<select id="countAutoOrderScribeExpressById"  parameterType="java.lang.Long" resultType="java.lang.Integer">
+<![CDATA[
+	select count(1) from auto_order_scribe_express where id=#{id}
+]]>
+</select>
+
+<select id="getAutoOrderScribeExpressById"  parameterType="java.lang.Long" resultMap="AutoOrderScribeExpress">
+	select <include refid="AutoOrderScribeExpress_Column_List"/>
+ from auto_order_scribe_express where id=#{id}
+</select>
+
+<select id="getAutoOrderScribeExpressBySiteName"  parameterType="map" resultMap="AutoOrderScribeExpress">
+	select <include refid="AutoOrderScribeExpress_Column_List"/>
+ from auto_order_scribe_express where site_name=#{siteName} limit 1
+</select>
+
+</mapper>

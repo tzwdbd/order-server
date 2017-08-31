@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="AutoOrderExpressDetailSQL">
+<resultMap id="AutoOrderExpressDetail"	type="com.oversea.task.domain.AutoOrderExpressDetail">
+	<result  property="id"  column="id"/>
+	<result  property="orderType"  column="order_type"/>
+	<result  property="siteName"  column="site_name"/>
+	<result  property="orderDetailLoadedCode"  column="order_detail_loaded_code"/>
+	<result  property="expressNoCode"  column="express_no_code"/>
+	<result  property="expressCompanyCode"  column="express_company_code"/>
+	<result  property="gmtCreate"  column="gmt_create"/>
+	<result  property="gmtModified"  column="gmt_modified"/>
+	<result  property="operator"  column="operator"/>
+</resultMap>
+
+<sql id="AutoOrderExpressDetail_Column_List">
+		id,
+		order_type,
+		site_name,
+		order_detail_loaded_code,
+		express_no_code,
+		express_company_code,
+		gmt_create,
+		gmt_modified,
+		operator
+</sql>
+
+<insert id="addAutoOrderExpressDetail"  parameterType="com.oversea.task.domain.AutoOrderExpressDetail">
+	INSERT INTO auto_order_express_detail (
+		order_type,
+		site_name,
+		order_detail_loaded_code,
+		express_no_code,
+		express_company_code,
+		gmt_create,
+		gmt_modified,
+		operator
+) VALUES (
+		#{orderType},
+		#{siteName},
+		#{orderDetailLoadedCode},
+		#{expressNoCode},
+		#{expressCompanyCode},
+		#{gmtCreate},
+		#{gmtModified},
+		#{operator})
+</insert>
+
+
+<update id="updateAutoOrderExpressDetailById"  parameterType="com.oversea.task.domain.AutoOrderExpressDetail">
+	update auto_order_express_detail set
+		order_type=#{orderType},
+		site_name=#{siteName},
+		order_detail_loaded_code=#{orderDetailLoadedCode},
+		express_no_code=#{expressNoCode},
+		express_company_code=#{expressCompanyCode},
+		gmt_create=#{gmtCreate},
+		gmt_modified=#{gmtModified},
+		operator=#{operator}
+	where id=#{id}
+</update>
+
+
+<update id="updateAutoOrderExpressDetailByDynamic"  parameterType="com.oversea.task.domain.AutoOrderExpressDetail">
+	update auto_order_express_detail <set>
+		<if test="orderType!= null">
+				order_type=#{orderType},
+		</if>
+		<if test="siteName!= null">
+				site_name=#{siteName},
+		</if>
+		<if test="orderDetailLoadedCode!= null">
+				order_detail_loaded_code=#{orderDetailLoadedCode},
+		</if>
+		<if test="expressNoCode!= null">
+				express_no_code=#{expressNoCode},
+		</if>
+		<if test="expressCompanyCode!= null">
+				express_company_code=#{expressCompanyCode},
+		</if>
+		<if test="gmtCreate!= null">
+				gmt_create=#{gmtCreate},
+		</if>
+		<if test="gmtModified!= null">
+				gmt_modified=#{gmtModified},
+		</if>
+		<if test="operator!= null">
+				operator=#{operator}
+		</if>
+</set>
+
+	where id=#{id}
+</update>
+
+
+<select id="countAutoOrderExpressDetailById"  parameterType="java.lang.Long" resultType="java.lang.Integer">
+<![CDATA[
+	select count(1) from auto_order_express_detail where id=#{id}
+]]>
+</select>
+
+<select id="getAutoOrderExpressDetailById"  parameterType="java.lang.Long" resultMap="AutoOrderExpressDetail">
+	select <include refid="AutoOrderExpressDetail_Column_List"/>
+ from auto_order_express_detail where id=#{id}
+</select>
+
+<select id="getAutoOrderExpressDetailBySiteName"  parameterType="map" resultMap="AutoOrderExpressDetail">
+	select <include refid="AutoOrderExpressDetail_Column_List"/>
+ from auto_order_express_detail where site_name=#{siteName} limit 1
+</select>
+
+</mapper>

@@ -16,6 +16,7 @@ import com.haihu.rpc.server.RpcServerProxy;
 import com.oversea.cdn.service.CdnService;
 import com.oversea.rabbitmq.sender.MessageSender;
 import com.oversea.task.common.TaskService;
+import com.oversea.task.domain.AutoOrderCleanCart;
 import com.oversea.task.domain.AutoOrderLogin;
 import com.oversea.task.domain.ExchangeDefinition;
 import com.oversea.task.domain.OrderAccount;
@@ -27,6 +28,7 @@ import com.oversea.task.domain.UserTradeAddress;
 import com.oversea.task.domain.UserTradeDTL;
 import com.oversea.task.domain.Zipcode;
 import com.oversea.task.enums.MoneyUnits;
+import com.oversea.task.mapper.AutoOrderCleanCartDAO;
 import com.oversea.task.mapper.AutoOrderLoginDAO;
 import com.oversea.task.mapper.ExchangeBankDefinitionDAO;
 import com.oversea.task.mapper.ExchangeDefinitionDAO;
@@ -91,6 +93,8 @@ public class ManualOrderService implements RpcCallback{
     private ExchangeBankDefinitionDAO exchangeBankDefinitionDAO;
     @Resource
     private AutoOrderLoginDAO autoOrderLoginDAO;
+    @Resource
+    private AutoOrderCleanCartDAO autoOrderCleanCartDAO;
     
     public void handleOrder(String orderNo,int groupNumber,int steps){
     	log.error("==========handleOrder begin============");
@@ -170,11 +174,7 @@ public class ManualOrderService implements RpcCallback{
             task.addParam("expiryDate", expiryDate);
             task.setGroup(ip);
             
-            AutoOrderLogin autoOrderLogin = autoOrderLoginDAO.getOrderLoginBySiteName(orderDetails.get(0).getSiteName());
-            task.addParam("autoOrderLogin", autoOrderLogin);
-            if(steps>1){
-            	
-            }
+            getAutoOrderBystep(task,steps, orderDetails.get(0).getSiteName());
             //获取当前账户在当天下的第几单
             int cnt = robotOrderDetailDAO.countOrderDetailForAutoOrderByAccountId(orderNo, orderDetail.getAccountId(), orderDetail.getId());
             //固定4个地址
@@ -252,6 +252,18 @@ public class ManualOrderService implements RpcCallback{
         }
         log.error("==========AutoOrderServiceJob end============");
     }
+
+	private void getAutoOrderBystep(Task task, int steps, String siteName) {
+		AutoOrderLogin autoOrderLogin = autoOrderLoginDAO.getOrderLoginBySiteName(siteName);
+        task.addParam("autoOrderLogin", autoOrderLogin);
+		if(steps==2){
+			AutoOrderCleanCart autoOrderCleanCart = autoOrderCleanCartDAO.getAutoOrderCleanCartBySiteName(siteName);
+			task.addParam("autoOrderCleanCart", autoOrderCleanCart);
+		}else if(steps==3){
+			AutoOrderCleanCart autoOrderCleanCart = autoOrderCleanCartDAO.getAutoOrderCleanCartBySiteName(siteName);
+			task.addParam("autoOrderCleanCart", autoOrderCleanCart);
+		}
+	}
 
 	@Override
 	public void callbackAck(boolean isSuccess, Method method, Object[] objs) {

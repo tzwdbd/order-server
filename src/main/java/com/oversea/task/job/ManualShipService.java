@@ -15,10 +15,14 @@ import com.haihu.rpc.server.RpcServerProxy;
 import com.oversea.cdn.service.CdnService;
 import com.oversea.rabbitmq.sender.MessageSender;
 import com.oversea.task.common.TaskService;
+import com.oversea.task.domain.AutoOrderExpressDetail;
 import com.oversea.task.domain.AutoOrderLogin;
+import com.oversea.task.domain.AutoOrderScribeExpress;
 import com.oversea.task.domain.OrderAccount;
 import com.oversea.task.domain.RobotOrderDetail;
+import com.oversea.task.mapper.AutoOrderExpressDetailDAO;
 import com.oversea.task.mapper.AutoOrderLoginDAO;
+import com.oversea.task.mapper.AutoOrderScribeExpressDAO;
 import com.oversea.task.mapper.ExchangeDefinitionDAO;
 import com.oversea.task.mapper.GiftCardDAO;
 import com.oversea.task.mapper.OrderAccountDAO;
@@ -77,6 +81,10 @@ public class ManualShipService implements RpcCallback{
     private OrderPayDetailDAO orderPayDetailDao;
     @Resource
     private AutoOrderLoginDAO autoOrderLoginDAO;
+    @Resource
+    private AutoOrderScribeExpressDAO autoOrderScribeExpressDAO;
+    @Resource
+    private AutoOrderExpressDetailDAO autoOrderExpressDetailDAO;
     
     public void handleShip(String orderNo,int groupNumber,int steps){
     	log.error("==========handleShip begin============");
@@ -97,11 +105,7 @@ public class ManualShipService implements RpcCallback{
         task.addParam("account", account);
         task.setGroup(ip);
         
-        AutoOrderLogin autoOrderLogin = autoOrderLoginDAO.getOrderLoginBySiteName(orderDetails.get(0).getSiteName());
-        task.addParam("autoOrderLogin", autoOrderLogin);
-        if(steps>1){
-        	
-        }
+        getAutoOrderBystep(task, steps, orderDetails.get(0).getSiteName());
         TaskService taskService = (TaskService)rpcServerProxy.wrapProxy(TaskService.class, ip, this);
         taskService.manualShip(task);
         log.error("==========ManualShipService end============");
@@ -131,4 +135,18 @@ public class ManualShipService implements RpcCallback{
 		
 	}
 	
+	
+	private void getAutoOrderBystep(Task task, int steps, String siteName) {
+		AutoOrderLogin autoOrderLogin = autoOrderLoginDAO.getOrderLoginBySiteName(siteName);
+        task.addParam("autoOrderLogin", autoOrderLogin);
+		if(steps==2){
+			AutoOrderScribeExpress autoOrderScribeExpress = autoOrderScribeExpressDAO.getAutoOrderScribeExpressBySiteName(siteName);
+			task.addParam("autoOrderScribeExpress", autoOrderScribeExpress);
+		}else if(steps==3){
+			AutoOrderScribeExpress autoOrderScribeExpress = autoOrderScribeExpressDAO.getAutoOrderScribeExpressBySiteName(siteName);
+			task.addParam("autoOrderScribeExpress", autoOrderScribeExpress);
+			AutoOrderExpressDetail autoOrderExpressDetail = autoOrderExpressDetailDAO.getAutoOrderExpressDetailBySiteName(siteName);
+			task.addParam("autoOrderExpressDetail", autoOrderExpressDetail);
+		}
+	}
 }

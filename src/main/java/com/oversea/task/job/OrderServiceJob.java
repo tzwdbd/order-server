@@ -614,7 +614,7 @@ public class OrderServiceJob implements RpcCallback{
             if(orderAccount.getPayAccountId() != null && orderAccount.getPayAccountId()>0){
             	OrderPayAccount orderPayAccount = orderPayAccountDAO.getOrderPayAccountById(orderAccount.getPayAccountId());
             	orderPayDetail.setCreditCardId(orderPayAccount.getCreditCardId());
-            	if(orderPayAccount.getCreditCardId() != null && orderAccount.getCreditCardId()>0){
+            	if(orderPayAccount.getCreditCardId() != null && orderPayAccount.getCreditCardId()>0){
             		OrderCreditCard orderCreditCard  = orderCreditCardDAO.getOrderCreditCardById(orderPayAccount.getCreditCardId());
             		if(orderCreditCard != null){
                     	orderPayDetail.setCardNo(orderCreditCard.getCardNo());

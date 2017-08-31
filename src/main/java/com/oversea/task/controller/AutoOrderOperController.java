@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.oversea.task.controller.base.BaseController;
 import com.oversea.task.frame.BaseModel;
 import com.oversea.task.job.ManualOrderService;
+import com.oversea.task.job.ManualShipService;
 
 @Controller
 public class AutoOrderOperController extends BaseController{
@@ -18,6 +19,8 @@ public class AutoOrderOperController extends BaseController{
 	
 	@Resource
 	private ManualOrderService manualOrderService;
+	@Resource
+	private ManualShipService manualShipService;
 	
 	@RequestMapping("handleAutoOrderOperByType")
 	@ResponseBody
@@ -26,9 +29,13 @@ public class AutoOrderOperController extends BaseController{
 			String orderNo = request.getParameter("orderNo");
 			String groupNumber = request.getParameter("groupNumber");
 			String steps = request.getParameter("steps");
-//			String type = request.getParameter("type");
+			String type = request.getParameter("type");
 			
-			manualOrderService.handleOrder(orderNo, Integer.valueOf(groupNumber), Integer.valueOf(steps));
+			if("logistics".equals(type)){
+				manualShipService.handleShip(orderNo, Integer.valueOf(groupNumber), Integer.valueOf(steps));
+			}else if("order".equals(type)){
+				manualOrderService.handleOrder(orderNo, Integer.valueOf(groupNumber), Integer.valueOf(steps));
+			}
 			
 			return new BaseModel(true,"操作成功");
 		}catch(Exception e){

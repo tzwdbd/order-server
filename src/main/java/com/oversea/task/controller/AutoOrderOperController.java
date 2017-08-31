@@ -23,8 +23,7 @@ public class AutoOrderOperController extends BaseController{
 	private ManualShipService manualShipService;
 	
 	@RequestMapping("handleAutoOrderOperByType")
-	@ResponseBody
-	public Object handleAutoOrderOperByType(HttpServletRequest request){
+	public void handleAutoOrderOperByType(HttpServletRequest request){
 		try{
 			String orderNo = request.getParameter("orderNo");
 			String groupNumber = request.getParameter("groupNumber");
@@ -37,10 +36,8 @@ public class AutoOrderOperController extends BaseController{
 				manualOrderService.handleOrder(orderNo, Integer.valueOf(groupNumber), Integer.valueOf(steps));
 			}
 			
-			return new BaseModel(true,"操作成功");
 		}catch(Exception e){
 			log.error("handleAutoOrderOperByType error : " , e);
-			return new BaseModel("异常");
 		}
 	}
 }

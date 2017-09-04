@@ -34,7 +34,11 @@
 		gmt_create,
 		gmt_modified,
 		operator,
-		next_page_url
+		next_page_url,
+		not_shiping_str,
+		shiping_str,
+		cancelled_str
+		
 </sql>
 
 <insert id="addAutoOrderScribeExpress"  parameterType="com.oversea.task.domain.AutoOrderScribeExpress">

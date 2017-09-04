@@ -106,6 +106,7 @@ public class ManualShipService implements RpcCallback{
         task.setGroup(ip);
         
         getAutoOrderBystep(task, steps, orderDetails.get(0).getSiteName());
+        log.error("商城为"+orderDetails.get(0).getSiteName()+"steps="+steps);
         TaskService taskService = (TaskService)rpcServerProxy.wrapProxy(TaskService.class, ip, this);
         taskService.manualShip(task);
         log.error("==========ManualShipService end============");

@@ -140,4 +140,9 @@ public class RobotOrderDetailDAOImpl extends BaseDao implements RobotOrderDetail
         map.put("groupNumber", groupNumber);
         return getSqlSession().selectList("getOrderDetailByOrderNoGroupNumber", map);
 	}
+
+	@Override
+	public List<RobotOrderDetail> getOrderDetailByMallStatus() {
+        return getSqlSession().selectList("getOrderDetailByMallStatus");
+	}
 }

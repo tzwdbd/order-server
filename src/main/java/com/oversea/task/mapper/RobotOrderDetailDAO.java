@@ -97,4 +97,6 @@ public interface RobotOrderDetailDAO {
     
     public List<RobotOrderDetail> findOrderDetailsByOrderTime(Date orderTime);
     public List<RobotOrderDetail> getOrderDetailByOrderNoGroupNumber(String orderNo,int groupNumber);
+    
+    public List<RobotOrderDetail> getOrderDetailByMallStatus();
 }

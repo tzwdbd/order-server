@@ -464,4 +464,8 @@
         from automan.order_detail where order_no=#{orderNo} and group_number=#{groupNumber};
     </select>
     
+    <select id="getOrderDetailByMallStatus" parameterType="map" resultMap="RobotOrderDetail">
+    	 select o.* from auto_order_mall_status a ,order_detail o where a.`logistics_status` =3 and o.site_name = a.mall_name and o.status =1000 and is_auto_express=0 group by device_id order by gmt_modified limit 1;
+    </select>
+    
 </mapper>

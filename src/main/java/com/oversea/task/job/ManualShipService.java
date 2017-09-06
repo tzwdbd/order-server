@@ -36,6 +36,7 @@ import com.oversea.task.mapper.UserTradeDTLDAO;
 import com.oversea.task.mapper.ZipcodeDAO;
 import com.oversea.task.obj.Task;
 import com.oversea.task.obj.TaskDetail;
+import com.oversea.task.obj.TaskResult;
 @Component
 public class ManualShipService implements RpcCallback{
 	
@@ -111,6 +112,30 @@ public class ManualShipService implements RpcCallback{
         taskService.manualShip(task);
         log.error("==========ManualShipService end============");
     }
+    
+    public void run(){
+    	log.error("==========handleShip run begin============");
+    	List<RobotOrderDetail> orderDetails = robotOrderDetailDAO.getOrderDetailByMallStatus();
+    	Task task = new TaskDetail();
+        OrderAccount account = orderAccountDAO.findById(orderDetails.get(0).getAccountId());
+        Integer deviceId = orderDetails.get(0).getDeviceId();
+        String ip = orderDeviceDAO.findById(deviceId).getDeviceIp();
+        Map<Long, String> asinCodeMap = new HashMap<Long, String>();
+        for (RobotOrderDetail detail : orderDetails) {
+            long productEntityId = detail.getProductEntityId();
+            String asinCode = robotOrderDetailDAO.getExternalProductEntityId(productEntityId);
+            asinCodeMap.put(productEntityId, asinCode);
+        }
+        task.addParam("asinMap", asinCodeMap);
+        task.addParam("robotOrderDetails", orderDetails);
+        task.addParam("account", account);
+        task.setGroup(ip);
+        
+        getAutoOrderBystep(task, 3, orderDetails.get(0).getSiteName());
+        TaskService taskService = (TaskService)rpcServerProxy.wrapProxy(TaskService.class, ip, this);
+        taskService.manualShip(task);
+        log.error("==========ManualShipService end============");
+    }
 
     @Override
 	public void callbackAck(boolean isSuccess, Method method, Object[] objs) {
@@ -131,8 +156,14 @@ public class ManualShipService implements RpcCallback{
 	}
 
 	@Override
-	public void callbackResult(Object arg0, Method arg1, Object[] arg2) {
-		
+	public void callbackResult(Object result, Method method, Object[] objs) {
+		TaskResult taskResult = (TaskResult)result;
+		if(taskResult == null){
+			return;
+		}
+        
+        List<RobotOrderDetail> orderDetails = (List<RobotOrderDetail>) taskResult.getValue();
+        log.error("callbackResult订单号:"+orderDetails.get(0).getOrderNo()+"--->status="+orderDetails.get(0).getStatus()+"--->express="+orderDetails.get(0).getExpressNo()+"--->company="+orderDetails.get(0).getCompany());
 		
 	}
 	

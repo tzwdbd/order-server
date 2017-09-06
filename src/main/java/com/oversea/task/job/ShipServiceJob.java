@@ -20,6 +20,7 @@ import com.oversea.task.common.TaskService;
 import com.oversea.task.domain.ExpressNode;
 import com.oversea.task.domain.ExpressSpider;
 import com.oversea.task.domain.OrderAccount;
+import com.oversea.task.domain.Resources;
 import com.oversea.task.domain.RobotOrderDetail;
 import com.oversea.task.domain.TradeExpressStatus;
 import com.oversea.task.domain.UserTradeExpress;
@@ -28,12 +29,14 @@ import com.oversea.task.mapper.ExpressNodeDAO;
 import com.oversea.task.mapper.ExpressSpiderDAO;
 import com.oversea.task.mapper.OrderAccountDAO;
 import com.oversea.task.mapper.OrderDeviceDAO;
+import com.oversea.task.mapper.ResourcesDAO;
 import com.oversea.task.mapper.RobotOrderDetailDAO;
 import com.oversea.task.mapper.TradeExpressStatusDAO;
 import com.oversea.task.mapper.UserTradeExpressDAO;
 import com.oversea.task.obj.Task;
 import com.oversea.task.obj.TaskDetail;
 import com.oversea.task.obj.TaskResult;
+import com.oversea.task.util.DateUtil;
 import com.oversea.task.util.OrderUtil;
 
 public class ShipServiceJob implements RpcCallback{
@@ -62,6 +65,11 @@ public class ShipServiceJob implements RpcCallback{
     
     @Resource
     private UserTradeExpressDAO userTradeExpressDAO;
+    
+    @Resource
+	private ResourcesDAO resourcesDAO;
+    
+    private static final String EXPRESS_HAIHU = "express_haihu_config";//过滤物流时间
     
     public String getScanStatus(){
     	return AutoBuyStatus.AUTO_SCRIBE_ORDER_NOT_READY.getValue() +
@@ -301,10 +309,12 @@ public class ShipServiceJob implements RpcCallback{
         	String shardKey = "_" + orderNo.charAt(orderNo.length() - 1);
     		// 获取商城信息
         	String siteName = null;
+        	Date orderTime = null;
         	List<RobotOrderDetail> orderDetailList = robotOrderDetailDAO.getRobotOrderDetailByOrderNo(orderNo);
         	if (orderDetailList != null && orderDetailList.size() > 0) {
         		RobotOrderDetail orderDetail = orderDetailList.get(0);
         		siteName = orderDetail.getSiteName();
+        		orderTime = orderDetail.getOrderTime();
         	}
         	if (siteName == null) {
         		log.error("没有获取到商城信息");
@@ -335,6 +345,9 @@ public class ShipServiceJob implements RpcCallback{
     				tradeExpressStatus.setOccurTime(occurTime);
     				tradeExpressStatus.setStatus(3);
     				tradeExpressStatus.setName("商城已发货");
+    				if(expressHaihu(siteName, orderTime) && !node.getName().contains("清关")){
+    					continue;
+    				}
     				if("zcn".equalsIgnoreCase(siteName) && node.getStatus() != null && node.getStatus().equals(14)){
     					tradeExpressStatus.setStatus(14);
         				tradeExpressStatus.setName("已签收");
@@ -354,4 +367,26 @@ public class ShipServiceJob implements RpcCallback{
     		log.error("插入物流节点到trade_express_status表中异常:\t"+e);
     	}
     }
+    
+   private boolean expressHaihu(String siteName,Date orderTime){
+	   boolean mark = false;
+	   try {
+		   List<Resources> resources = resourcesDAO.getSaleResourceByType(EXPRESS_HAIHU);
+		   for(Resources r:resources){
+			   if(siteName.equalsIgnoreCase(r.getName())){
+				   Date startTime = DateUtil.ymdhmsString2DateTime(r.getResValue());
+				   if (orderTime.after(startTime)) {
+					   mark = true;
+					   break;
+				   }
+			   }
+		   }
+		} catch (Exception e) {
+			
+		}
+	   
+	   return mark;
+   }
+   
+    
 }

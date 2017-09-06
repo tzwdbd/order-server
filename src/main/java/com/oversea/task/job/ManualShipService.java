@@ -117,24 +117,26 @@ public class ManualShipService implements RpcCallback{
     public void run(){
     	log.error("==========handleShip run begin============");
     	List<RobotOrderDetail> orderDetails = robotOrderDetailDAO.getOrderDetailByMallStatus();
-    	Task task = new TaskDetail();
-        OrderAccount account = orderAccountDAO.findById(orderDetails.get(0).getAccountId());
-        Integer deviceId = orderDetails.get(0).getDeviceId();
-        String ip = orderDeviceDAO.findById(deviceId).getDeviceIp();
-        Map<Long, String> asinCodeMap = new HashMap<Long, String>();
-        for (RobotOrderDetail detail : orderDetails) {
-            long productEntityId = detail.getProductEntityId();
-            String asinCode = robotOrderDetailDAO.getExternalProductEntityId(productEntityId);
-            asinCodeMap.put(productEntityId, asinCode);
-        }
-        task.addParam("asinMap", asinCodeMap);
-        task.addParam("robotOrderDetails", orderDetails);
-        task.addParam("account", account);
-        task.setGroup(ip);
-        
-        getAutoOrderBystep(task, 3, orderDetails.get(0).getSiteName());
-        TaskService taskService = (TaskService)rpcServerProxy.wrapProxy(TaskService.class, ip, this);
-        taskService.manualShip(task);
+    	if(orderDetails!=null && orderDetails.size()>0){
+	    	Task task = new TaskDetail();
+	        OrderAccount account = orderAccountDAO.findById(orderDetails.get(0).getAccountId());
+	        Integer deviceId = orderDetails.get(0).getDeviceId();
+	        String ip = orderDeviceDAO.findById(deviceId).getDeviceIp();
+	        Map<Long, String> asinCodeMap = new HashMap<Long, String>();
+	        for (RobotOrderDetail detail : orderDetails) {
+	            long productEntityId = detail.getProductEntityId();
+	            String asinCode = robotOrderDetailDAO.getExternalProductEntityId(productEntityId);
+	            asinCodeMap.put(productEntityId, asinCode);
+	        }
+	        task.addParam("asinMap", asinCodeMap);
+	        task.addParam("robotOrderDetails", orderDetails);
+	        task.addParam("account", account);
+	        task.setGroup(ip);
+	        
+	        getAutoOrderBystep(task, 3, orderDetails.get(0).getSiteName());
+	        TaskService taskService = (TaskService)rpcServerProxy.wrapProxy(TaskService.class, ip, this);
+	        taskService.manualShip(task);
+    	}
         log.error("==========ManualShipService end============");
     }
 
@@ -176,7 +178,9 @@ public class ManualShipService implements RpcCallback{
         		if(!StringUtil.isBlank(orderDetails.get(0).getExpressCompany())){
         			r.setExpressCompany(orderDetails.get(0).getExpressCompany());
         		}
-        		robotOrderDetailDAO.updateRobotOrderDetail(r);
+        		if(orderDetails.get(0).getStatus()==100 || orderDetails.get(0).getStatus()==97){
+        			robotOrderDetailDAO.updateRobotOrderDetail(r);
+        		}
         	}
         }
 	}

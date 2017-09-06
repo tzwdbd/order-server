@@ -14,6 +14,7 @@ import com.haihu.rpc.common.RpcCallback;
 import com.haihu.rpc.server.RpcServerProxy;
 import com.oversea.cdn.service.CdnService;
 import com.oversea.rabbitmq.sender.MessageSender;
+import com.oversea.rabbitmq.utils.StringUtil;
 import com.oversea.task.common.TaskService;
 import com.oversea.task.domain.AutoOrderExpressDetail;
 import com.oversea.task.domain.AutoOrderLogin;
@@ -163,8 +164,21 @@ public class ManualShipService implements RpcCallback{
 		}
         
         List<RobotOrderDetail> orderDetails = (List<RobotOrderDetail>) taskResult.getValue();
-        log.error("callbackResult订单号:"+orderDetails.get(0).getOrderNo()+"--->status="+orderDetails.get(0).getStatus()+"--->express="+orderDetails.get(0).getExpressNo()+"--->company="+orderDetails.get(0).getCompany());
-		
+        log.error("callbackResult订单号:"+orderDetails.get(0).getOrderNo()+"--->status="+orderDetails.get(0).getStatus()+"--->express="+orderDetails.get(0).getExpressNo()+"--->company="+orderDetails.get(0).getExpressCompany());
+        
+        List<RobotOrderDetail> orderDetailLists = robotOrderDetailDAO.getRobotOrderDetailByOrderNo(orderDetails.get(0).getOrderNo());
+        for(RobotOrderDetail r:orderDetailLists){
+        	if(r.getAccountId().equals(orderDetails.get(0).getAccountId())){
+        		r.setStatus(orderDetails.get(0).getStatus());
+        		if(!StringUtil.isBlank(orderDetails.get(0).getExpressNo())){
+        			r.setExpressNo(orderDetails.get(0).getExpressNo());
+        		}
+        		if(!StringUtil.isBlank(orderDetails.get(0).getExpressCompany())){
+        			r.setExpressCompany(orderDetails.get(0).getExpressCompany());
+        		}
+        		robotOrderDetailDAO.updateRobotOrderDetail(r);
+        	}
+        }
 	}
 	
 	

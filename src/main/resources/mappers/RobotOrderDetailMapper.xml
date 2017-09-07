@@ -44,6 +44,7 @@
         <result property="groupNumber" column="group_number"/>
         <result property="dispatchTime" column="dispatch_time"/>
         <result property="totalPromotion" column="total_promotion"/>
+        <result property="totalPay" column="total_pay"/>
         <result property="fromId" column="from_id"/>
         
     </resultMap>
@@ -97,7 +98,8 @@
         group_number,
         dispatch_time,
         total_promotion,
-        from_id
+        from_id,
+        total_pay
     </sql>
 
     <insert id="addRobotOrderDetail" parameterType="com.oversea.task.domain.RobotOrderDetail">
@@ -136,7 +138,8 @@
         mall_express_fee,
         promotion_fee,
         is_auto_express,
-        total_promotion
+        total_promotion,
+        total_pay
         ) VALUES (
         #{orderNo},
         #{productId},
@@ -172,7 +175,8 @@
         #{mallExpressFee},
         #{promotionFee},
         #{isAutoExpress},
-        #{totalPromotion})
+        #{totalPromotion},
+        #{totalPay})
     </insert>
 
 

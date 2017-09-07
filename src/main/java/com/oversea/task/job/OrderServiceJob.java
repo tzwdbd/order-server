@@ -248,26 +248,38 @@ public class OrderServiceJob implements RpcCallback{
                     		}
                     		task.addParam("address", userTradeAddress);
                     		if("zcn".equals(firstOrderDetail.getSiteName())){
-                    			userTradeAddress.setIdCardBack(userTradeAddress.getIdCardBack()+"@1c_1e_1wh_250w");
-                    			userTradeAddress.setIdCardFront(userTradeAddress.getIdCardFront()+"@1c_1e_1wh_250w");
-                    			String code = "20260216";
-                    			if(StringUtil.isBlank(userTradeAddress.getIdCardBack())){
-                    				continue;
+                    			if(firstOrderDetail.getAccountId()==23815){
+                    				userTradeAddress.setName("王雅娟");
+                    				userTradeAddress.setIdCardBack("http://img.haihu.com/01161214cc725fe7a5614d9dbadc23603cec413f.png@1c_1e_1wh_250w");
+                    				userTradeAddress.setIdCardFront("http://img.haihu.com/011612140135113ae18846d999f87e5e55ec4364.png@1c_1e_1wh_250w");
+                    				userTradeAddress.setExpireDate("20350720");
+                    			}else if(firstOrderDetail.getAccountId()==22810){
+                    				userTradeAddress.setIdCardBack("http://img.haihu.com/01161214298bf88711744d0e8f46ec4b00690518.png@1c_1e_1wh_250w");
+                    				userTradeAddress.setIdCardFront("http://img.haihu.com/01161214449fc9f6e6ed4af1ae9f324e5a454ae0.png@1c_1e_1wh_250w");
+                    				userTradeAddress.setExpireDate("20350629");
+                    				userTradeAddress.setName("李志存");
                     			}else{
-                    				String codes = "";
-                    				try {
-                    					codes = IDcardUtil.getEndDateByIdCardBack(userTradeAddress.getIdCardBack());
-									} catch (Exception e) {
-										codes = "";
-										log.error("IDcardUtil code异常",e);
-									}
-	                    			
-	                    			if(StringUtil.isBlank(codes)){
-	                    				userTradeAddress.setExpireDate(code);
+	                    			userTradeAddress.setIdCardBack(userTradeAddress.getIdCardBack()+"@1c_1e_1wh_250w");
+	                    			userTradeAddress.setIdCardFront(userTradeAddress.getIdCardFront()+"@1c_1e_1wh_250w");
+	                    			String code = "20260216";
+	                    			if(StringUtil.isBlank(userTradeAddress.getIdCardBack())){
+	                    				continue;
 	                    			}else{
-	                    				userTradeAddress.setExpireDate(codes);
+	                    				String codes = "";
+	                    				try {
+	                    					codes = IDcardUtil.getEndDateByIdCardBack(userTradeAddress.getIdCardBack());
+										} catch (Exception e) {
+											codes = "";
+											log.error("IDcardUtil code异常",e);
+										}
+		                    			
+		                    			if(StringUtil.isBlank(codes)){
+		                    				userTradeAddress.setExpireDate(code);
+		                    			}else{
+		                    				userTradeAddress.setExpireDate(codes);
+		                    			}
+		                    			log.error("userTradeAddress用户[" + userTradeAddress.getPayNo() + "]的过期时间为[" + code + "]");
 	                    			}
-	                    			log.error("userTradeAddress用户[" + userTradeAddress.getPayNo() + "]的过期时间为[" + code + "]");
                     			}
                     		}
                 		}else{

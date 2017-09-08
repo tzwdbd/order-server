@@ -250,14 +250,16 @@ public class OrderServiceJob implements RpcCallback{
                     		if("zcn".equals(firstOrderDetail.getSiteName())){
                     			if(firstOrderDetail.getAccountId()==23815){
                     				userTradeAddress.setName("王雅娟");
-                    				userTradeAddress.setIdCardBack("http://img.haihu.com/01161214cc725fe7a5614d9dbadc23603cec413f.png@1c_1e_1wh_250w");
-                    				userTradeAddress.setIdCardFront("http://img.haihu.com/011612140135113ae18846d999f87e5e55ec4364.png@1c_1e_1wh_250w");
+                    				userTradeAddress.setIdCardBack("http://img.haihu.com/011612140135113ae18846d999f87e5e55ec4364.png@1c_1e_1wh_250w");
+                    				userTradeAddress.setIdCardFront("http://img.haihu.com/01161214cc725fe7a5614d9dbadc23603cec413f.png@1c_1e_1wh_250w");
                     				userTradeAddress.setExpireDate("20350720");
+                    				userTradeAddress.setIdCard("430103198110040048");
                     			}else if(firstOrderDetail.getAccountId()==22810){
-                    				userTradeAddress.setIdCardBack("http://img.haihu.com/01161214298bf88711744d0e8f46ec4b00690518.png@1c_1e_1wh_250w");
-                    				userTradeAddress.setIdCardFront("http://img.haihu.com/01161214449fc9f6e6ed4af1ae9f324e5a454ae0.png@1c_1e_1wh_250w");
+                    				userTradeAddress.setIdCardBack("http://img.haihu.com/01161214449fc9f6e6ed4af1ae9f324e5a454ae0.png@1c_1e_1wh_250w");
+                    				userTradeAddress.setIdCardFront("http://img.haihu.com/01161214298bf88711744d0e8f46ec4b00690518.png@1c_1e_1wh_250w");
                     				userTradeAddress.setExpireDate("20350629");
                     				userTradeAddress.setName("李志存");
+                    				userTradeAddress.setIdCard("440224198002010959");
                     			}else{
 	                    			userTradeAddress.setIdCardBack(userTradeAddress.getIdCardBack()+"@1c_1e_1wh_250w");
 	                    			userTradeAddress.setIdCardFront(userTradeAddress.getIdCardFront()+"@1c_1e_1wh_250w");

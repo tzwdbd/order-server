@@ -375,7 +375,8 @@ public class ShipServiceJob implements RpcCallback{
 		   for(Resources r:resources){
 			   if(siteName.equalsIgnoreCase(r.getName())){
 				   Date startTime = DateUtil.ymdhmsString2DateTime(r.getResValue());
-				   if (orderTime.after(startTime)) {
+				   Date endTime = DateUtil.ymdhmsString2DateTime(r.getValue2());
+				   if (orderTime.after(startTime) && orderTime.before(endTime)) {
 					   mark = true;
 					   break;
 				   }

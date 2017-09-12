@@ -1,6 +1,7 @@
 package com.oversea.task.job;
 
 import java.lang.reflect.Method;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -172,15 +173,16 @@ public class ManualShipService implements RpcCallback{
         for(RobotOrderDetail r:orderDetailLists){
         	if(r.getAccountId().equals(orderDetails.get(0).getAccountId())){
         		r.setStatus(orderDetails.get(0).getStatus());
-        		if(!StringUtil.isBlank(orderDetails.get(0).getExpressNo())){
-        			r.setExpressNo(orderDetails.get(0).getExpressNo());
+        		if(orderDetails.get(0).getStatus()==100){
+	        		if(!StringUtil.isBlank(orderDetails.get(0).getExpressNo())){
+	        			r.setExpressNo(orderDetails.get(0).getExpressNo());
+	        		}
+	        		if(!StringUtil.isBlank(orderDetails.get(0).getExpressCompany())){
+	        			r.setExpressCompany(orderDetails.get(0).getExpressCompany());
+	        		}
         		}
-        		if(!StringUtil.isBlank(orderDetails.get(0).getExpressCompany())){
-        			r.setExpressCompany(orderDetails.get(0).getExpressCompany());
-        		}
-        		if(orderDetails.get(0).getStatus()==100 || orderDetails.get(0).getStatus()==97){
-        			robotOrderDetailDAO.updateRobotOrderDetail(r);
-        		}
+        		r.setGmtModified(new Date());
+    			robotOrderDetailDAO.updateRobotOrderDetail(r);
         	}
         }
 	}

@@ -248,10 +248,11 @@ public class ShipServiceJob implements RpcCallback{
             		}
             	}
             	userTradeExpressDAO.updateUserTradeExpressByDynamic(update) ;
+            }else{
+            	_orderDetail.setExpressNo(orderDetail.getExpressNo() != null ? orderDetail.getExpressNo().trim() : null);
             }
             _orderDetail.setGmtModified(new Date());
             _orderDetail.setExpressCompany(orderDetail.getExpressCompany());
-            _orderDetail.setExpressNo(orderDetail.getExpressNo() != null ? orderDetail.getExpressNo().trim() : null);
             if(orderDetail.getSiteName().equalsIgnoreCase("amazon") || orderDetail.getSiteName().equalsIgnoreCase("amazon.jp") 
             		||orderDetail.getSiteName().equalsIgnoreCase("zcn")){
             	_orderDetail.setExpressStatus(4);

@@ -222,6 +222,33 @@ public class ShipServiceJob implements RpcCallback{
             	robotOrderDetailDAO.updateRobotOrderDetail(_orderDetail);
             	continue ;
             }
+            if(!StringUtil.isBlank(_orderDetail.getExpressNo()) && _orderDetail.getExpressNo().startsWith("E") && !StringUtil.isBlank(orderDetail.getExpressNo()) && !_orderDetail.getExpressNo().equals(orderDetail.getExpressNo())){
+            	//换单号
+            	UserTradeExpress userTradeExpress = userTradeExpressDAO.getUserTradeExpressByExpressNo(_orderDetail.getExpressNo()) ;
+            	if(userTradeExpress==null){
+            		log.error("还没有生成user_trade_express记录");
+            		continue ;
+            	}
+            	String trackNo = userTradeExpress.getTrackNo() ;
+            	String changeTrackNoList = userTradeExpress.getChangeTrackNoList() ;
+            	UserTradeExpress update = new UserTradeExpress() ;
+            	update.setId(userTradeExpress.getId());
+            	
+            	if(StringUtils.isBlank(changeTrackNoList)){
+            		update.setChangeTrackNoList(","+orderDetail.getExpressNo());
+            		update.setChangeSendStatus(0);
+            	}else{
+            		String[] changeTrackNoArray = changeTrackNoList.split(",") ;
+            		String lastTrackNo = changeTrackNoArray[changeTrackNoArray.length-1] ;
+            		if(orderDetail.getExpressNo().equalsIgnoreCase(lastTrackNo)){
+            			continue ;
+            		}else{
+            			update.setChangeTrackNoList(changeTrackNoList+","+orderDetail.getExpressNo());
+                		update.setChangeSendStatus(0);
+            		}
+            	}
+            	userTradeExpressDAO.updateUserTradeExpressByDynamic(update) ;
+            }
             _orderDetail.setGmtModified(new Date());
             _orderDetail.setExpressCompany(orderDetail.getExpressCompany());
             _orderDetail.setExpressNo(orderDetail.getExpressNo() != null ? orderDetail.getExpressNo().trim() : null);

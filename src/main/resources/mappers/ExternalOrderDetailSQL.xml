@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="ExternalOrderDetailSQL">
+<resultMap id="ExternalOrderDetail"	type="com.oversea.task.domain.ExternalOrderDetail">
+	<result  property="id"  column="id"/>
+	<result  property="partnerId"  column="partner_id"/>
+	<result  property="saleOrderCode"  column="sale_order_code"/>
+	<result  property="date"  column="date"/>
+	<result  property="orderAmount"  column="order_amount"/>
+	<result  property="skuId"  column="sku_id"/>
+	<result  property="productUrl"  column="product_url"/>
+	<result  property="productRebateUrl"  column="product_rebate_url"/>
+	<result  property="itemName"  column="item_name"/>
+	<result  property="itemAttr"  column="item_attr"/>
+	<result  property="itemCount"  column="item_count"/>
+	<result  property="itemValue"  column="item_value"/>
+	<result  property="itemPrice"  column="item_price"/>
+	<result  property="discountCode"  column="discount_code"/>
+	<result  property="realPriceOrg"  column="real_price_org"/>
+	<result  property="exchangeRate"  column="exchange_rate"/>
+	<result  property="unit"  column="unit"/>
+	<result  property="remark"  column="remark"/>
+	<result  property="mallProductCode"  column="mall_product_code"/>
+	<result  property="productId"  column="product_id"/>
+	<result  property="siteName"  column="site_name"/>
+	<result  property="mallOrderNo"  column="mall_order_no"/>
+	<result  property="expressCompany"  column="express_company"/>
+	<result  property="expressNo"  column="express_no"/>
+	<result  property="company"  column="company"/>
+	<result  property="modeType"  column="mode_type"/>
+	<result  property="payType"  column="pay_type"/>
+	<result  property="accountId"  column="account_id"/>
+	<result  property="deviceId"  column="device_id"/>
+	<result  property="gmtCreate"  column="gmt_create"/>
+	<result  property="gmtModified"  column="gmt_modified"/>
+	<result  property="orderTime"  column="order_time"/>
+	<result  property="dispatchTime"  column="dispatch_time"/>
+	<result  property="totalPrice"  column="total_price"/>
+	<result  property="rmbPrice"  column="rmb_price"/>
+	<result  property="status"  column="status"/>
+	<result  property="orderRemark"  column="order_remark"/>
+	<result  property="singlePrice"  column="single_price"/>
+	<result  property="orderImg"  column="order_img"/>
+	<result  property="promotionCodeListStatus"  column="promotion_code_list_status"/>
+</resultMap>
+
+<sql id="ExternalOrderDetail_Column_List">
+		id,
+		partner_id,
+		sale_order_code,
+		date,
+		order_amount,
+		sku_id,
+		product_url,
+		product_rebate_url,
+		item_name,
+		item_attr,
+		item_count,
+		item_value,
+		item_price,
+		discount_code,
+		real_price_org,
+		exchange_rate,
+		unit,
+		remark,
+		mall_product_code,
+		product_id,
+		site_name,
+		mall_order_no,
+		express_company,
+		express_no,
+		company,
+		mode_type,
+		pay_type,
+		account_id,
+		device_id,
+		gmt_create,
+		gmt_modified,
+		order_time,
+		dispatch_time,
+		total_price,
+		rmb_price,
+		status,
+		order_remark,
+		single_price,
+		order_img,
+		promotion_code_list_status
+</sql>
+
+<insert id="addExternalOrderDetail"  parameterType="com.oversea.task.domain.ExternalOrderDetail">
+	INSERT INTO external_order_detail (
+		partner_id,
+		sale_order_code,
+		date,
+		order_amount,
+		sku_id,
+		product_url,
+		product_rebate_url,
+		item_name,
+		item_attr,
+		item_count,
+		item_value,
+		item_price,
+		discount_code,
+		real_price_org,
+		exchange_rate,
+		unit,
+		remark,
+		mall_product_code,
+		product_id,
+		site_name,
+		mall_order_no,
+		express_company,
+		express_no,
+		company,
+		mode_type,
+		pay_type,
+		account_id,
+		device_id,
+		gmt_create,
+		gmt_modified,
+		order_time,
+		dispatch_time,
+		total_price,
+		rmb_price,
+		status,
+		order_remark,
+		single_price,
+		order_img,
+		promotion_code_list_status
+) VALUES (
+		#{partnerId},
+		#{saleOrderCode},
+		#{date},
+		#{orderAmount},
+		#{skuId},
+		#{productUrl},
+		#{productRebateUrl},
+		#{itemName},
+		#{itemAttr},
+		#{itemCount},
+		#{itemValue},
+		#{itemPrice},
+		#{discountCode},
+		#{realPriceOrg},
+		#{exchangeRate},
+		#{unit},
+		#{remark},
+		#{mallProductCode},
+		#{productId},
+		#{siteName},
+		#{mallOrderNo},
+		#{expressCompany},
+		#{expressNo},
+		#{company},
+		#{modeType},
+		#{payType},
+		#{accountId},
+		#{deviceId},
+		#{gmtCreate},
+		#{gmtModified},
+		#{orderTime},
+		#{dispatchTime},
+		#{totalPrice},
+		#{rmbPrice},
+		#{status},
+		#{orderRemark},
+		#{singlePrice},
+		#{orderImg},
+		#{promotionCodeListStatus})
+</insert>
+
+
+<update id="updateExternalOrderDetailById"  parameterType="com.oversea.task.domain.ExternalOrderDetail">
+	update external_order_detail set
+		partner_id=#{partnerId},
+		sale_order_code=#{saleOrderCode},
+		date=#{date},
+		order_amount=#{orderAmount},
+		sku_id=#{skuId},
+		product_url=#{productUrl},
+		product_rebate_url=#{productRebateUrl},
+		item_name=#{itemName},
+		item_attr=#{itemAttr},
+		item_count=#{itemCount},
+		item_value=#{itemValue},
+		item_price=#{itemPrice},
+		discount_code=#{discountCode},
+		real_price_org=#{realPriceOrg},
+		exchange_rate=#{exchangeRate},
+		unit=#{unit},
+		remark=#{remark},
+		mall_product_code=#{mallProductCode},
+		product_id=#{productId},
+		site_name=#{siteName},
+		mall_order_no=#{mallOrderNo},
+		express_company=#{expressCompany},
+		express_no=#{expressNo},
+		company=#{company},
+		mode_type=#{modeType},
+		pay_type=#{payType},
+		account_id=#{accountId},
+		device_id=#{deviceId},
+		gmt_create=#{gmtCreate},
+		gmt_modified=#{gmtModified},
+		order_time=#{orderTime},
+		dispatch_time=#{dispatchTime},
+		total_price=#{totalPrice},
+		rmb_price=#{rmbPrice},
+		status=#{status},
+		order_remark=#{orderRemark}
+	where id=#{id}
+</update>
+
+
+<update id="updateExternalOrderDetailByDynamic"  parameterType="com.oversea.task.domain.ExternalOrderDetail">
+	update external_order_detail <set>
+		<if test="partnerId!= null">
+				partner_id=#{partnerId},
+		</if>
+		<if test="saleOrderCode!= null">
+				sale_order_code=#{saleOrderCode},
+		</if>
+		<if test="date!= null">
+				date=#{date},
+		</if>
+		<if test="orderAmount!= null">
+				order_amount=#{orderAmount},
+		</if>
+		<if test="skuId!= null">
+				sku_id=#{skuId},
+		</if>
+		<if test="productUrl!= null">
+				product_url=#{productUrl},
+		</if>
+		<if test="productRebateUrl!= null">
+				product_rebate_url=#{productRebateUrl},
+		</if>
+		<if test="itemName!= null">
+				item_name=#{itemName},
+		</if>
+		<if test="itemAttr!= null">
+				item_attr=#{itemAttr},
+		</if>
+		<if test="itemCount!= null">
+				item_count=#{itemCount},
+		</if>
+		<if test="itemValue!= null">
+				item_value=#{itemValue},
+		</if>
+		<if test="itemPrice!= null">
+				item_price=#{itemPrice},
+		</if>
+		<if test="discountCode!= null">
+				discount_code=#{discountCode},
+		</if>
+		<if test="realPriceOrg!= null">
+				real_price_org=#{realPriceOrg},
+		</if>
+		<if test="exchangeRate!= null">
+				exchange_rate=#{exchangeRate},
+		</if>
+		<if test="unit!= null">
+				unit=#{unit},
+		</if>
+		<if test="remark!= null">
+				remark=#{remark},
+		</if>
+		<if test="mallProductCode!= null">
+				mall_product_code=#{mallProductCode},
+		</if>
+		<if test="productId!= null">
+				product_id=#{productId},
+		</if>
+		<if test="siteName!= null">
+				site_name=#{siteName},
+		</if>
+		<if test="mallOrderNo!= null">
+				mall_order_no=#{mallOrderNo},
+		</if>
+		<if test="expressCompany!= null">
+				express_company=#{expressCompany},
+		</if>
+		<if test="expressNo!= null">
+				express_no=#{expressNo},
+		</if>
+		<if test="company!= null">
+				company=#{company},
+		</if>
+		<if test="modeType!= null">
+				mode_type=#{modeType},
+		</if>
+		<if test="payType!= null">
+				pay_type=#{payType},
+		</if>
+		<if test="accountId!= null">
+				account_id=#{accountId},
+		</if>
+		<if test="deviceId!= null">
+				device_id=#{deviceId},
+		</if>
+		<if test="gmtCreate!= null">
+				gmt_create=#{gmtCreate},
+		</if>
+		<if test="gmtModified!= null">
+				gmt_modified=#{gmtModified},
+		</if>
+		<if test="orderTime!= null">
+				order_time=#{orderTime},
+		</if>
+		<if test="dispatchTime!= null">
+				dispatch_time=#{dispatchTime},
+		</if>
+		<if test="totalPrice!= null">
+				total_price=#{totalPrice},
+		</if>
+		<if test="rmbPrice!= null">
+				rmb_price=#{rmbPrice},
+		</if>
+		<if test="status!= null">
+				status=#{status},
+		</if>
+		<if test="orderRemark!= null">
+				order_remark=#{orderRemark},
+		</if>
+		<if test="singlePrice!= null">
+				single_price=#{singlePrice},
+		</if>
+		<if test="orderImg!= null">
+				order_img=#{orderImg},
+		</if>
+		<if test="promotionCodeListStatus!= null">
+				promotion_code_list_status=#{promotionCodeListStatus}
+		</if>
+</set>
+
+	where id=#{id}
+</update>
+
+
+<select id="countExternalOrderDetailById"  parameterType="java.lang.Long" resultType="java.lang.Integer">
+<![CDATA[
+	select count(1) from external_order_detail where id=#{id}
+]]>
+</select>
+
+<select id="getExternalOrderDetailById"  parameterType="java.lang.Long" resultMap="ExternalOrderDetail">
+	select <include refid="ExternalOrderDetail_Column_List"/>
+ from external_order_detail where id=#{id}
+</select>
+
+<select id="getExternalOrderDetailByStatus"  parameterType="map" resultMap="ExternalOrderDetail">
+<![CDATA[ 
+	select *
+ from automan.brush_order_detail where and status = #{status}
+ ]]>
+</select>
+
+<update id="updateStatus" parameterType="map">
+        update automan.external_order_detail set status=#{status},gmt_modified=now() where id=#{id}
+</update>
+
+<select id="getExternalOrderDetailByOrderNo"  parameterType="map" resultMap="ExternalOrderDetail">
+	select <include refid="ExternalOrderDetail_Column_List"/>
+ from external_order_detail where sale_order_code=#{saleOrderCode}
+</select>
+
+<select id="findExternalOrderDetailsForSpiderExpress"  parameterType="map" resultMap="ExternalOrderDetail">
+	select <include refid="ExternalOrderDetail_Column_List"/>
+ from external_order_detail where `status` in(${status})  order by gmt_modified
+</select>
+
+</mapper>

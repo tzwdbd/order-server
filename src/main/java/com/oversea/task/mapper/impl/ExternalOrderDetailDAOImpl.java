@@ -4,10 +4,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Repository;
+
 import com.oversea.task.domain.ExternalOrderDetail;
 import com.oversea.task.mapper.BaseDao;
 import com.oversea.task.mapper.ExternalOrderDetailDAO;
-
+@Repository
 public class ExternalOrderDetailDAOImpl extends BaseDao implements ExternalOrderDetailDAO {
 	public void addExternalOrderDetail(ExternalOrderDetail externalOrderDetail) {
 		getSqlSession().insert("addExternalOrderDetail",externalOrderDetail);

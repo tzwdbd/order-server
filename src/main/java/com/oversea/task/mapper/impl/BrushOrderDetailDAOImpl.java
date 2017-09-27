@@ -12,59 +12,60 @@ import com.oversea.task.mapper.BaseDao;
 import com.oversea.task.mapper.BrushOrderDetailDAO;
 @Repository
 public class BrushOrderDetailDAOImpl extends BaseDao implements BrushOrderDetailDAO {
+	private static final String NAMESPACE = "BrushOrderDetailSQL.";
 	public void addBrushOrderDetail(BrushOrderDetail brushOrderDetail) {
-		getSqlSession().insert("addBrushOrderDetail",brushOrderDetail);
+		getSqlSession().insert(NAMESPACE+"addBrushOrderDetail",brushOrderDetail);
 }
 	public void updateBrushOrderDetailById(BrushOrderDetail brushOrderDetail) {
-		getSqlSession().update("updateBrushOrderDetailById",brushOrderDetail);
+		getSqlSession().update(NAMESPACE+"updateBrushOrderDetailById",brushOrderDetail);
 }
 	public void updateBrushOrderDetailByDynamic(BrushOrderDetail brushOrderDetail) {
-		getSqlSession().update("updateBrushOrderDetailByDynamic",brushOrderDetail);
+		getSqlSession().update(NAMESPACE+"updateBrushOrderDetailByDynamic",brushOrderDetail);
 }
 	public BrushOrderDetail getBrushOrderDetailById(Long id) {
-		return getSqlSession().selectOne("getBrushOrderDetailById", id);
+		return getSqlSession().selectOne(NAMESPACE+"getBrushOrderDetailById", id);
 }
 	public int countBrushOrderDetailById(Long id) {
-		return (Integer)getSqlSession().selectOne("countBrushOrderDetailById",id);
+		return (Integer)getSqlSession().selectOne(NAMESPACE+"countBrushOrderDetailById",id);
 }
 	@Override
 	public BrushOrderDetail getBrushOrderDetailByDate(Date dispatchTime) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("dispatchTime", dispatchTime);
-		return getSqlSession().selectOne("getBrushOrderDetailByDate", map);
+		return getSqlSession().selectOne(NAMESPACE+"getBrushOrderDetailByDate", map);
 	}
 	@Override
 	public void updateStatus(Long id, Integer status) {
 		Map<String,Object> map = new HashMap<String, Object>();
 		map.put("id", id);
 		map.put("status", status);
-		getSqlSession().update("updateStatus",map);
+		getSqlSession().update(NAMESPACE+"updateStatus",map);
 		
 	}
 	@Override
 	public List<BrushOrderDetail> getBrushOrderDetailListBystatus(String status) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("status", status);
-		return getSqlSession().selectList("getBrushOrderDetailListBystatus", map);
+		return getSqlSession().selectList(NAMESPACE+"getBrushOrderDetailListBystatus", map);
 	}
 	@Override
 	public List<BrushOrderDetail> getBrushOrderDetailListByExpressstatus(
 			String status) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("expressStatus", status);
-		return getSqlSession().selectList("getBrushOrderDetailListByExpressstatus", map);
+		return getSqlSession().selectList(NAMESPACE+"getBrushOrderDetailListByExpressstatus", map);
 	}
 	@Override
 	public List<BrushOrderDetail> getBrushOrderDetailListByThree(String status) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("status", status);
-		return getSqlSession().selectList("getBrushOrderDetailListByThree", map);
+		return getSqlSession().selectList(NAMESPACE+"getBrushOrderDetailListByThree", map);
 	}
 	@Override
 	public List<BrushOrderDetail> getBrushOrderDetailListByExpressNo(
 			List<String> expressNos) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("expressNos", expressNos);
-		return getSqlSession().selectList("getBrushOrderDetailListByExpressNo", map);
+		return getSqlSession().selectList(NAMESPACE+"getBrushOrderDetailListByExpressNo", map);
 	}
 }

@@ -354,7 +354,7 @@
 <select id="getExternalOrderDetailByStatus"  parameterType="map" resultMap="ExternalOrderDetail">
 <![CDATA[ 
 	select *
- from automan.external_order_detail where and status = #{status}
+ from automan.external_order_detail where  status = #{status}
  ]]>
 </select>
 

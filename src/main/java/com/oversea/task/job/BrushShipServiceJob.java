@@ -19,6 +19,7 @@ import com.oversea.task.domain.BrushOrderDetail;
 import com.oversea.task.domain.ExpressNode;
 import com.oversea.task.domain.OrderAccount;
 import com.oversea.task.domain.RobotOrderDetail;
+import com.oversea.task.enums.AutoBuyStatus;
 import com.oversea.task.mapper.BrushOrderDetailDAO;
 import com.oversea.task.mapper.OrderAccountDAO;
 import com.oversea.task.mapper.OrderDeviceDAO;
@@ -44,14 +45,16 @@ public class BrushShipServiceJob implements RpcCallback{
     @Resource
     private OrderDeviceDAO orderDeviceDAO;
     
-    
+    public String getScanStatus(){
+    	return "1000,100,99";
+    }
     
     
 	
 	public void run(){
 		log.error("============BrushShipServiceJob begin============");
 		try{
-			List<BrushOrderDetail> brushOrderDetails = brushOrderDetailDAO.getBrushOrderDetailListBystatus("1000,100,99");
+			List<BrushOrderDetail> brushOrderDetails = brushOrderDetailDAO.getBrushOrderDetailListBystatus(getScanStatus());
 	    	for(BrushOrderDetail brushOrderDetail : brushOrderDetails){
     			Task task = new TaskDetail();
                 OrderAccount account = orderAccountDAO.findById(brushOrderDetail.getAccountId());

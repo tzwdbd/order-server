@@ -23,6 +23,8 @@ import com.oversea.task.domain.ExternalOrderDetail;
 import com.oversea.task.domain.OrderAccount;
 import com.oversea.task.domain.OrderDevice;
 import com.oversea.task.domain.OrderPayDetail;
+import com.oversea.task.domain.TransferClearInfo;
+import com.oversea.task.domain.UserTradeAddress;
 import com.oversea.task.enums.AutoBuyStatus;
 import com.oversea.task.enums.MoneyUnits;
 import com.oversea.task.mapper.ExchangeBankDefinitionDAO;
@@ -35,6 +37,7 @@ import com.oversea.task.mapper.OrderDeviceDAO;
 import com.oversea.task.mapper.OrderPayAccountDAO;
 import com.oversea.task.mapper.OrderPayDetailDAO;
 import com.oversea.task.mapper.ResourcesDAO;
+import com.oversea.task.mapper.RobotOrderDetailDAO;
 import com.oversea.task.mapper.UserTradeAddressDAO;
 import com.oversea.task.mapper.UserTradeDTLDAO;
 import com.oversea.task.mapper.ZipcodeDAO;
@@ -90,6 +93,8 @@ public class ExternalOrderServiceJob implements RpcCallback{
     private ExchangeBankDefinitionDAO exchangeBankDefinitionDAO;
     @Resource
 	private ResourcesDAO resourcesDAO;
+    @Resource
+    private RobotOrderDetailDAO robotOrderDetailDAO;
     
     public void run(){
     	log.error("==========ExternalOrderServiceJob begin============");
@@ -151,18 +156,30 @@ public class ExternalOrderServiceJob implements RpcCallback{
             task.addParam("count", String.valueOf(cnt));
             
            	if(externalOrderDetail.getCompany()!=null && externalOrderDetail.getCompany()>0){
-//	        	TransferClearInfo transferClearInfo = robotOrderDetailDAO.getExpressAddress(externalOrderDetail.getCompany());
-//	        	if(transferClearInfo!=null){
-//	            	task.addParam("expressAddress", transferClearInfo.getRecipientName());
-//	            	UserTradeAddress userTradeAddress = new UserTradeAddress();
-//	            	userTradeAddress.setAddress(transferClearInfo.getRecipientAddress());
-//	            	userTradeAddress.setCity(transferClearInfo.getRecipientCity());
-//	            	userTradeAddress.setName(transferClearInfo.getRecipientName());
-//	            	userTradeAddress.setState(transferClearInfo.getRecipientProvince());
-//	            	userTradeAddress.setZip(transferClearInfo.getRecipientZipCode());
-//	            	userTradeAddress.setMobile(transferClearInfo.getRecipientTel());
-//	            	task.addParam("address", userTradeAddress);
-//	        	}
+           		int company = externalOrderDetail.getCompany();
+           		if(company==1 && ("amazon").equalsIgnoreCase(externalOrderDetail.getSiteName())){
+           			company = 37;
+           		}else if(company==1 && ("amazon.jp").equalsIgnoreCase(externalOrderDetail.getSiteName())){
+           			company = 38;
+           		}else if(company==2 && ("amazon.jp").equalsIgnoreCase(externalOrderDetail.getSiteName())){
+           			company = 35;
+           		}else if(company==2 && ("amazon.jp").equalsIgnoreCase(externalOrderDetail.getSiteName())){
+           			company = 36;
+           		}else{
+           			return ;
+           		}
+	        	TransferClearInfo transferClearInfo = robotOrderDetailDAO.getExpressAddress(Long.parseLong(String.valueOf(company)));
+	        	if(transferClearInfo!=null){
+	            	task.addParam("expressAddress", transferClearInfo.getRecipientName());
+	            	UserTradeAddress userTradeAddress = new UserTradeAddress();
+	            	userTradeAddress.setAddress(transferClearInfo.getRecipientAddress());
+	            	userTradeAddress.setCity(transferClearInfo.getRecipientCity());
+	            	userTradeAddress.setName(transferClearInfo.getRecipientName());
+	            	userTradeAddress.setState(transferClearInfo.getRecipientProvince());
+	            	userTradeAddress.setZip(transferClearInfo.getRecipientZipCode());
+	            	userTradeAddress.setMobile(transferClearInfo.getRecipientTel());
+	            	task.addParam("address", userTradeAddress);
+	        	}
            	}
             TaskService taskService = (TaskService)rpcServerProxy.wrapProxy(TaskService.class, ip, this);
             taskService.externalOrder(task);
@@ -261,7 +278,9 @@ public class ExternalOrderServiceJob implements RpcCallback{
         		
         		//消费流水记录
         		try {
-        			addOrderPayDetailLog(externalOrderDetailList);
+        			if(externalOrderDetailList.get(0).getCompany()!=null && externalOrderDetailList.get(0).getCompany()>0){
+        				addOrderPayDetailLog(externalOrderDetailList);
+        			}
 				} catch (Exception e) {
 					log.error("消费流水记录出错",e);
 				}

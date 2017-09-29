@@ -117,6 +117,7 @@ public class BrushShipServiceJob implements RpcCallback{
 			if(objs != null){
 				Task task = (Task)objs[0];
 				BrushOrderDetail brushOrderDetail = (BrushOrderDetail) task.getParam("brushOrderDetail");
+				brushOrderDetailDAO.updateStatus(brushOrderDetail.getId(), AutoBuyStatus.AUTO_SCRIBE_ORDER_NOT_READY.getValue());
 				log.error("刷单订单号:"+brushOrderDetail.getOrderNo()+"提交爬取物流详情成功"+"ip:"+task.getGroup());
 			}
 		}

@@ -106,6 +106,9 @@ public class ExternalShipServiceJob implements RpcCallback{
                 long productEntityId = detail.getId();
                 asinCodeMap.put(productEntityId, detail.getMallProductCode());
             }
+            if((new Date().getTime()-externalOrderDetail.getOrderTime().getTime())/1000/60<120){
+            	return;
+            }
             task.addParam("asinMap", asinCodeMap);
             task.addParam("externalOrderDetails", list);
             task.addParam("account", account);

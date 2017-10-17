@@ -330,6 +330,7 @@ public class ExternalOrderServiceJob implements RpcCallback{
 			orderPayDetail.setOrderTime(externalOrderDetail.getOrderTime());
 			orderPayDetail.setGroupNumber(0);
 			orderPayDetail.setOrderStatus(4);
+			orderPayDetail.setProductEntityId(Long.parseLong(externalOrderDetail.getSkuId()));
 			if(("amazon").equalsIgnoreCase(externalOrderDetail.getSiteName()) || ("amazon.jp").equalsIgnoreCase(externalOrderDetail.getSiteName())){
 				orderPayDetail.setStartBalance(String.valueOf(orderAccount.getBalanceWb()));
 				orderPayDetail.setEndBalance(String.valueOf(_externalOrderDetail.getBalanceWb()));

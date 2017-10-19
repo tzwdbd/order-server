@@ -145,4 +145,9 @@ public class RobotOrderDetailDAOImpl extends BaseDao implements RobotOrderDetail
 	public List<RobotOrderDetail> getOrderDetailByMallStatus() {
         return getSqlSession().selectList("getOrderDetailByMallStatus");
 	}
+
+	@Override
+	public List<RobotOrderDetail> getOrderDetailOrderByMallStatus() {
+		return getSqlSession().selectList("getOrderDetailOrderByMallStatus");
+	}
 }

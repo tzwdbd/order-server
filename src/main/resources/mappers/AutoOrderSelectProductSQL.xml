@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="AutoOrderSelectProductSQL">
+<resultMap id="AutoOrderSelectProduct"	type="com.oversea.task.domain.AutoOrderSelectProduct">
+	<result  property="id"  column="id"/>
+	<result  property="siteName"  column="site_name"/>
+	<result  property="productLoadedCode"  column="product_loaded_code"/>
+	<result  property="singlePriceCode"  column="single_price_code"/>
+	<result  property="numCode"  column="num_code"/>
+	<result  property="addCartCode"  column="add_cart_code"/>
+	<result  property="addedCode"  column="added_code"/>
+	<result  property="cartLoadedCode"  column="cart_loaded_code"/>
+	<result  property="numedCode"  column="numed_code"/>
+	<result  property="gmtCreate"  column="gmt_create"/>
+	<result  property="gmtModified"  column="gmt_modified"/>
+	<result  property="operator"  column="operator"/>
+</resultMap>
+
+<sql id="AutoOrderSelectProduct_Column_List">
+		id,
+		site_name,
+		product_loaded_code,
+		single_price_code,
+		num_code,
+		add_cart_code,
+		added_code,
+		cart_loaded_code,
+		numed_code,
+		gmt_create,
+		gmt_modified,
+		operator
+</sql>
+
+<insert id="addAutoOrderSelectProduct"  parameterType="com.oversea.task.domain.AutoOrderSelectProduct">
+	INSERT INTO auto_order_select_product (
+		site_name,
+		product_loaded_code,
+		single_price_code,
+		num_code,
+		add_cart_code,
+		added_code,
+		cart_loaded_code,
+		numed_code,
+		gmt_create,
+		gmt_modified,
+		operator
+) VALUES (
+		#{siteName},
+		#{productLoadedCode},
+		#{singlePriceCode},
+		#{numCode},
+		#{addCartCode},
+		#{addedCode},
+		#{cartLoadedCode},
+		#{numedCode},
+		#{gmtCreate},
+		#{gmtModified},
+		#{operator})
+</insert>
+
+
+<update id="updateAutoOrderSelectProductById"  parameterType="com.oversea.task.domain.AutoOrderSelectProduct">
+	update auto_order_select_product set
+		site_name=#{siteName},
+		product_loaded_code=#{productLoadedCode},
+		single_price_code=#{singlePriceCode},
+		num_code=#{numCode},
+		add_cart_code=#{addCartCode},
+		added_code=#{addedCode},
+		cart_loaded_code=#{cartLoadedCode},
+		numed_code=#{numedCode},
+		gmt_create=#{gmtCreate},
+		gmt_modified=#{gmtModified},
+		operator=#{operator}
+	where id=#{id}
+</update>
+
+
+<update id="updateAutoOrderSelectProductByDynamic"  parameterType="com.oversea.task.domain.AutoOrderSelectProduct">
+	update auto_order_select_product <set>
+		<if test="siteName!= null">
+				site_name=#{siteName},
+		</if>
+		<if test="productLoadedCode!= null">
+				product_loaded_code=#{productLoadedCode},
+		</if>
+		<if test="singlePriceCode!= null">
+				single_price_code=#{singlePriceCode},
+		</if>
+		<if test="numCode!= null">
+				num_code=#{numCode},
+		</if>
+		<if test="addCartCode!= null">
+				add_cart_code=#{addCartCode},
+		</if>
+		<if test="addedCode!= null">
+				added_code=#{addedCode},
+		</if>
+		<if test="cartLoadedCode!= null">
+				cart_loaded_code=#{cartLoadedCode},
+		</if>
+		<if test="numedCode!= null">
+				numed_code=#{numedCode},
+		</if>
+		<if test="gmtCreate!= null">
+				gmt_create=#{gmtCreate},
+		</if>
+		<if test="gmtModified!= null">
+				gmt_modified=#{gmtModified},
+		</if>
+		<if test="operator!= null">
+				operator=#{operator}
+		</if>
+</set>
+
+	where id=#{id}
+</update>
+
+
+<select id="countAutoOrderSelectProductById"  parameterType="java.lang.Long" resultType="java.lang.Integer">
+<![CDATA[
+	select count(1) from auto_order_select_product where id=#{id}
+]]>
+</select>
+
+<select id="getAutoOrderSelectProductById"  parameterType="java.lang.Long" resultMap="AutoOrderSelectProduct">
+	select <include refid="AutoOrderSelectProduct_Column_List"/>
+ from auto_order_select_product where id=#{id}
+</select>
+
+<select id="getOrderSelectProductBySiteName"  parameterType="map" resultMap="AutoOrderSelectProduct">
+	select <include refid="AutoOrderScribeExpress_Column_List"/>
+ from auto_order_select_product where site_name=#{siteName} limit 1
+</select>
+
+</mapper>

@@ -18,6 +18,8 @@ import com.oversea.rabbitmq.sender.MessageSender;
 import com.oversea.task.common.TaskService;
 import com.oversea.task.domain.AutoOrderCleanCart;
 import com.oversea.task.domain.AutoOrderLogin;
+import com.oversea.task.domain.AutoOrderPay;
+import com.oversea.task.domain.AutoOrderSelectProduct;
 import com.oversea.task.domain.ExchangeDefinition;
 import com.oversea.task.domain.OrderAccount;
 import com.oversea.task.domain.OrderCreditCard;
@@ -30,6 +32,8 @@ import com.oversea.task.domain.Zipcode;
 import com.oversea.task.enums.MoneyUnits;
 import com.oversea.task.mapper.AutoOrderCleanCartDAO;
 import com.oversea.task.mapper.AutoOrderLoginDAO;
+import com.oversea.task.mapper.AutoOrderPayDAO;
+import com.oversea.task.mapper.AutoOrderSelectProductDAO;
 import com.oversea.task.mapper.ExchangeBankDefinitionDAO;
 import com.oversea.task.mapper.ExchangeDefinitionDAO;
 import com.oversea.task.mapper.GiftCardDAO;
@@ -95,6 +99,10 @@ public class ManualOrderService implements RpcCallback{
     private AutoOrderLoginDAO autoOrderLoginDAO;
     @Resource
     private AutoOrderCleanCartDAO autoOrderCleanCartDAO;
+    @Resource
+    private AutoOrderSelectProductDAO autoOrderSelectProductDAO;
+    @Resource
+    private AutoOrderPayDAO autoOrderPayDAO;
     
     public void handleOrder(String orderNo,int groupNumber,int steps){
     	log.error("==========handleOrder begin============");
@@ -262,6 +270,15 @@ public class ManualOrderService implements RpcCallback{
 		}else if(steps==3){
 			AutoOrderCleanCart autoOrderCleanCart = autoOrderCleanCartDAO.getAutoOrderCleanCartBySiteName(siteName);
 			task.addParam("autoOrderCleanCart", autoOrderCleanCart);
+			AutoOrderSelectProduct autoOrderSelectProduct = autoOrderSelectProductDAO.getOrderSelectProductBySiteName(siteName);
+			task.addParam("autoOrderSelectProduct", autoOrderSelectProduct);
+		}else if(steps==4){
+			AutoOrderCleanCart autoOrderCleanCart = autoOrderCleanCartDAO.getAutoOrderCleanCartBySiteName(siteName);
+			task.addParam("autoOrderCleanCart", autoOrderCleanCart);
+			AutoOrderSelectProduct autoOrderSelectProduct = autoOrderSelectProductDAO.getOrderSelectProductBySiteName(siteName);
+			task.addParam("autoOrderSelectProduct", autoOrderSelectProduct);
+			AutoOrderPay autoOrderPay = autoOrderPayDAO.getOrderPayBySiteName(siteName);
+			task.addParam("autoOrderPay", autoOrderPay);
 		}
 	}
 

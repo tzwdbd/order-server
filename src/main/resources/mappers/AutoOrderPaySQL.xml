@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="AutoOrderPaySQL">
+<resultMap id="AutoOrderPay"	type="com.oversea.task.domain.AutoOrderPay">
+	<result  property="id"  column="id"/>
+	<result  property="siteName"  column="site_name"/>
+	<result  property="cartLoadedCode"  column="cart_loaded_code"/>
+	<result  property="submitCode"  column="submit_code"/>
+	<result  property="deleteAddressListCode"  column="delete_address_list_code"/>
+	<result  property="deleteCode"  column="delete_code"/>
+	<result  property="deleteConfirmCode"  column="delete_confirm_code"/>
+	<result  property="addNewAddressCode"  column="add_new_address_code"/>
+	<result  property="nameCode"  column="name_code"/>
+	<result  property="regionCode"  column="region_code"/>
+	<result  property="cityCode"  column="city_code"/>
+	<result  property="countyCode"  column="county_code"/>
+	<result  property="streetCode"  column="street_code"/>
+	<result  property="postcodeCode"  column="postcode_code"/>
+	<result  property="telephoneCode"  column="telephone_code"/>
+	<result  property="emailCode"  column="email_code"/>
+	<result  property="identityCode"  column="identity_code"/>
+	<result  property="saveAddressCode"  column="save_address_code"/>
+	<result  property="alipayCode"  column="alipay_code"/>
+	<result  property="couponTextCode"  column="coupon_text_code"/>
+	<result  property="couponSubmitCode"  column="coupon_submit_code"/>
+	<result  property="couponErrorCode"  column="coupon_error_code"/>
+	<result  property="couponRightCode"  column="coupon_right_code"/>
+	<result  property="totalPriceCode"  column="total_price_code"/>
+	<result  property="orderPlaceCode"  column="order_place_code"/>
+	<result  property="mallOrderNoCode"  column="mall_order_no_code"/>
+	<result  property="gmtCreate"  column="gmt_create"/>
+	<result  property="gmtModified"  column="gmt_modified"/>
+	<result  property="operator"  column="operator"/>
+</resultMap>
+
+<sql id="AutoOrderPay_Column_List">
+		id,
+		site_name,
+		cart_loaded_code,
+		submit_code,
+		delete_address_list_code,
+		delete_code,
+		delete_confirm_code,
+		add_new_address_code,
+		name_code,
+		region_code,
+		city_code,
+		county_code,
+		street_code,
+		postcode_code,
+		telephone_code,
+		email_code,
+		identity_code,
+		save_address_code,
+		alipay_code,
+		coupon_text_code,
+		coupon_submit_code,
+		coupon_error_code,
+		coupon_right_code,
+		total_price_code,
+		order_place_code,
+		mall_order_no_code,
+		gmt_create,
+		gmt_modified,
+		operator
+</sql>
+
+<insert id="addAutoOrderPay"  parameterType="com.oversea.task.domain.AutoOrderPay">
+	INSERT INTO auto_order_pay (
+		site_name,
+		cart_loaded_code,
+		submit_code,
+		delete_address_list_code,
+		delete_code,
+		delete_confirm_code,
+		add_new_address_code,
+		name_code,
+		region_code,
+		city_code,
+		county_code,
+		street_code,
+		postcode_code,
+		telephone_code,
+		email_code,
+		identity_code,
+		save_address_code,
+		alipay_code,
+		coupon_text_code,
+		coupon_submit_code,
+		coupon_error_code,
+		coupon_right_code,
+		total_price_code,
+		order_place_code,
+		mall_order_no_code,
+		gmt_create,
+		gmt_modified,
+		operator
+) VALUES (
+		#{siteName},
+		#{cartLoadedCode},
+		#{submitCode},
+		#{deleteAddressListCode},
+		#{deleteCode},
+		#{deleteConfirmCode},
+		#{addNewAddressCode},
+		#{nameCode},
+		#{regionCode},
+		#{cityCode},
+		#{countyCode},
+		#{streetCode},
+		#{postcodeCode},
+		#{telephoneCode},
+		#{emailCode},
+		#{identityCode},
+		#{saveAddressCode},
+		#{alipayCode},
+		#{couponTextCode},
+		#{couponSubmitCode},
+		#{couponErrorCode},
+		#{couponRightCode},
+		#{totalPriceCode},
+		#{orderPlaceCode},
+		#{mallOrderNoCode},
+		#{gmtCreate},
+		#{gmtModified},
+		#{operator})
+</insert>
+
+
+<update id="updateAutoOrderPayById"  parameterType="com.oversea.task.domain.AutoOrderPay">
+	update auto_order_pay set
+		site_name=#{siteName},
+		cart_loaded_code=#{cartLoadedCode},
+		submit_code=#{submitCode},
+		delete_address_list_code=#{deleteAddressListCode},
+		delete_code=#{deleteCode},
+		delete_confirm_code=#{deleteConfirmCode},
+		add_new_address_code=#{addNewAddressCode},
+		name_code=#{nameCode},
+		region_code=#{regionCode},
+		city_code=#{cityCode},
+		county_code=#{countyCode},
+		street_code=#{streetCode},
+		postcode_code=#{postcodeCode},
+		telephone_code=#{telephoneCode},
+		email_code=#{emailCode},
+		identity_code=#{identityCode},
+		save_address_code=#{saveAddressCode},
+		alipay_code=#{alipayCode},
+		coupon_text_code=#{couponTextCode},
+		coupon_submit_code=#{couponSubmitCode},
+		coupon_error_code=#{couponErrorCode},
+		coupon_right_code=#{couponRightCode},
+		total_price_code=#{totalPriceCode},
+		order_place_code=#{orderPlaceCode},
+		mall_order_no_code=#{mallOrderNoCode},
+		gmt_create=#{gmtCreate},
+		gmt_modified=#{gmtModified},
+		operator=#{operator}
+	where id=#{id}
+</update>
+
+
+<update id="updateAutoOrderPayByDynamic"  parameterType="com.oversea.task.domain.AutoOrderPay">
+	update auto_order_pay <set>
+		<if test="siteName!= null">
+				site_name=#{siteName},
+		</if>
+		<if test="cartLoadedCode!= null">
+				cart_loaded_code=#{cartLoadedCode},
+		</if>
+		<if test="submitCode!= null">
+				submit_code=#{submitCode},
+		</if>
+		<if test="deleteAddressListCode!= null">
+				delete_address_list_code=#{deleteAddressListCode},
+		</if>
+		<if test="deleteCode!= null">
+				delete_code=#{deleteCode},
+		</if>
+		<if test="deleteConfirmCode!= null">
+				delete_confirm_code=#{deleteConfirmCode},
+		</if>
+		<if test="addNewAddressCode!= null">
+				add_new_address_code=#{addNewAddressCode},
+		</if>
+		<if test="nameCode!= null">
+				name_code=#{nameCode},
+		</if>
+		<if test="regionCode!= null">
+				region_code=#{regionCode},
+		</if>
+		<if test="cityCode!= null">
+				city_code=#{cityCode},
+		</if>
+		<if test="countyCode!= null">
+				county_code=#{countyCode},
+		</if>
+		<if test="streetCode!= null">
+				street_code=#{streetCode},
+		</if>
+		<if test="postcodeCode!= null">
+				postcode_code=#{postcodeCode},
+		</if>
+		<if test="telephoneCode!= null">
+				telephone_code=#{telephoneCode},
+		</if>
+		<if test="emailCode!= null">
+				email_code=#{emailCode},
+		</if>
+		<if test="identityCode!= null">
+				identity_code=#{identityCode},
+		</if>
+		<if test="saveAddressCode!= null">
+				save_address_code=#{saveAddressCode},
+		</if>
+		<if test="alipayCode!= null">
+				alipay_code=#{alipayCode},
+		</if>
+		<if test="couponTextCode!= null">
+				coupon_text_code=#{couponTextCode},
+		</if>
+		<if test="couponSubmitCode!= null">
+				coupon_submit_code=#{couponSubmitCode},
+		</if>
+		<if test="couponErrorCode!= null">
+				coupon_error_code=#{couponErrorCode},
+		</if>
+		<if test="couponRightCode!= null">
+				coupon_right_code=#{couponRightCode},
+		</if>
+		<if test="totalPriceCode!= null">
+				total_price_code=#{totalPriceCode},
+		</if>
+		<if test="orderPlaceCode!= null">
+				order_place_code=#{orderPlaceCode},
+		</if>
+		<if test="mallOrderNoCode!= null">
+				mall_order_no_code=#{mallOrderNoCode},
+		</if>
+		<if test="gmtCreate!= null">
+				gmt_create=#{gmtCreate},
+		</if>
+		<if test="gmtModified!= null">
+				gmt_modified=#{gmtModified},
+		</if>
+		<if test="operator!= null">
+				operator=#{operator}
+		</if>
+</set>
+
+	where id=#{id}
+</update>
+
+
+<select id="countAutoOrderPayById"  parameterType="java.lang.Long" resultType="java.lang.Integer">
+<![CDATA[
+	select count(1) from auto_order_pay where id=#{id}
+]]>
+</select>
+
+<select id="getAutoOrderPayById"  parameterType="java.lang.Long" resultMap="AutoOrderPay">
+	select <include refid="AutoOrderPay_Column_List"/>
+ from auto_order_pay where id=#{id}
+</select>
+<select id="getOrderPayBySiteName"  parameterType="map" resultMap="AutoOrderPay">
+	select <include refid="AutoOrderScribeExpress_Column_List"/>
+ from auto_order_pay where site_name=#{siteName} limit 1
+</select>
+
+</mapper>

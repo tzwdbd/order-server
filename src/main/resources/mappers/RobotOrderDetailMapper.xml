@@ -472,7 +472,7 @@
     	 select o.* from auto_order_mall_status a ,order_detail o where a.`logistics_status` =3 and o.site_name = a.mall_name and o.status in (1000,99) and o.is_auto_express=0 order by o.gmt_modified limit 1;
     </select>
     <select id="getOrderDetailOrderByMallStatus" parameterType="map" resultMap="RobotOrderDetail">
-    	 select o.* from auto_order_mall_status a ,order_detail o where a.`logistics_status` =4 and o.site_name = a.mall_name and o.status =0 and o.`is_manual`='yes' order by o.gmt_modified;
+    	 select o.* from auto_order_mall_status a ,order_detail o where a.`order_status` =4 and o.site_name = a.mall_name and o.status = 10 and o.`is_manual`='yes' order by o.gmt_modified;
     </select>
     
     

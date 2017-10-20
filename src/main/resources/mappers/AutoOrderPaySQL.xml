@@ -266,7 +266,7 @@
  from auto_order_pay where id=#{id}
 </select>
 <select id="getOrderPayBySiteName"  parameterType="map" resultMap="AutoOrderPay">
-	select <include refid="AutoOrderScribeExpress_Column_List"/>
+	select <include refid="AutoOrderPay_Column_List"/>
  from auto_order_pay where site_name=#{siteName} limit 1
 </select>
 

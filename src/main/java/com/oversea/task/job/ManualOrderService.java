@@ -329,7 +329,7 @@ public class ManualOrderService implements RpcCallback{
 				Task task = (Task)objs[0];
 				List<RobotOrderDetail> orderList = (List<RobotOrderDetail>) task.getParam("robotOrderDetails");
 				for (RobotOrderDetail r : orderList) {
-	                robotOrderDetailDAO.updateRobotOrderDetailStatusById(AutoBuyStatus.AUTO_PAY_PARPARE.getValue(),r.getId());
+	                robotOrderDetailDAO.updateRobotOrderDetailStatusById(10,r.getId());
 	            }
 				log.info(String.format("Auto提交自动出错下单订单号[%s],分配账号:%s:,发送机器IP:%s", orderList.get(0).getOrderNo(), orderList.get(0).getAccountId(), task.getGroup()));
 			}catch(Exception e){

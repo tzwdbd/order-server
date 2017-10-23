@@ -126,8 +126,14 @@ public class OrderServiceJob implements RpcCallback{
             
             //订单没有全部扫过来
             List<UserTradeDTL> list = userTradeDTLDAO.getUserTradeDTLByOrderNo(orderNo);
+            List<UserTradeDTL> list1 = new ArrayList<UserTradeDTL>();
             List<RobotOrderDetail> list0 = robotOrderDetailDAO.getRobotOrderDetailByOrderNo(orderNo);
-            if(list != null && list0 != null && list0.size() < list.size()){
+            for(UserTradeDTL utdtl:list){
+            	if(utdtl.getStatus()<40){
+            		list1.add(utdtl);
+            	}
+            }
+            if(list != null && list0 != null && list0.size() < list1.size()){
             	log.error("订单orderNo = "+orderNo+"还没完全扫描到order_detail表里");
             	continue;
             }

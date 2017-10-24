@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
 
 import com.haihu.rpc.common.RpcCallback;
 import com.haihu.rpc.server.RpcServerProxy;
+import com.oversea.cdn.service.CdnService;
 import com.oversea.rabbitmq.utils.StringUtil;
 import com.oversea.task.common.TaskService;
 import com.oversea.task.domain.ExpressNode;
@@ -68,6 +69,8 @@ public class ShipServiceJob implements RpcCallback{
     
     @Resource
 	private ResourcesDAO resourcesDAO;
+    @Resource
+    private CdnService cdnClient;
     
     private static final String EXPRESS_HAIHU = "express_haihu_config";//过滤物流时间
     
@@ -173,6 +176,20 @@ public class ShipServiceJob implements RpcCallback{
         	log.error(e);
         }
         
+        //处理日亚退税
+        String fedroadtext = "";
+        String cdnUrl  ="";
+        try{
+        	fedroadtext = (String) taskResult.getParam("fedroadtext");
+        	if(!StringUtil.isBlank(fedroadtext)){
+        		cdnUrl = cdnClient.saveFile(fedroadtext.getBytes(), "", "html");
+        		log.error("fedroadtext url:"+cdnUrl);
+        	}else{
+        		log.error("fedroadtext 为空");
+        	}
+        }catch(Exception e){
+        	log.error("fedroadtext 异常");
+        }   
         //插入物流节点
         List<String> finishList = new ArrayList<String>();
         List<ExpressNode> list = null;
@@ -269,6 +286,9 @@ public class ShipServiceJob implements RpcCallback{
             if(finishList.size()>0 && !StringUtil.isBlank(orderDetail.getExpressNo()) && finishList.contains(orderDetail.getExpressNo())){
   				_orderDetail.setExpressStatus(14);
   			}
+            if(!StringUtil.isBlank(cdnUrl)){
+            	_orderDetail.setPromotionFee(cdnUrl);
+            }
             robotOrderDetailDAO.updateRobotOrderDetail(_orderDetail);
             log.error(String.format("收到物流爬取结果:orderNo:%s,status:%s", orderDetail.getOrderNo(), orderDetail.getStatus()));
         }

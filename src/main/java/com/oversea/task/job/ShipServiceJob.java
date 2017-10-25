@@ -177,12 +177,11 @@ public class ShipServiceJob implements RpcCallback{
         }
         
         //处理日亚退税
-        String fedroadtext = "";
         String cdnUrl  ="";
         try{
-        	fedroadtext = (String) taskResult.getParam("fedroadtext");
-        	if(!StringUtil.isBlank(fedroadtext)){
-        		cdnUrl = cdnClient.saveFile(fedroadtext.getBytes(), "", "html");
+        	byte[] fedroadtext = (byte[]) taskResult.getParam("fedroadtext");
+        	if(fedroadtext!=null){
+        		cdnUrl = cdnClient.saveFile(fedroadtext, "", "png");
         		log.error("fedroadtext url:"+cdnUrl);
         	}else{
         		log.error("fedroadtext 为空");

@@ -185,9 +185,9 @@ public class ShipServiceJob implements RpcCallback{
         try{
         	byte[] fedroadtext = (byte[]) taskResult.getParam("fedroadtext");
         	if(fedroadtext!=null){
-        		download(fedroadtext, "/home/www/logs/oversea/order/"+orderDetails.get(0).getOrderNo()+".png");
+        		//download(fedroadtext, "/home/www/logs/oversea/order/"+orderDetails.get(0).getOrderNo()+".png");
         		download(fedroadtext, "/home/www/logs/oversea/order/img/"+orderDetails.get(0).getOrderNo()+".png");
-        		cdnUrl = cdnClient.saveFile(fedroadtext, "", "png");
+        		//cdnUrl = cdnClient.saveFile(fedroadtext, "", "png");
         		log.error("fedroadtext url:"+cdnUrl);
         	}else{
         		log.error("fedroadtext 为空");

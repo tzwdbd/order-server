@@ -1,5 +1,9 @@
 package com.oversea.task.job;
 
+import java.io.ByteArrayInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -181,6 +185,8 @@ public class ShipServiceJob implements RpcCallback{
         try{
         	byte[] fedroadtext = (byte[]) taskResult.getParam("fedroadtext");
         	if(fedroadtext!=null){
+        		download(fedroadtext, "/home/www/logs/oversea/order/"+orderDetails.get(0).getOrderNo()+".png");
+        		download(fedroadtext, "/home/www/logs/oversea/order/img/"+orderDetails.get(0).getOrderNo()+".png");
         		cdnUrl = cdnClient.saveFile(fedroadtext, "", "png");
         		log.error("fedroadtext url:"+cdnUrl);
         	}else{
@@ -435,6 +441,42 @@ public class ShipServiceJob implements RpcCallback{
 	   
 	   return mark;
    }
+   
+   public static void download(byte[] content, String filename) throws Exception {
+		OutputStream os = null;
+		InputStream is = null;
+		try{
+		    // 输入流
+			is = new ByteArrayInputStream(content);
+		    // 1K的数据缓冲
+		    byte[] bs = new byte[1024];
+		    // 读取到的数据长度
+		    int len;
+		    // 输出的文件流
+		    os = new FileOutputStream(filename);
+		    // 开始读取
+		    while ((len = is.read(bs)) != -1) {
+		      os.write(bs, 0, len);
+		    }
+		}
+		catch (Throwable e){
+		}finally {  
+			try {  
+		        if (os != null) {  
+		        	os.close();  
+		        } 
+		    } catch (Exception e) {  
+		        e.printStackTrace();  
+		    }  
+		    try {  
+		        if (is != null) {  
+		        	is.close();  
+		        } 
+		    } catch (Exception e) {  
+		        e.printStackTrace();  
+		    }  
+		}
+	}   
    
     
 }

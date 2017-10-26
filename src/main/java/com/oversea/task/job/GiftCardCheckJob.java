@@ -152,5 +152,6 @@ public class GiftCardCheckJob implements RpcCallback{
 		giftCardCheck.setRmb(rmbs);
 		giftCardCheckDAO.addGiftCardCheck(giftCardCheck);
 		orderAccountDAO.updateOrderAccountStatusAndBalanceWb(orderAccount.getAccountId(), AccountStatus.Init.getValue(), orderAccount.getBalanceWb());
+		orderAccountDAO.updateOrderFirstName(orderAccount.getFirstName(), orderAccount.getAccountId());
 	}
 }

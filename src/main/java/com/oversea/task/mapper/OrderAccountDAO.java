@@ -76,5 +76,5 @@ public interface OrderAccountDAO {
      */
 	public List<OrderAccount> getNeedRechargeAccountByStatusByGroup(String status,String expressCompanyIds,String siteNames);
 	
-	public int updateOrderFirstName(String firstName,Long id);
+	public int updateOrderFirstName(String firstName,long id);
 }

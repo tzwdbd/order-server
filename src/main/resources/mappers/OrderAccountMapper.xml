@@ -61,5 +61,8 @@
         select * from automan.order_account_new where status in (${status}) and express_company_id  in (${expressCompanyIds}) and account_type in (${siteNames}) group by device_id ORDER BY effective_time ;
     </select>
     
+    <update id="updateOrderFirstName" parameterType="map">
+        update automan.order_account_new set first_name=#{firstName} where account_id=#{id}
+    </update>
 
 </mapper>

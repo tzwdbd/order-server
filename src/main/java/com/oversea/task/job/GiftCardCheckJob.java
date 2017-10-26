@@ -109,7 +109,7 @@ public class GiftCardCheckJob implements RpcCallback{
 			return;
 		}
 		OrderAccount orderAccount = (OrderAccount) taskResult.getValue();
-		log.error("收到:"+orderAccount.getAccountId()+"的礼品卡为"+orderAccount.getBalanceWb());
+		log.error("收到:"+orderAccount.getAccountId()+"的礼品卡为"+orderAccount.getBalanceWb()+" 的卡号为"+orderAccount.getFirstName());
 		
 		GiftCardCheck giftCardCheck = new GiftCardCheck();
 		giftCardCheck.setAccountId((long)orderAccount.getAccountId());

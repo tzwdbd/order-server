@@ -61,8 +61,18 @@
         select * from automan.order_account_new where status in (${status}) and express_company_id  in (${expressCompanyIds}) and account_type in (${siteNames}) group by device_id ORDER BY effective_time ;
     </select>
     
-    <update id="updateOrderFirstName" parameterType="map">
-        update automan.order_account_new set first_name=#{firstName} where account_id=#{id}
+    <update id="updateOrderFirstNameAndRecipients" parameterType="com.oversea.task.domain.OrderAccount">
+       update automan.order_account_new set modify_time=now()
+			<if test="cardNo!=null">
+				,recipients=#{cardNo}
+			</if>
+			<if test="suffixNo!=null">
+				,recipients_old=#{suffixNo}
+			</if>
+			<if test="firstName!=null">
+				,first_name=#{firstName}
+			</if>
+		where account_id=#{accountId}
     </update>
 
 </mapper>

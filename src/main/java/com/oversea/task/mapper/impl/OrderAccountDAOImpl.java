@@ -105,10 +105,7 @@ public class OrderAccountDAOImpl extends BaseDao implements OrderAccountDAO {
 	}
 
 	@Override
-	public int updateOrderFirstName(String firstName, long id) {
-		Map<String, Object> map = new HashMap<String, Object>();
-        map.put("id", id);
-        map.put("firstName", firstName);
-        return getSqlSession().update("OrderAccountMapper.updateOrderFirstName", map);
+	public int updateOrderFirstNameAndRecipients(OrderAccount orderAccount) {
+        return getSqlSession().update("OrderAccountMapper.updateOrderFirstNameAndRecipients", orderAccount);
 	}
 }

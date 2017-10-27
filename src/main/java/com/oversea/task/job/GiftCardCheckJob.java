@@ -109,7 +109,7 @@ public class GiftCardCheckJob implements RpcCallback{
 			return;
 		}
 		OrderAccount orderAccount = (OrderAccount) taskResult.getValue();
-		log.error("收到:"+orderAccount.getAccountId()+"的礼品卡为"+orderAccount.getBalanceWb()+" 的卡号为"+orderAccount.getFirstName());
+		log.error("收到:"+orderAccount.getAccountId()+"的礼品卡为"+orderAccount.getBalanceWb()+" 的卡号为"+orderAccount.getFirstName()+" 的prime 类型为"+orderAccount.getCardNo()+" 的prime过期时间为"+orderAccount.getSuffixNo());
 		
 		GiftCardCheck giftCardCheck = new GiftCardCheck();
 		giftCardCheck.setAccountId((long)orderAccount.getAccountId());
@@ -152,6 +152,11 @@ public class GiftCardCheckJob implements RpcCallback{
 		giftCardCheck.setRmb(rmbs);
 		giftCardCheckDAO.addGiftCardCheck(giftCardCheck);
 		orderAccountDAO.updateOrderAccountStatusAndBalanceWb(orderAccount.getAccountId(), AccountStatus.Init.getValue(), orderAccount.getBalanceWb());
-		orderAccountDAO.updateOrderFirstName(orderAccount.getFirstName(), orderAccount.getAccountId());
+		OrderAccount oa = new OrderAccount();
+		oa.setAccountId(orderAccount.getAccountId());
+		oa.setFirstName(orderAccount.getFirstName());
+		oa.setSuffixNo(orderAccount.getSuffixNo());
+		oa.setCardNo(orderAccount.getCardNo());
+		orderAccountDAO.updateOrderFirstNameAndRecipients(oa);
 	}
 }

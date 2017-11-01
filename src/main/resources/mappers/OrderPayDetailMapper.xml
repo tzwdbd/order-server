@@ -102,7 +102,7 @@
     </insert>
     <select id="getOrderPayDetailByAccountId" parameterType="map" resultMap="OrderPayDetail">
     <![CDATA[
-		select * from automan.order_pay_detail where account_id=#{accountId} and pay_type ='giftcard' and gmt_create>#{startTime} and gmt_create<#{endTime} group by order_no 
+		select * from automan.order_pay_detail where account_id=#{accountId} and pay_type ='giftcard' and status_type = -1 and gmt_create>#{startTime} and gmt_create<#{endTime} group by order_no 
 		]]>
 	</select>
     

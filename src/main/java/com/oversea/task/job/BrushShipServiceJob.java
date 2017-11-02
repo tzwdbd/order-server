@@ -17,6 +17,7 @@ import com.oversea.rabbitmq.utils.StringUtil;
 import com.oversea.task.common.TaskService;
 import com.oversea.task.domain.BrushOrderDetail;
 import com.oversea.task.domain.ExpressNode;
+import com.oversea.task.domain.ExternalOrderDetail;
 import com.oversea.task.domain.OrderAccount;
 import com.oversea.task.domain.RobotOrderDetail;
 import com.oversea.task.enums.AutoBuyStatus;
@@ -119,6 +120,12 @@ public class BrushShipServiceJob implements RpcCallback{
 				BrushOrderDetail brushOrderDetail = (BrushOrderDetail) task.getParam("brushOrderDetail");
 				brushOrderDetailDAO.updateStatus(brushOrderDetail.getId(), AutoBuyStatus.AUTO_SCRIBE_ORDER_NOT_READY.getValue());
 				log.error("刷单订单号:"+brushOrderDetail.getOrderNo()+"提交爬取物流详情成功"+"ip:"+task.getGroup());
+			}
+		}else{
+			if(objs != null){
+				Task task = (Task)objs[0];
+				BrushOrderDetail brushOrderDetail = (BrushOrderDetail) task.getParam("brushOrderDetail");
+				log.error("订单号:"+brushOrderDetail.getOrderNo()+"提交爬取物流失败");
 			}
 		}
 	}

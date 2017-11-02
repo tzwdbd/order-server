@@ -343,7 +343,7 @@
 
 <select id="getBrushOrderDetailListBystatus"  parameterType="map" resultMap="BrushOrderDetail">
 	select <include refid="BrushOrderDetail_Column_List"/>
- from brush_order_detail where status in(${status}) and is_direct is null and express_status=0
+ from brush_order_detail where status in(${status}) and is_direct !='yes' and express_status=0
 </select>
 
 <select id="getBrushOrderDetailListByExpressstatus"  parameterType="map" resultMap="BrushOrderDetail">

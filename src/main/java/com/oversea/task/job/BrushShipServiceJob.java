@@ -166,13 +166,25 @@ public class BrushShipServiceJob implements RpcCallback{
         if(!(_brushOrderDetail.getStatus() != null && _brushOrderDetail.getStatus().equals(100))){//100状态不用修改
         	_brushOrderDetail.setStatus(brushOrderDetail.getStatus());
         }
-        if(brushOrderDetail.getStatus()!=null && brushOrderDetail.getStatus()==100 && StringUtil.isBlank(_brushOrderDetail.getReviewContent())){
+        if(brushOrderDetail.getStatus()!=null && brushOrderDetail.getStatus()==100){
         	_brushOrderDetail.setExpressStatus(1);
+        	if(!StringUtil.isBlank(_brushOrderDetail.getFeedbackContent())){
+        		_brushOrderDetail.setExpressStatus(5);
+        	}else{
+        		if(!StringUtil.isBlank(_brushOrderDetail.getReviewContent())){
+            		_brushOrderDetail.setExpressStatus(6);
+            	}
+        	}
+        	
         }
         if(finishList.size()>0 && !StringUtil.isBlank(brushOrderDetail.getExpressNo()) && finishList.contains(brushOrderDetail.getExpressNo())){
         	_brushOrderDetail.setExpressStatus(14);
-        	if(!StringUtil.isBlank(_brushOrderDetail.getReviewContent())){
+        	if(!StringUtil.isBlank(_brushOrderDetail.getFeedbackContent())){
         		_brushOrderDetail.setExpressStatus(5);
+        	}else{
+        		if(!StringUtil.isBlank(_brushOrderDetail.getReviewContent())){
+            		_brushOrderDetail.setExpressStatus(6);
+            	}
         	}
 		}
         brushOrderDetailDAO.updateBrushOrderDetailByDynamic(_brushOrderDetail);

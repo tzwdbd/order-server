@@ -221,6 +221,8 @@ public class BrushOrderServiceJob implements RpcCallback{
             _brushOrderDetail.setGmtModified(new Date());
             _brushOrderDetail.setStatus(brushOrderDetail.getStatus() == AutoBuyStatus.AUTO_ORDER_ING.getValue() ? AutoBuyStatus.CLIENT_ORDER_TASK_STATUS_ERROR.getValue() : brushOrderDetail.getStatus());
             _brushOrderDetail.setTotalPrice(brushOrderDetail.getTotalPrice());
+            String rmbPrice = getRmbPrice(brushOrderDetail.getUnits(),brushOrderDetail.getTotalPrice());
+            _brushOrderDetail.setRmbPrice(rmbPrice);
             _brushOrderDetail.setSinglePrice(brushOrderDetail.getSinglePrice());
             _brushOrderDetail.setMallOrderNo(brushOrderDetail.getMallOrderNo());
             _brushOrderDetail.setIsManual("NO");

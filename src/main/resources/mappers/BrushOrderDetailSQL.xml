@@ -343,12 +343,12 @@
 
 <select id="getBrushOrderDetailListBystatus"  parameterType="map" resultMap="BrushOrderDetail">
 	select <include refid="BrushOrderDetail_Column_List"/>
- from brush_order_detail where status in(${status}) and ( is_direct is null or is_direct = '0') and express_status=0
+ from brush_order_detail where status in(${status}) and ( is_direct is null or is_direct = '0') and express_status=0 order by gmt_modified
 </select>
 
 <select id="getBrushOrderDetailListByExpressstatus"  parameterType="map" resultMap="BrushOrderDetail">
 	select <include refid="BrushOrderDetail_Column_List"/>
- from brush_order_detail where express_status in(${expressStatus}) and status = 100
+ from brush_order_detail where express_status in(${expressStatus}) and status = 100 order by gmt_modified
 </select>
 
 <select id="getBrushOrderDetailListByThree"  parameterType="map" resultMap="BrushOrderDetail">

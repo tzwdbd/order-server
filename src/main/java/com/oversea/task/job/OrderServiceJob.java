@@ -129,7 +129,7 @@ public class OrderServiceJob implements RpcCallback{
             List<UserTradeDTL> list1 = new ArrayList<UserTradeDTL>();
             List<RobotOrderDetail> list0 = robotOrderDetailDAO.getRobotOrderDetailByOrderNo(orderNo);
             for(UserTradeDTL utdtl:list){
-            	if(utdtl.getStatus()<40 && utdtl.getStockStatus()<3){
+            	if(utdtl.getStockStatus()<3){
             		list1.add(utdtl);
             	}
             }
@@ -144,6 +144,12 @@ public class OrderServiceJob implements RpcCallback{
             	if(o.getFromId()!=null && o.getFromId()>0){
             		stockOrderList.add(o);
             		log.error("囤货匹配订单orderNo = "+o.getOrderNo()+"remove掉 list size＝"+orderList.size());
+            	}
+            }
+            for (RobotOrderDetail o: orderList){
+            	if(o.getStatus()==100){
+            		stockOrderList.add(o);
+            		log.error("100订单orderNo = "+o.getOrderNo()+"remove掉 list size＝"+orderList.size());
             	}
             }
             orderList.removeAll(stockOrderList);

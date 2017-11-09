@@ -129,7 +129,7 @@ public class OrderServiceJob implements RpcCallback{
             List<UserTradeDTL> list1 = new ArrayList<UserTradeDTL>();
             List<RobotOrderDetail> list0 = robotOrderDetailDAO.getRobotOrderDetailByOrderNo(orderNo);
             for(UserTradeDTL utdtl:list){
-            	if(utdtl.getStatus()<40 || utdtl.getStockStatus()==null || utdtl.getStockStatus()<3){
+            	if(utdtl.getStatus()<40 && utdtl.getStockStatus()<3){
             		list1.add(utdtl);
             	}
             }

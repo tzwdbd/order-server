@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -69,7 +70,7 @@ public class ExternalShipServiceJob implements RpcCallback{
 		try{
 			List<ExternalOrderDetail> externalOrderDetails = externalOrderDetailDAO.findExternalOrderDetailsForSpiderExpress(getScanStatus());
 			//按orderno 分组
-			Map<String,List<ExternalOrderDetail>> map = new HashMap<String, List<ExternalOrderDetail>>();
+			LinkedHashMap<String,List<ExternalOrderDetail>> map = new LinkedHashMap<String, List<ExternalOrderDetail>>();
 			for(ExternalOrderDetail externaOrderDeatil:externalOrderDetails){
 				if(!map.containsKey(externaOrderDeatil.getSaleOrderCode())){
 					List<ExternalOrderDetail> list = new ArrayList<ExternalOrderDetail>();

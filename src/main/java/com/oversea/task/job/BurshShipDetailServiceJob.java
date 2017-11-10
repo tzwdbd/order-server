@@ -107,6 +107,12 @@ public class BurshShipDetailServiceJob implements RpcCallback{
 				BrushOrderDetail brushOrderDetail = (BrushOrderDetail) task.getParam("brushOrderDetail");
 				log.error("刷单订单号:"+brushOrderDetail.getOrderNo()+"提交爬取物流详情成功"+"ip:"+task.getGroup());
 			}
+		}else{
+			if(objs != null){
+				Task task = (Task)objs[0];
+				BrushOrderDetail brushOrderDetail = (BrushOrderDetail) task.getParam("brushOrderDetail");
+				log.error("订单号:"+brushOrderDetail.getOrderNo()+"提交爬取物流失败");
+			}
 		}
 	}
 

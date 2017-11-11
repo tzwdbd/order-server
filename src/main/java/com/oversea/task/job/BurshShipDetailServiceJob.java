@@ -90,6 +90,7 @@ public class BurshShipDetailServiceJob implements RpcCallback{
                 
                 if(brushOrderDetail.getExpressStatus() ==6 && "amazon.jp".equals(brushOrderDetail.getSiteName())){
                 	if((new Date().getTime()-brushOrderDetail.getGmtModified().getTime())/1000/60/24/60<5){
+                		log.error("============brushOrderDetail"+ brushOrderDetail.getOrderNo()+"时辰未到");
                 		continue;
                 	}
                 }

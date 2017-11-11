@@ -88,6 +88,12 @@ public class BurshShipDetailServiceJob implements RpcCallback{
                 task.addParam("account", account);
                 task.setGroup(ip);
                 
+                if(brushOrderDetail.getExpressStatus() ==6 && "amazon.jp".equals(brushOrderDetail.getSiteName())){
+                	if((new Date().getTime()-brushOrderDetail.getGmtModified().getTime())/1000/60/24/60<5){
+                		continue;
+                	}
+                }
+                
                 TaskService taskService = (TaskService)rpcServerProxy.wrapProxy(TaskService.class, ip, this);
                 taskService.burshShipService(task);
 	    	}

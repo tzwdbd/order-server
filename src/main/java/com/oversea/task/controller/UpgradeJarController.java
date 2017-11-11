@@ -54,9 +54,9 @@ public class UpgradeJarController {
     @Resource
     private ClientJarVersionProcessor clientJarVersionProcessor;
     
-    private static final int BATCH_COUNT = 12;//一批更新12个
+    private static final int BATCH_COUNT = 24;//一批更新12个
     
-    private static final int BATCH_TIME = 25000;//每隔25秒更新一批
+    private static final int BATCH_TIME = 5000;//每隔5秒更新一批
     
 
     private volatile AtomicReference<byte[]> zipRef = new AtomicReference<byte[]>();

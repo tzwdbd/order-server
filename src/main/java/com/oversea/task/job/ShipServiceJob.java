@@ -244,7 +244,7 @@ public class ShipServiceJob implements RpcCallback{
             	robotOrderDetailDAO.updateRobotOrderDetail(_orderDetail);
             	continue ;
             }
-            if(!StringUtil.isBlank(_orderDetail.getExpressNo()) && _orderDetail.getExpressNo().startsWith("E") && !StringUtil.isBlank(orderDetail.getExpressNo()) && !_orderDetail.getExpressNo().equals(orderDetail.getExpressNo())){
+            if(!StringUtil.isBlank(_orderDetail.getExpressNo()) && !StringUtil.isBlank(orderDetail.getExpressNo()) && !_orderDetail.getExpressNo().equals(orderDetail.getExpressNo())){
             	//换单号
             	UserTradeExpress userTradeExpress = userTradeExpressDAO.getUserTradeExpressByExpressNo(_orderDetail.getExpressNo()) ;
             	if(userTradeExpress==null){

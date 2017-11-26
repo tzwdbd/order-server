@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -120,7 +121,7 @@ public class ManualShipService implements RpcCallback{
     	log.error("==========handleShip run begin============");
     	List<RobotOrderDetail> orderDetails = robotOrderDetailDAO.getOrderDetailByMallStatus();
     	//按orderno 分组
-		Map<String,List<RobotOrderDetail>> map = new HashMap<String, List<RobotOrderDetail>>();
+    	LinkedHashMap<String,List<RobotOrderDetail>> map = new LinkedHashMap<String, List<RobotOrderDetail>>();
 		for(RobotOrderDetail robotOrderDetail:orderDetails){
 			if(!map.containsKey(robotOrderDetail.getOrderNo())){
 				List<RobotOrderDetail> list = new ArrayList<RobotOrderDetail>();

@@ -1,6 +1,7 @@
 package com.oversea.task.job;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -92,7 +93,7 @@ public class ManualShipService implements RpcCallback{
     public void handleShip(String orderNo,int groupNumber,int steps){
     	log.error("==========handleShip begin============");
     	List<RobotOrderDetail> orderDetails = robotOrderDetailDAO.getOrderDetailByOrderNoGroupNumber(orderNo, groupNumber);
-            
+      
     	Task task = new TaskDetail();
         OrderAccount account = orderAccountDAO.findById(orderDetails.get(0).getAccountId());
         Integer deviceId = orderDetails.get(0).getDeviceId();
@@ -118,30 +119,32 @@ public class ManualShipService implements RpcCallback{
     public void run(){
     	log.error("==========handleShip run begin============");
     	List<RobotOrderDetail> orderDetails = robotOrderDetailDAO.getOrderDetailByMallStatus();
-    	if(orderDetails!=null && orderDetails.size()>0){
-	    	Task task = new TaskDetail();
-	        OrderAccount account = orderAccountDAO.findById(orderDetails.get(0).getAccountId());
-	        Integer deviceId = orderDetails.get(0).getDeviceId();
-	        String ip = orderDeviceDAO.findById(deviceId).getDeviceIp();
-	        Map<Long, String> asinCodeMap = new HashMap<Long, String>();
-	        for (RobotOrderDetail detail : orderDetails) {
-	            long productEntityId = detail.getProductEntityId();
-	            String asinCode = robotOrderDetailDAO.getExternalProductEntityId(productEntityId);
-	            asinCodeMap.put(productEntityId, asinCode);
-	        }
-	        task.addParam("asinMap", asinCodeMap);
-	        task.addParam("robotOrderDetails", orderDetails);
-	        task.addParam("account", account);
-	        task.setGroup(ip);
-	        
-	        getAutoOrderBystep(task, 3, orderDetails.get(0).getSiteName());
-	        TaskService taskService = (TaskService)rpcServerProxy.wrapProxy(TaskService.class, ip, this);
-	        taskService.manualShip(task);
+    	//按orderno 分组
+		Map<String,List<RobotOrderDetail>> map = new HashMap<String, List<RobotOrderDetail>>();
+		for(RobotOrderDetail robotOrderDetail:orderDetails){
+			if(!map.containsKey(robotOrderDetail.getOrderNo())){
+				List<RobotOrderDetail> list = new ArrayList<RobotOrderDetail>();
+				list.add(robotOrderDetail);
+				map.put(robotOrderDetail.getOrderNo(), list);
+			}else{
+				map.get(robotOrderDetail.getOrderNo()).add(robotOrderDetail);
+			}
+		}
+		if(map.size() > 0){
+    		for (Map.Entry<String,List<RobotOrderDetail>> entry : map.entrySet()) {  
+    			List<RobotOrderDetail> temp = entry.getValue();
+    			processOrder(temp);
+    		}
     	}
+    	
         log.error("==========ManualShipService end============");
     }
+    
+    private void processOrder(List<RobotOrderDetail> orderDetails) {
+    	handleShip(orderDetails.get(0).getOrderNo(), 0, 3);
+    }
 
-    @Override
+	@Override
 	public void callbackAck(boolean isSuccess, Method method, Object[] objs) {
 		// TODO Auto-generated method stub
 		if(isSuccess){
@@ -169,21 +172,19 @@ public class ManualShipService implements RpcCallback{
         List<RobotOrderDetail> orderDetails = (List<RobotOrderDetail>) taskResult.getValue();
         log.error("callbackResult订单号:"+orderDetails.get(0).getOrderNo()+"--->status="+orderDetails.get(0).getStatus()+"--->express="+orderDetails.get(0).getExpressNo()+"--->company="+orderDetails.get(0).getExpressCompany());
         
-        List<RobotOrderDetail> orderDetailLists = robotOrderDetailDAO.getRobotOrderDetailByOrderNo(orderDetails.get(0).getOrderNo());
-        for(RobotOrderDetail r:orderDetailLists){
-        	if(r.getAccountId().equals(orderDetails.get(0).getAccountId())){
-        		r.setStatus(orderDetails.get(0).getStatus());
-        		if(orderDetails.get(0).getStatus()==100){
-	        		if(!StringUtil.isBlank(orderDetails.get(0).getExpressNo())){
-	        			r.setExpressNo(orderDetails.get(0).getExpressNo());
-	        		}
-	        		if(!StringUtil.isBlank(orderDetails.get(0).getExpressCompany())){
-	        			r.setExpressCompany(orderDetails.get(0).getExpressCompany());
-	        		}
+        for(RobotOrderDetail orderDetail:orderDetails){
+        	RobotOrderDetail _orderDetail = robotOrderDetailDAO.getRobotOrderDetailById(orderDetail.getId());
+        	_orderDetail.setStatus(orderDetail.getStatus());
+    		if(orderDetail.getStatus()==100){
+        		if(!StringUtil.isBlank(orderDetail.getExpressNo())){
+        			_orderDetail.setExpressNo(orderDetail.getExpressNo());
         		}
-        		r.setGmtModified(new Date());
-    			robotOrderDetailDAO.updateRobotOrderDetail(r);
-        	}
+        		if(!StringUtil.isBlank(orderDetail.getExpressCompany())){
+        			_orderDetail.setExpressCompany(orderDetail.getExpressCompany());
+        		}
+    		}
+    		_orderDetail.setGmtModified(new Date());
+			robotOrderDetailDAO.updateRobotOrderDetail(_orderDetail);
         }
 	}
 	

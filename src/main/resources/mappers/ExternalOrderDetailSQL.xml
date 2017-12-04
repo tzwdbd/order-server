@@ -372,4 +372,10 @@
  from external_order_detail where `status` in(${status})  order by gmt_modified
 </select>
 
+<select id="countExternalOrderDetail"  parameterType="map" resultType="java.lang.Integer">
+<![CDATA[
+	select count(1) from automan.external_order_detail where account_id = #{accountId} and company = #{company} and site_name = #{siteName} and sale_order_code!=#{saleOrderCode} and id<#{id} group by sale_order_code;
+]]>
+</select>
+
 </mapper>

@@ -150,9 +150,7 @@ public class ExternalOrderServiceJob implements RpcCallback{
             for (ExternalOrderDetail eo : temp) {
             	externalOrderDetailDAO.updateStatus(AutoBuyStatus.AUTO_ORDER_ING.getValue(),eo.getId());
             }
-
-            int cnt = (int) (Math.random()*10);
-            //固定4个地址
+            int cnt = externalOrderDetailDAO.countExternalOrderDetail(externalOrderDetail.getSaleOrderCode(),externalOrderDetail.getAccountId(),externalOrderDetail.getCompany(),externalOrderDetail.getSiteName(),externalOrderDetail.getId());
             task.addParam("count", String.valueOf(cnt));
             
            	if(externalOrderDetail.getCompany()!=null && externalOrderDetail.getCompany()>0){

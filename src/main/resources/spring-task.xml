@@ -79,6 +79,8 @@
 	
 	<bean id="rechargedNowServiceJob" class="com.oversea.task.job.RechargedNowServiceJob"/>
 	
+	<bean id="testOrderServiceJob" class="com.oversea.task.job.TestOrderServiceJob"/>
+	
 	<bean id="machineStatusProcessor" class="com.oversea.task.machine.MachineStatusProcessor" depends-on="springObjectFactory"/>
    
 </beans>

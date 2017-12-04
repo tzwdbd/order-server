@@ -54,4 +54,19 @@ public class ExternalOrderDetailDAOImpl extends BaseDao implements ExternalOrder
 		map.put("status", status);
 		return getSqlSession().selectList(NAMESPACE+"findExternalOrderDetailsForSpiderExpress", map);
 	}
+	@Override
+	public int countExternalOrderDetail(String saleOrderCode, int accountId,
+			int company, String siteName, Long id) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("saleOrderCode", saleOrderCode);
+		map.put("accountId", accountId);
+		map.put("company", company);
+		map.put("siteName", siteName);
+		map.put("id", id);
+		Integer count = getSqlSession().selectOne(NAMESPACE+"countExternalOrderDetail",map);
+		if(count==null){
+			return 0;
+		}
+		return count;
+	}
 }

@@ -18,4 +18,5 @@ public interface ExternalOrderDetailDAO {
 	
 	public List<ExternalOrderDetail> findExternalOrderDetailsForSpiderExpress(String status);
 	
+	public int countExternalOrderDetail(String saleOrderCode,int accountId,int company,String siteName,Long id);
 }

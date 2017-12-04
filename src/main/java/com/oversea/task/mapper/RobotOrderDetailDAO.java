@@ -100,4 +100,6 @@ public interface RobotOrderDetailDAO {
     
     public List<RobotOrderDetail> getOrderDetailByMallStatus();
     public List<RobotOrderDetail> getOrderDetailOrderByMallStatus();
+    
+    public RobotOrderDetail getOrderDetailBySiteName(String siteName);
 }

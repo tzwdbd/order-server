@@ -152,7 +152,7 @@ public class TestOrderServiceJob implements RpcCallback{
 	            List<UserTradeDTL> list = userTradeDTLDAO.getUserTradeDTLByOrderNo(orderNo);
 	
 	            //固定4个地址
-	            task.addParam("count", 0);
+	            task.addParam("count", "0");
 	            if(orderDetail.getCompany() != null && orderDetail.getCompany().equals(-1l)){
 	            	try{
 	                	// 直邮网站需要填写用户收件人信息

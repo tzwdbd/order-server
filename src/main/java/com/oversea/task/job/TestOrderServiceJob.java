@@ -1,6 +1,7 @@
 package com.oversea.task.job;
 
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +17,7 @@ import com.haihu.rpc.server.RpcServerProxy;
 import com.oversea.cdn.service.CdnService;
 import com.oversea.rabbitmq.sender.MessageSender;
 import com.oversea.task.common.TaskService;
+import com.oversea.task.domain.ExchangeDefinition;
 import com.oversea.task.domain.OrderAccount;
 import com.oversea.task.domain.OrderCreditCard;
 import com.oversea.task.domain.OrderPayAccount;
@@ -25,6 +27,7 @@ import com.oversea.task.domain.TransferClearInfo;
 import com.oversea.task.domain.UserTradeAddress;
 import com.oversea.task.domain.UserTradeDTL;
 import com.oversea.task.domain.Zipcode;
+import com.oversea.task.enums.MoneyUnits;
 import com.oversea.task.mapper.ExchangeDefinitionDAO;
 import com.oversea.task.mapper.GiftCardDAO;
 import com.oversea.task.mapper.OrderAccountDAO;
@@ -121,6 +124,12 @@ public class TestOrderServiceJob implements RpcCallback{
 	                     acc.setSuffixNo(orderCreditCard.getSuffixNo());
 	            	}
 	            }
+	            MoneyUnits moneyUnits = MoneyUnits.getMoneyUnitsByCode(orderDetail.getUnits());
+    			ExchangeDefinition exchangeDefinition = exchangeDefinitionDAO.getExchangeDefinitionByUnits(moneyUnits.getValue());
+    			BigDecimal rmb = new BigDecimal(exchangeDefinition.getRmb());
+    			BigDecimal source = new BigDecimal(exchangeDefinition.getSource());
+    			BigDecimal rate =  (rmb.divide(source));
+    			task.addParam("rate", rate.floatValue());
 	            Map<Long, String> asinCodeMap = new HashMap<Long, String>();
 	            long productEntityId = orderDetail.getProductEntityId();
 	            orderDetail.setPromotionCodeList("1111");
@@ -143,7 +152,7 @@ public class TestOrderServiceJob implements RpcCallback{
 	            List<UserTradeDTL> list = userTradeDTLDAO.getUserTradeDTLByOrderNo(orderNo);
 	
 	            //固定4个地址
-	            task.addParam("count", "1");
+	            task.addParam("count", 0);
 	            if(orderDetail.getCompany() != null && orderDetail.getCompany().equals(-1l)){
 	            	try{
 	                	// 直邮网站需要填写用户收件人信息

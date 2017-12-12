@@ -163,6 +163,10 @@ public class ExternalOrderServiceJob implements RpcCallback{
            			company = 35;
            		}else if(company==2 && ("amazon.jp").equalsIgnoreCase(externalOrderDetail.getSiteName())){
            			company = 36;
+           		}else if(company==4){
+           			company = 26;
+           		}else if(company==50){
+           			company = 50;
            		}else{
            			return ;
            		}

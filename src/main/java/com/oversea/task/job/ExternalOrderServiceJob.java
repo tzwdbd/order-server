@@ -20,9 +20,13 @@ import com.oversea.rabbitmq.sender.MessageSender;
 import com.oversea.task.common.TaskService;
 import com.oversea.task.domain.ExchangeBankDefinition;
 import com.oversea.task.domain.ExternalOrderDetail;
+import com.oversea.task.domain.GiftCard;
 import com.oversea.task.domain.OrderAccount;
+import com.oversea.task.domain.OrderCreditCard;
 import com.oversea.task.domain.OrderDevice;
+import com.oversea.task.domain.OrderPayAccount;
 import com.oversea.task.domain.OrderPayDetail;
+import com.oversea.task.domain.Resources;
 import com.oversea.task.domain.TransferClearInfo;
 import com.oversea.task.domain.UserTradeAddress;
 import com.oversea.task.enums.AutoBuyStatus;
@@ -95,7 +99,7 @@ public class ExternalOrderServiceJob implements RpcCallback{
 	private ResourcesDAO resourcesDAO;
     @Resource
     private RobotOrderDetailDAO robotOrderDetailDAO;
-    
+    private static final String PAYTYPE = "payType";//0信用卡
     public void run(){
     	log.error("==========ExternalOrderServiceJob begin============");
     	List<ExternalOrderDetail> externalOrderDetails = externalOrderDetailDAO.getExternalOrderDetailByStatus(500);
@@ -138,15 +142,65 @@ public class ExternalOrderServiceJob implements RpcCallback{
                 log.error("[Account]:" + externalOrderDetail.getAccountId() + "找不到对应的账号信息");
                 return;
             }
+            String expiryDate = null;
+            OrderCreditCard orderCreditCard = null;
+            if (acc.getCreditCardId() != null) {
+                String cardNo = orderAccountDAO.getOrderCreditCardNoByCardId(acc.getCreditCardId());
+                acc.setCardNo(cardNo);
+                String suffixNo = orderAccountDAO.getOrderCreditSuffixNoByCardId(acc.getCreditCardId());
+                acc.setSuffixNo(suffixNo);
+                
+                orderCreditCard  = orderCreditCardDAO.getOrderCreditCardById(acc.getCreditCardId());
+                if(orderCreditCard != null){
+                	 expiryDate = orderCreditCard.getExpiryDate();
+                }
+            }
             
             Task task = new TaskDetail();
+            
+            // 查询支付帐号及密码
+            if(acc.getPayAccountId() != null){
+            	OrderPayAccount orderPayAccount = orderPayAccountDAO.getOrderPayAccountById(acc.getPayAccountId());
+            	task.addParam("orderPayAccount", orderPayAccount);
+            	
+            	if(orderPayAccount.getCreditCardId() != null){
+            		 orderCreditCard  = orderCreditCardDAO.getOrderCreditCardById(orderPayAccount.getCreditCardId());
+            		 acc.setCardNo(orderCreditCard.getCardNo());
+                     acc.setSuffixNo(orderCreditCard.getSuffixNo());
+            	}
+            }
             
 			BigDecimal rmb = new BigDecimal(externalOrderDetail.getExchangeRate());
 			task.addParam("rate", rmb.floatValue());
             task.addParam("externalOrderDetails", temp);
             task.addParam("account", acc);
             task.addParam("mallName", externalOrderDetail.getSiteName());
+            task.addParam("expiryDate", expiryDate);
+            if(orderCreditCard != null){
+            	task.addParam("orderCreditCard", orderCreditCard);
+            }
             task.setGroup(ip);
+            boolean mark = false;
+            List<Resources> resourcesList = resourcesDAO.getSaleResourceByType(PAYTYPE);
+            for(Resources r:resourcesList){
+            	if(externalOrderDetail.getSiteName().equalsIgnoreCase(r.getName()) && "1".equals(r.getResValue())){
+            		task.addParam("type", "1");
+                	List<GiftCard> giftCardList = giftCardDAO.getPassWordCard(externalOrderDetail.getSiteName());
+                	if(giftCardList.size()==0){
+                		mark = true;
+                		break;
+                	}else{
+                		for(GiftCard giftCard : giftCardList){
+                    		giftCardDAO.updateGiftCardProcessStatus(giftCard.getId(), "yes");
+                    	}
+                		task.addParam("giftCardList", giftCardList);
+                	}
+                	break;
+            	}
+            }
+            if(mark){
+            	return;
+            }
             for (ExternalOrderDetail eo : temp) {
             	externalOrderDetailDAO.updateStatus(AutoBuyStatus.AUTO_ORDER_ING.getValue(),eo.getId());
             }

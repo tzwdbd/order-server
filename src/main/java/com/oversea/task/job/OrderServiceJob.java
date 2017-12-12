@@ -201,7 +201,6 @@ public class OrderServiceJob implements RpcCallback{
                 task.addParam("account", acc);
                 task.addParam("isPay", true);
                 task.addParam("mallName", firstOrderDetail.getSiteName());
-                task.addParam("expiryDate", expiryDate);
                 if(orderCreditCard != null){
                 	task.addParam("orderCreditCard", orderCreditCard);
                 }

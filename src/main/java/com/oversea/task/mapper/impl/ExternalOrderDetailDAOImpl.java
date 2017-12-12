@@ -56,7 +56,7 @@ public class ExternalOrderDetailDAOImpl extends BaseDao implements ExternalOrder
 	}
 	@Override
 	public int countExternalOrderDetail(String saleOrderCode, int accountId,
-			int company, String siteName, Long id) {
+			Integer company, String siteName, Long id) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("saleOrderCode", saleOrderCode);
 		map.put("accountId", accountId);

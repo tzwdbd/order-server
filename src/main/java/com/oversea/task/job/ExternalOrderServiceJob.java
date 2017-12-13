@@ -27,6 +27,7 @@ import com.oversea.task.domain.OrderDevice;
 import com.oversea.task.domain.OrderPayAccount;
 import com.oversea.task.domain.OrderPayDetail;
 import com.oversea.task.domain.Resources;
+import com.oversea.task.domain.ThirdPayDetail;
 import com.oversea.task.domain.TransferClearInfo;
 import com.oversea.task.domain.UserTradeAddress;
 import com.oversea.task.enums.AutoBuyStatus;
@@ -42,6 +43,7 @@ import com.oversea.task.mapper.OrderPayAccountDAO;
 import com.oversea.task.mapper.OrderPayDetailDAO;
 import com.oversea.task.mapper.ResourcesDAO;
 import com.oversea.task.mapper.RobotOrderDetailDAO;
+import com.oversea.task.mapper.ThirdPayDetailDAO;
 import com.oversea.task.mapper.UserTradeAddressDAO;
 import com.oversea.task.mapper.UserTradeDTLDAO;
 import com.oversea.task.mapper.ZipcodeDAO;
@@ -99,6 +101,9 @@ public class ExternalOrderServiceJob implements RpcCallback{
 	private ResourcesDAO resourcesDAO;
     @Resource
     private RobotOrderDetailDAO robotOrderDetailDAO;
+    @Resource
+	private ThirdPayDetailDAO thirdPayDetailDAO;
+    
     private static final String PAYTYPE = "payType";//0信用卡
     public void run(){
     	log.error("==========ExternalOrderServiceJob begin============");
@@ -336,6 +341,8 @@ public class ExternalOrderServiceJob implements RpcCallback{
         		try {
         			if(externalOrderDetailList.get(0).getCompany()!=null && externalOrderDetailList.get(0).getCompany()>0){
         				addOrderPayDetailLog(externalOrderDetailList);
+        			}else{
+        				addThirdPayDetailLog(externalOrderDetailList);
         			}
 				} catch (Exception e) {
 					log.error("消费流水记录出错",e);
@@ -395,6 +402,36 @@ public class ExternalOrderServiceJob implements RpcCallback{
 			String rmbPrice = getRmbPrice(externalOrderDetail.getUnit(),externalOrderDetail.getTotalPrice());
 			orderPayDetail.setRmbPrice(rmbPrice);
 			orderPayDetailDao.addOrderPayDetail(orderPayDetail);
+		}
+		
+	}
+	private void addThirdPayDetailLog(List<ExternalOrderDetail> externalOrderDetailList) {
+		for(ExternalOrderDetail _externalOrderDetail:externalOrderDetailList){
+			ThirdPayDetail thirdPayDetail = new ThirdPayDetail();
+			Long productId = 0L;
+			Long productEntityId = 0L;
+			ExternalOrderDetail externalOrderDetail = externalOrderDetailDAO.getExternalOrderDetailById(_externalOrderDetail.getId());
+			//orderAccount
+			thirdPayDetail.setAccountId(Long.parseLong(String.valueOf(externalOrderDetail.getAccountId())));
+			//OrderAccount orderAccount = orderAccountDAO.findById(externalOrderDetail.getAccountId());
+			thirdPayDetail.setProductId(productId);
+			thirdPayDetail.setProductEntityId(productEntityId);
+			thirdPayDetail.setUnits(externalOrderDetail.getUnit());
+			thirdPayDetail.setTotalPrice(externalOrderDetail.getTotalPrice());
+			thirdPayDetail.setSkuPrice(externalOrderDetail.getRealPriceOrg());
+			thirdPayDetail.setNum(externalOrderDetail.getItemCount());
+			thirdPayDetail.setSolePrice(String.valueOf(Float.parseFloat(externalOrderDetail.getRealPriceOrg())*externalOrderDetail.getItemCount()));
+			thirdPayDetail.setSiteName(externalOrderDetail.getSiteName());
+			thirdPayDetail.setOrderNo(externalOrderDetail.getSaleOrderCode());
+			thirdPayDetail.setGmtCreate(new Date());
+			thirdPayDetail.setOrderTime(externalOrderDetail.getOrderTime());
+			thirdPayDetail.setPayStatus(0);
+			if(!StringUtil.isBlank(externalOrderDetail.getSkuId())){
+				thirdPayDetail.setProductEntityId(Long.parseLong(externalOrderDetail.getSkuId()));
+			}
+			String rmbPrice = getRmbPrice(externalOrderDetail.getUnit(),externalOrderDetail.getTotalPrice());
+			thirdPayDetail.setRmbPrice(rmbPrice);
+			thirdPayDetailDAO.addThirdPayDetail(thirdPayDetail);
 		}
 		
 	}

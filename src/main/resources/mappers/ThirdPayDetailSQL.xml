@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="ThirdPayDetailSQL">
+<resultMap id="ThirdPayDetail"	type="com.oversea.task.domain.ThirdPayDetail">
+	<result  property="id"  column="id"/>
+	<result  property="orderNo"  column="order_no"/>
+	<result  property="siteName"  column="site_name"/>
+	<result  property="productId"  column="product_id"/>
+	<result  property="productEntityId"  column="product_entity_id"/>
+	<result  property="num"  column="num"/>
+	<result  property="skuPrice"  column="sku_price"/>
+	<result  property="solePrice"  column="sole_price"/>
+	<result  property="totalPrice"  column="total_price"/>
+	<result  property="rmbPrice"  column="rmb_price"/>
+	<result  property="units"  column="units"/>
+	<result  property="payStatus"  column="pay_status"/>
+	<result  property="accountId"  column="account_id"/>
+	<result  property="gmtCreate"  column="gmt_create"/>
+	<result  property="modifyTime"  column="modify_time"/>
+	<result  property="orderTime"  column="order_time"/>
+	<result  property="company"  column="company"/>
+	<result  property="isDirect"  column="is_direct"/>
+	<result  property="operatorCompany"  column="operator_company"/>
+</resultMap>
+
+<sql id="ThirdPayDetail_Column_List">
+		id,
+		order_no,
+		site_name,
+		product_id,
+		product_entity_id,
+		num,
+		sku_price,
+		sole_price,
+		total_price,
+		rmb_price,
+		units,
+		pay_status,
+		account_id,
+		gmt_create,
+		modify_time,
+		order_time,
+		company,
+		is_direct,
+		operator_company
+</sql>
+
+<insert id="addThirdPayDetail"  parameterType="com.oversea.task.domain.ThirdPayDetail">
+	INSERT INTO third_pay_detail (
+		order_no,
+		site_name,
+		product_id,
+		product_entity_id,
+		num,
+		sku_price,
+		sole_price,
+		total_price,
+		rmb_price,
+		units,
+		pay_status,
+		account_id,
+		gmt_create,
+		modify_time,
+		order_time,
+		company,
+		is_direct,
+		operator_company
+) VALUES (
+		#{orderNo},
+		#{siteName},
+		#{productId},
+		#{productEntityId},
+		#{num},
+		#{skuPrice},
+		#{solePrice},
+		#{totalPrice},
+		#{rmbPrice},
+		#{units},
+		#{payStatus},
+		#{accountId},
+		now(),
+		now(),
+		#{orderTime},
+		#{company},
+		#{isDirect},
+		#{operatorCompany})
+</insert>
+
+
+<update id="updateThirdPayDetailById"  parameterType="com.oversea.task.domain.ThirdPayDetail">
+	update third_pay_detail set
+		order_no=#{orderNo},
+		site_name=#{siteName},
+		product_id=#{productId},
+		product_entity_id=#{productEntityId},
+		num=#{num},
+		sku_price=#{skuPrice},
+		sole_price=#{solePrice},
+		total_price=#{totalPrice},
+		rmb_price=#{rmbPrice},
+		units=#{units},
+		pay_status=#{payStatus},
+		account_id=#{accountId},
+		gmt_create=#{gmtCreate},
+		modify_time=#{modifyTime},
+		order_time=#{orderTime},
+		company=#{company},
+		is_direct=#{isDirect},
+		operator_company=#{operatorCompany}
+	where id=#{id}
+</update>
+
+
+<update id="updateThirdPayDetailByDynamic"  parameterType="com.oversea.task.domain.ThirdPayDetail">
+	update third_pay_detail <set>
+		<if test="orderNo!= null">
+				order_no=#{orderNo},
+		</if>
+		<if test="siteName!= null">
+				site_name=#{siteName},
+		</if>
+		<if test="productId!= null">
+				product_id=#{productId},
+		</if>
+		<if test="productEntityId!= null">
+				product_entity_id=#{productEntityId},
+		</if>
+		<if test="num!= null">
+				num=#{num},
+		</if>
+		<if test="skuPrice!= null">
+				sku_price=#{skuPrice},
+		</if>
+		<if test="solePrice!= null">
+				sole_price=#{solePrice},
+		</if>
+		<if test="totalPrice!= null">
+				total_price=#{totalPrice},
+		</if>
+		<if test="rmbPrice!= null">
+				rmb_price=#{rmbPrice},
+		</if>
+		<if test="units!= null">
+				units=#{units},
+		</if>
+		<if test="payStatus!= null">
+				pay_status=#{payStatus},
+		</if>
+		<if test="accountId!= null">
+				account_id=#{accountId},
+		</if>
+		<if test="gmtCreate!= null">
+				gmt_create=#{gmtCreate},
+		</if>
+		<if test="modifyTime!= null">
+				modify_time=#{modifyTime},
+		</if>
+		<if test="orderTime!= null">
+				order_time=#{orderTime},
+		</if>
+		<if test="company!= null">
+				company=#{company},
+		</if>
+		<if test="isDirect!= null">
+				is_direct=#{isDirect},
+		</if>
+		<if test="operatorCompany!= null">
+				operator_company=#{operatorCompany}
+		</if>
+</set>
+
+	where id=#{id}
+</update>
+
+
+<select id="countThirdPayDetailById"  parameterType="java.lang.Long" resultType="java.lang.Integer">
+<![CDATA[
+	select count(1) from third_pay_detail where id=#{id}
+]]>
+</select>
+
+<select id="getThirdPayDetailById"  parameterType="java.lang.Long" resultMap="ThirdPayDetail">
+	select <include refid="ThirdPayDetail_Column_List"/>
+ from third_pay_detail where id=#{id}
+</select>
+
+</mapper>

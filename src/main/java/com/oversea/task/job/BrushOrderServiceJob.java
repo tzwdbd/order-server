@@ -45,6 +45,7 @@ import com.oversea.task.obj.Task;
 import com.oversea.task.obj.TaskDetail;
 import com.oversea.task.obj.TaskResult;
 import com.oversea.task.util.MathUtil;
+import com.oversea.task.util.ThreeDES;
 
 public class BrushOrderServiceJob implements RpcCallback{
 	
@@ -109,11 +110,11 @@ public class BrushOrderServiceJob implements RpcCallback{
 	                String cardNo = orderAccountDAO.getOrderCreditCardNoByCardId(acc.getCreditCardId());
 	                acc.setCardNo(cardNo);
 	                String suffixNo = orderAccountDAO.getOrderCreditSuffixNoByCardId(acc.getCreditCardId());
-	                acc.setSuffixNo(suffixNo);
+	                acc.setSuffixNo(ThreeDES.decryptMode(suffixNo));
 	                
 	                orderCreditCard  = orderCreditCardDAO.getOrderCreditCardById(acc.getCreditCardId());
 	                if(orderCreditCard != null){
-	                	 expiryDate = orderCreditCard.getExpiryDate();
+	                	 expiryDate = ThreeDES.decryptMode(orderCreditCard.getExpiryDate());
 	                }
 	            }
 	            
@@ -127,7 +128,7 @@ public class BrushOrderServiceJob implements RpcCallback{
 	            	if(orderPayAccount.getCreditCardId() != null){
 	            		 orderCreditCard  = orderCreditCardDAO.getOrderCreditCardById(orderPayAccount.getCreditCardId());
 	            		 acc.setCardNo(orderCreditCard.getCardNo());
-	                     acc.setSuffixNo(orderCreditCard.getSuffixNo());
+	                     acc.setSuffixNo(ThreeDES.decryptMode(orderCreditCard.getSuffixNo()));
 	            	}
 	            }
 	            Map<Long, String> asinCodeMap = new HashMap<Long, String>();

@@ -35,6 +35,7 @@ import com.oversea.task.obj.Task;
 import com.oversea.task.obj.TaskDetail;
 import com.oversea.task.obj.TaskResult;
 import com.oversea.task.util.OrderUtil;
+import com.oversea.task.util.ThreeDES;
 
 /**
  * 爬取物流详情
@@ -85,6 +86,7 @@ public class BurshShipDetailServiceJob implements RpcCallback{
                 asinCodeMap.put(productEntityId, asinCode);
                 task.addParam("asinMap", asinCodeMap);
                 task.addParam("brushOrderDetail", brushOrderDetail);
+                account.setLoginPwd(ThreeDES.decryptMode(account.getLoginPwd()));
                 task.addParam("account", account);
                 task.setGroup(ip);
                 

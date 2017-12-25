@@ -65,6 +65,7 @@ import com.oversea.task.obj.TaskResult;
 import com.oversea.task.util.IDcardUtil;
 import com.oversea.task.util.MathUtil;
 import com.oversea.task.util.StringUtil;
+import com.oversea.task.util.ThreeDES;
 @Component
 public class ManualOrderService implements RpcCallback{
 	
@@ -193,6 +194,7 @@ public class ManualOrderService implements RpcCallback{
 			BigDecimal rate =  (rmb.divide(source));
 			task.addParam("rate", rate.floatValue());
             task.addParam("robotOrderDetails", orderDetails);
+            acc.setLoginPwd(ThreeDES.decryptMode(acc.getLoginPwd()));
             task.addParam("account", acc);
             task.addParam("isPay", true);
             task.addParam("mallName", orderDetail.getSiteName());

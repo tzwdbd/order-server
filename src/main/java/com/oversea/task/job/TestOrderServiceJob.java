@@ -42,6 +42,7 @@ import com.oversea.task.mapper.ZipcodeDAO;
 import com.oversea.task.obj.Task;
 import com.oversea.task.obj.TaskDetail;
 import com.oversea.task.obj.TaskResult;
+import com.oversea.task.util.ThreeDES;
 
 public class TestOrderServiceJob implements RpcCallback{
 	
@@ -139,6 +140,7 @@ public class TestOrderServiceJob implements RpcCallback{
 	            List<RobotOrderDetail> robotOrderDetails = new ArrayList<RobotOrderDetail>();
 	            robotOrderDetails.add(orderDetail);
 	            task.addParam("robotOrderDetails", robotOrderDetails);
+	            acc.setLoginPwd(ThreeDES.decryptMode(acc.getLoginPwd()));
 	            task.addParam("account", acc);
 	            task.addParam("isPay", false);
 	            task.addParam("mallName", orderDetail.getSiteName());

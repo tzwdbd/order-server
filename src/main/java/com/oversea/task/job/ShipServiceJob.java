@@ -43,6 +43,7 @@ import com.oversea.task.obj.TaskDetail;
 import com.oversea.task.obj.TaskResult;
 import com.oversea.task.util.DateUtil;
 import com.oversea.task.util.OrderUtil;
+import com.oversea.task.util.ThreeDES;
 
 public class ShipServiceJob implements RpcCallback{
 	
@@ -103,6 +104,7 @@ public class ShipServiceJob implements RpcCallback{
 	                }
 	                task.addParam("asinMap", asinCodeMap);
 	                task.addParam("robotOrderDetails", list);
+	                account.setLoginPwd(ThreeDES.decryptMode(account.getLoginPwd()));
 	                task.addParam("account", account);
 	                task.setGroup(ip);
 	                

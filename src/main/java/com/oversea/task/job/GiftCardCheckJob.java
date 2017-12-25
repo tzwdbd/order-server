@@ -30,6 +30,7 @@ import com.oversea.task.obj.TaskDetail;
 import com.oversea.task.obj.TaskResult;
 import com.oversea.task.util.DateUtil;
 import com.oversea.task.util.MathUtil;
+import com.oversea.task.util.ThreeDES;
 
 public class GiftCardCheckJob implements RpcCallback{
 	
@@ -68,6 +69,7 @@ public class GiftCardCheckJob implements RpcCallback{
     			Task task = new TaskDetail();
                 Integer deviceId = account.getDeviceId();
                 String ip = orderDeviceDAO.findById(deviceId).getDeviceIp();
+                account.setLoginPwd(ThreeDES.decryptMode(account.getLoginPwd()));
                 task.addParam("account", account);
                 task.setGroup(ip);
                 orderAccountDAO.updateOrderAccountStatusTemp(account.getAccountId(), 0);

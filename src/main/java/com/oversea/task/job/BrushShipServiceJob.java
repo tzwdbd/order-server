@@ -28,6 +28,7 @@ import com.oversea.task.mapper.RobotOrderDetailDAO;
 import com.oversea.task.obj.Task;
 import com.oversea.task.obj.TaskDetail;
 import com.oversea.task.obj.TaskResult;
+import com.oversea.task.util.ThreeDES;
 
 public class BrushShipServiceJob implements RpcCallback{
 	
@@ -67,6 +68,7 @@ public class BrushShipServiceJob implements RpcCallback{
                 asinCodeMap.put(productEntityId, asinCode);
                 task.addParam("asinMap", asinCodeMap);
                 task.addParam("brushOrderDetail", brushOrderDetail);
+                account.setLoginPwd(ThreeDES.decryptMode(account.getLoginPwd()));
                 task.addParam("account", account);
                 task.setGroup(ip);
                 

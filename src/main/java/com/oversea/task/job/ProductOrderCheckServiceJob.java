@@ -32,6 +32,7 @@ import com.oversea.task.obj.Task;
 import com.oversea.task.obj.TaskDetail;
 import com.oversea.task.obj.TaskResult;
 import com.oversea.task.util.DateUtil;
+import com.oversea.task.util.ThreeDES;
 public class ProductOrderCheckServiceJob implements RpcCallback {
 
 	private Logger log = Logger.getLogger(getClass());
@@ -122,6 +123,7 @@ public class ProductOrderCheckServiceJob implements RpcCallback {
 		String ip = orderDeviceDAO.findById(siteResource.getPriority()).getDeviceIp();
 		Task task = new TaskDetail();
 		task.addParam("robotOrderDetails", productList);
+		acc.setLoginPwd(ThreeDES.decryptMode(acc.getLoginPwd()));
 		task.addParam("account", acc);
 		task.addParam("mallName", siteResource.getName());
 		task.addParam("skuMap", skuMap);

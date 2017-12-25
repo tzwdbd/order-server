@@ -35,6 +35,7 @@ import com.oversea.task.obj.TaskDetail;
 import com.oversea.task.obj.TaskResult;
 import com.oversea.task.util.DateUtil;
 import com.oversea.task.util.OrderUtil;
+import com.oversea.task.util.ThreeDES;
 
 /**
  * 爬取物流详情
@@ -93,6 +94,7 @@ public class ShipDetailServiceJob implements RpcCallback{
 	                }
 	                task.addParam("asinMap", asinCodeMap);
 	                task.addParam("robotOrderDetails", list);
+	                account.setLoginPwd(ThreeDES.decryptMode(account.getLoginPwd()));
 	                task.addParam("account", account);
 	                task.setGroup(ip);
 	                

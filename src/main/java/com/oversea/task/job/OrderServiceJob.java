@@ -199,6 +199,7 @@ public class OrderServiceJob implements RpcCallback{
     			BigDecimal rate =  (rmb.divide(source));
     			task.addParam("rate", rate.floatValue());
                 task.addParam("robotOrderDetails", orderList);
+                acc.setLoginPwd(ThreeDES.decryptMode(acc.getLoginPwd()));
                 task.addParam("account", acc);
                 task.addParam("isPay", true);
                 task.addParam("mallName", firstOrderDetail.getSiteName());

@@ -25,6 +25,7 @@ import com.oversea.task.obj.Task;
 import com.oversea.task.obj.TaskDetail;
 import com.oversea.task.obj.TaskResult;
 import com.oversea.task.util.StringUtil;
+import com.oversea.task.util.ThreeDES;
 
 
 public class RechargeServiceJob implements RpcCallback{
@@ -88,6 +89,7 @@ public class RechargeServiceJob implements RpcCallback{
                         OrderDevice orderDevice = orderDeviceDAO.findById(orderAccount.getDeviceId());
                         if (orderDevice != null) {
                         	Task task = new TaskDetail();
+                        	orderAccount.setLoginPwd(ThreeDES.decryptMode(orderAccount.getLoginPwd()));
                             task.addParam("account", orderAccount);
                             task.addParam("giftCard", list);
                             task.setGroup(orderDevice.getDeviceIp());

@@ -33,6 +33,7 @@ import com.oversea.task.mapper.UserTradeExpressDAO;
 import com.oversea.task.obj.Task;
 import com.oversea.task.obj.TaskDetail;
 import com.oversea.task.obj.TaskResult;
+import com.oversea.task.util.ThreeDES;
 
 public class ExternalShipServiceJob implements RpcCallback{
 	
@@ -116,6 +117,7 @@ public class ExternalShipServiceJob implements RpcCallback{
             }
             task.addParam("asinMap", asinCodeMap);
             task.addParam("externalOrderDetails", list);
+            account.setLoginPwd(ThreeDES.decryptMode(account.getLoginPwd()));
             task.addParam("account", account);
             task.setGroup(ip);
             

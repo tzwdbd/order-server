@@ -131,6 +131,7 @@ public class BrushOrderServiceJob implements RpcCallback{
 	                     acc.setSuffixNo(ThreeDES.decryptMode(orderCreditCard.getSuffixNo()));
 	            	}
 	            }
+	            acc.setLoginPwd(ThreeDES.decryptMode(acc.getLoginPwd()));
 	            Map<Long, String> asinCodeMap = new HashMap<Long, String>();
                 long productEntityId = brushOrderDetail.getProductEntityId();
                 String asinCode = robotOrderDetailDAO.getExternalProductEntityId(productEntityId);

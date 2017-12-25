@@ -179,6 +179,7 @@ public class ExternalOrderServiceJob implements RpcCallback{
 			BigDecimal rmb = new BigDecimal(externalOrderDetail.getExchangeRate());
 			task.addParam("rate", rmb.floatValue());
             task.addParam("externalOrderDetails", temp);
+            acc.setLoginPwd(ThreeDES.decryptMode(acc.getLoginPwd()));
             task.addParam("account", acc);
             task.addParam("mallName", externalOrderDetail.getSiteName());
             task.addParam("expiryDate", expiryDate);

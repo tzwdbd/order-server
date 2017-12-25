@@ -41,6 +41,7 @@ import com.oversea.task.mapper.ZipcodeDAO;
 import com.oversea.task.obj.Task;
 import com.oversea.task.obj.TaskDetail;
 import com.oversea.task.obj.TaskResult;
+import com.oversea.task.util.ThreeDES;
 @Component
 public class ManualShipService implements RpcCallback{
 	
@@ -107,6 +108,7 @@ public class ManualShipService implements RpcCallback{
         }
         task.addParam("asinMap", asinCodeMap);
         task.addParam("robotOrderDetails", orderDetails);
+        account.setLoginPwd(ThreeDES.decryptMode(account.getLoginPwd()));
         task.addParam("account", account);
         task.setGroup(ip);
         

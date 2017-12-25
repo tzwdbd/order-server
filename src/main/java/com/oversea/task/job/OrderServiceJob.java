@@ -223,6 +223,10 @@ public class OrderServiceJob implements RpcCallback{
                     		for(GiftCard giftCard : giftCardList){
                         		giftCardDAO.updateGiftCardProcessStatus(giftCard.getId(), "yes");
                         	}
+                    		for(GiftCard giftCard : giftCardList){
+                    			giftCard.setSecurityCode(ThreeDES.decryptMode(giftCard.getSecurityCode()));
+                    			giftCard.setPassWord(ThreeDES.decryptMode(giftCard.getPassWord()));
+                        	}
                     		task.addParam("giftCardList", giftCardList);
                     	}
                     	break;

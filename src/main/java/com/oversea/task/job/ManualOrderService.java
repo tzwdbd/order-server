@@ -179,6 +179,8 @@ public class ManualOrderService implements RpcCallback{
             // 查询支付帐号及密码
             if(acc.getPayAccountId() != null){
             	OrderPayAccount orderPayAccount = orderPayAccountDAO.getOrderPayAccountById(acc.getPayAccountId());
+            	orderPayAccount.setLoginPassword(ThreeDES.decryptMode(orderPayAccount.getLoginPassword()));
+            	orderPayAccount.setPayPassword(ThreeDES.decryptMode(orderPayAccount.getPayPassword()));
             	task.addParam("orderPayAccount", orderPayAccount);
             	
             	if(orderPayAccount.getCreditCardId() != null){

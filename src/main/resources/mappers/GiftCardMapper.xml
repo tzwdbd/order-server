@@ -44,9 +44,6 @@
         <if test="balance!= null">
             ,balance=#{balance}
         </if>
-        <if test="securityCode!= null">
-            ,security_code=#{securityCode}
-        </if>
         <if test="isUsed!= null">
             ,is_used=#{isUsed}
         </if>

@@ -3,6 +3,7 @@ package com.oversea.task.job;
 import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -96,83 +97,85 @@ public class BrushOrderServiceJob implements RpcCallback{
     
     public void run(){
     	log.error("==========BrushOrderServiceJob begin============");
-    	BrushOrderDetail brushOrderDetail = brushOrderDetailDAO.getBrushOrderDetailByDate(new Date());
-        if(brushOrderDetail!=null){
-	        String orderNo = brushOrderDetail.getOrderNo();
-	        String expiryDate = null;
-	        
-	        
-	        try {
-	            String ip = orderDeviceDAO.findById(brushOrderDetail.getDeviceId()).getDeviceIp();
-	            OrderAccount acc = orderAccountDAO.findById(brushOrderDetail.getAccountId());
-	            OrderCreditCard orderCreditCard = null;
-	            if (acc.getCreditCardId() != null) {
-	                String cardNo = orderAccountDAO.getOrderCreditCardNoByCardId(acc.getCreditCardId());
-	                acc.setCardNo(cardNo);
-	                String suffixNo = orderAccountDAO.getOrderCreditSuffixNoByCardId(acc.getCreditCardId());
-	                acc.setSuffixNo(ThreeDES.decryptMode(suffixNo));
-	                
-	                orderCreditCard  = orderCreditCardDAO.getOrderCreditCardById(acc.getCreditCardId());
-	                if(orderCreditCard != null){
-	                	 expiryDate = ThreeDES.decryptMode(orderCreditCard.getExpiryDate());
-	                }
-	            }
-	            
-	            Task task = new TaskDetail();
-	            BrushInfo brushInfo = brushInfoDAO.getBrushInfoById(brushOrderDetail.getBrushInfoId());
-	            // 查询支付帐号及密码
-	            if(acc.getPayAccountId() != null){
-	            	OrderPayAccount orderPayAccount = orderPayAccountDAO.getOrderPayAccountById(acc.getPayAccountId());
-	            	task.addParam("orderPayAccount", orderPayAccount);
-	            	
-	            	if(orderPayAccount.getCreditCardId() != null){
-	            		 orderCreditCard  = orderCreditCardDAO.getOrderCreditCardById(orderPayAccount.getCreditCardId());
-	            		 acc.setCardNo(orderCreditCard.getCardNo());
-	                     acc.setSuffixNo(ThreeDES.decryptMode(orderCreditCard.getSuffixNo()));
-	            	}
-	            }
-	            acc.setLoginPwd(ThreeDES.decryptMode(acc.getLoginPwd()));
-	            Map<Long, String> asinCodeMap = new HashMap<Long, String>();
-                long productEntityId = brushOrderDetail.getProductEntityId();
-                String asinCode = robotOrderDetailDAO.getExternalProductEntityId(productEntityId);
-                asinCodeMap.put(productEntityId, asinCode);
-                task.addParam("asinMap", asinCodeMap);
-	            task.addParam("brushOrderDetail", brushOrderDetail);
-	            task.addParam("brushInfo", brushInfo);
-	            task.addParam("account", acc);
-	            task.addParam("isPay", true);
-	            task.addParam("mallName", brushOrderDetail.getSiteName());
-	            task.addParam("expiryDate", expiryDate);
-	            if(orderCreditCard != null){
-	            	task.addParam("orderCreditCard", orderCreditCard);
-	            }
-	            task.addParam("expiryDate", expiryDate);
-	            task.setGroup(ip);
-	            
-	            
-	
-	            //固定4个地址
-	            task.addParam("count", "1");
-	            
-	        	TransferClearInfo transferClearInfo = robotOrderDetailDAO.getExpressAddress((long)brushOrderDetail.getCompany());
-	        	if(transferClearInfo!=null){
-	            	task.addParam("expressAddress", transferClearInfo.getRecipientName());
-	            	UserTradeAddress userTradeAddress = new UserTradeAddress();
-	            	userTradeAddress.setAddress(transferClearInfo.getRecipientAddress());
-	            	userTradeAddress.setCity(transferClearInfo.getRecipientCity());
-	            	userTradeAddress.setName(transferClearInfo.getRecipientName());
-	            	userTradeAddress.setState(transferClearInfo.getRecipientProvince());
-	            	userTradeAddress.setZip(transferClearInfo.getRecipientZipCode());
-	            	userTradeAddress.setMobile(transferClearInfo.getRecipientTel());
-	            	task.addParam("address", userTradeAddress);
-	        	}
-	        	brushOrderDetailDAO.updateStatus(brushOrderDetail.getId(),AutoBuyStatus.AUTO_ORDER_ING.getValue());
-	            TaskService taskService = (TaskService)rpcServerProxy.wrapProxy(TaskService.class, ip, this);
-	            taskService.burshOrderService(task);
-	        } catch (Exception e) {
-	            log.error("ORDERDETAIL:[" + orderNo + "]:" + e.getMessage(), e);
+    	List<BrushOrderDetail> brushOrderDetails = brushOrderDetailDAO.getBrushOrderDetailByDate(new Date());
+    	for(BrushOrderDetail brushOrderDetail:brushOrderDetails){
+	        if(brushOrderDetail!=null){
+		        String orderNo = brushOrderDetail.getOrderNo();
+		        String expiryDate = null;
+		        
+		        
+		        try {
+		            String ip = orderDeviceDAO.findById(brushOrderDetail.getDeviceId()).getDeviceIp();
+		            OrderAccount acc = orderAccountDAO.findById(brushOrderDetail.getAccountId());
+		            OrderCreditCard orderCreditCard = null;
+		            if (acc.getCreditCardId() != null) {
+		                String cardNo = orderAccountDAO.getOrderCreditCardNoByCardId(acc.getCreditCardId());
+		                acc.setCardNo(cardNo);
+		                String suffixNo = orderAccountDAO.getOrderCreditSuffixNoByCardId(acc.getCreditCardId());
+		                acc.setSuffixNo(ThreeDES.decryptMode(suffixNo));
+		                
+		                orderCreditCard  = orderCreditCardDAO.getOrderCreditCardById(acc.getCreditCardId());
+		                if(orderCreditCard != null){
+		                	 expiryDate = ThreeDES.decryptMode(orderCreditCard.getExpiryDate());
+		                }
+		            }
+		            
+		            Task task = new TaskDetail();
+		            BrushInfo brushInfo = brushInfoDAO.getBrushInfoById(brushOrderDetail.getBrushInfoId());
+		            // 查询支付帐号及密码
+		            if(acc.getPayAccountId() != null){
+		            	OrderPayAccount orderPayAccount = orderPayAccountDAO.getOrderPayAccountById(acc.getPayAccountId());
+		            	task.addParam("orderPayAccount", orderPayAccount);
+		            	
+		            	if(orderPayAccount.getCreditCardId() != null){
+		            		 orderCreditCard  = orderCreditCardDAO.getOrderCreditCardById(orderPayAccount.getCreditCardId());
+		            		 acc.setCardNo(orderCreditCard.getCardNo());
+		                     acc.setSuffixNo(ThreeDES.decryptMode(orderCreditCard.getSuffixNo()));
+		            	}
+		            }
+		            acc.setLoginPwd(ThreeDES.decryptMode(acc.getLoginPwd()));
+		            Map<Long, String> asinCodeMap = new HashMap<Long, String>();
+	                long productEntityId = brushOrderDetail.getProductEntityId();
+	                String asinCode = robotOrderDetailDAO.getExternalProductEntityId(productEntityId);
+	                asinCodeMap.put(productEntityId, asinCode);
+	                task.addParam("asinMap", asinCodeMap);
+		            task.addParam("brushOrderDetail", brushOrderDetail);
+		            task.addParam("brushInfo", brushInfo);
+		            task.addParam("account", acc);
+		            task.addParam("isPay", true);
+		            task.addParam("mallName", brushOrderDetail.getSiteName());
+		            task.addParam("expiryDate", expiryDate);
+		            if(orderCreditCard != null){
+		            	task.addParam("orderCreditCard", orderCreditCard);
+		            }
+		            task.addParam("expiryDate", expiryDate);
+		            task.setGroup(ip);
+		            
+		            
+		
+		            //固定4个地址
+		            task.addParam("count", "1");
+		            
+		        	TransferClearInfo transferClearInfo = robotOrderDetailDAO.getExpressAddress((long)brushOrderDetail.getCompany());
+		        	if(transferClearInfo!=null){
+		            	task.addParam("expressAddress", transferClearInfo.getRecipientName());
+		            	UserTradeAddress userTradeAddress = new UserTradeAddress();
+		            	userTradeAddress.setAddress(transferClearInfo.getRecipientAddress());
+		            	userTradeAddress.setCity(transferClearInfo.getRecipientCity());
+		            	userTradeAddress.setName(transferClearInfo.getRecipientName());
+		            	userTradeAddress.setState(transferClearInfo.getRecipientProvince());
+		            	userTradeAddress.setZip(transferClearInfo.getRecipientZipCode());
+		            	userTradeAddress.setMobile(transferClearInfo.getRecipientTel());
+		            	task.addParam("address", userTradeAddress);
+		        	}
+		        	brushOrderDetailDAO.updateStatus(brushOrderDetail.getId(),AutoBuyStatus.AUTO_ORDER_ING.getValue());
+		            TaskService taskService = (TaskService)rpcServerProxy.wrapProxy(TaskService.class, ip, this);
+		            taskService.burshOrderService(task);
+		        } catch (Exception e) {
+		            log.error("ORDERDETAIL:[" + orderNo + "]:" + e.getMessage(), e);
+		        }
 	        }
-        }
+    	}
         log.error("==========brushServiceJob end============");
     }
 

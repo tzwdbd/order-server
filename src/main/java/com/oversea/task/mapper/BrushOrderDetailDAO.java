@@ -11,7 +11,7 @@ public interface BrushOrderDetailDAO {
 	public BrushOrderDetail getBrushOrderDetailById(Long id);
 	public int countBrushOrderDetailById(Long id);
 	
-	public BrushOrderDetail getBrushOrderDetailByDate(Date dispatchTime);
+	public List<BrushOrderDetail> getBrushOrderDetailByDate(Date dispatchTime);
 	public void updateStatus(Long id,Integer status);
 	
 	public List<BrushOrderDetail> getBrushOrderDetailListBystatus(String status);

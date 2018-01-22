@@ -333,7 +333,7 @@
 <select id="getBrushOrderDetailByDate"  parameterType="map" resultMap="BrushOrderDetail">
 <![CDATA[ 
 	select *
- from automan.brush_order_detail where dispatch_time<#{dispatchTime} and status = 500 limit 1
+ from automan.brush_order_detail where dispatch_time<#{dispatchTime} and status = 500
  ]]>
 </select>
 

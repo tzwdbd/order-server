@@ -29,10 +29,10 @@ public class BrushOrderDetailDAOImpl extends BaseDao implements BrushOrderDetail
 		return (Integer)getSqlSession().selectOne(NAMESPACE+"countBrushOrderDetailById",id);
 }
 	@Override
-	public BrushOrderDetail getBrushOrderDetailByDate(Date dispatchTime) {
+	public List<BrushOrderDetail> getBrushOrderDetailByDate(Date dispatchTime) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("dispatchTime", dispatchTime);
-		return getSqlSession().selectOne(NAMESPACE+"getBrushOrderDetailByDate", map);
+		return getSqlSession().selectList(NAMESPACE+"getBrushOrderDetailByDate", map);
 	}
 	@Override
 	public void updateStatus(Long id, Integer status) {

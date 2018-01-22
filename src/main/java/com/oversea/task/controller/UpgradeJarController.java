@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.google.gson.Gson;
+import com.oversea.rabbitmq.utils.StringUtil;
 import com.oversea.task.update.ClientJarVersionProcessor;
 
 /**
@@ -129,17 +130,35 @@ public class UpgradeJarController {
 	public void versionCheck(HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
 		String version = request.getParameter("version");
+		String type = request.getParameter("type");
 		boolean isUpdate = false;
-		if(!StringUtils.isEmpty(version) && !StringUtils.isEmpty(clientJarVersionProcessor.getClientJarVersion())){
-			if(!version.equalsIgnoreCase(clientJarVersionProcessor.getClientJarVersion())){
-				if(clientNum.get() < BATCH_COUNT){
-					log.error("正在更新的ip:" + getIpAddress(request));
-					clientNum.addAndGet(1);
-					lastUpdateTime = System.currentTimeMillis();
-					isUpdate = true;
-				}else{
-					if(System.currentTimeMillis() - lastUpdateTime >= BATCH_TIME){
-						clientNum.set(0);
+		if(!StringUtil.isBlank(type) && "new".equals(type)){
+			if(!StringUtils.isEmpty(version) && !StringUtils.isEmpty(clientJarVersionProcessor.getNewjarVersion())){
+				if(!version.equalsIgnoreCase(clientJarVersionProcessor.getNewjarVersion())){
+					if(clientNum.get() < BATCH_COUNT){
+						log.error("正在更新的ip:" + getIpAddress(request));
+						clientNum.addAndGet(1);
+						lastUpdateTime = System.currentTimeMillis();
+						isUpdate = true;
+					}else{
+						if(System.currentTimeMillis() - lastUpdateTime >= BATCH_TIME){
+							clientNum.set(0);
+						}
+					}
+				}
+			}
+		}else{
+			if(!StringUtils.isEmpty(version) && !StringUtils.isEmpty(clientJarVersionProcessor.getClientJarVersion())){
+				if(!version.equalsIgnoreCase(clientJarVersionProcessor.getClientJarVersion())){
+					if(clientNum.get() < BATCH_COUNT){
+						log.error("正在更新的ip:" + getIpAddress(request));
+						clientNum.addAndGet(1);
+						lastUpdateTime = System.currentTimeMillis();
+						isUpdate = true;
+					}else{
+						if(System.currentTimeMillis() - lastUpdateTime >= BATCH_TIME){
+							clientNum.set(0);
+						}
 					}
 				}
 			}

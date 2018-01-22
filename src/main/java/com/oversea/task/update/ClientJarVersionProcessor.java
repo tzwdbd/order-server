@@ -1,6 +1,7 @@
 package com.oversea.task.update;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,6 +40,14 @@ public class ClientJarVersionProcessor extends Thread{
 				e.printStackTrace();
 			}
 		}
+	}
+	public String getNewjarVersion(){
+		try {
+			return MD5Util.calMD5(new File("/home/www/work/haihu/"+clientName));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	public String getClientJarVersion() {

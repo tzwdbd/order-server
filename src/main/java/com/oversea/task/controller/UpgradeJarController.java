@@ -97,7 +97,11 @@ public class UpgradeJarController {
      */
     @RequestMapping(value = "/upgrade_jar", method = RequestMethod.GET)
     public void upgradeJar(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String clientJarPath = clientJarFolderPath + clientZipName;
+    	String param = request.getParameter("r");
+    	String clientJarPath = clientJarFolderPath + clientZipName;
+    	if("new".equals(param)){
+    		clientJarPath = "/home/www/work/haihu/"+clientZipName;
+    	}
         //String clientJarPath = clientJarFolderPath + clientName;
         log.error("更新的路径为:"+clientJarPath);
         File file = new File(clientJarPath);

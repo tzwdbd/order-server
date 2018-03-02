@@ -23,6 +23,7 @@
 	<result  property="gmtModified"  column="gmt_modified"/>
 	<result  property="operatorId"  column="operator_id"/>
 	<result  property="productName"  column="product_name"/>
+	<result  property="shopName"  column="shop_name"/>
 	
 </resultMap>
 
@@ -187,7 +188,7 @@
 </select>
 
 <select id="getBrushInfoById"  parameterType="java.lang.Long" resultMap="BrushInfo">
-	select <include refid="BrushInfo_Column_List"/>
+	select * 
  from brush_info where id=#{id}
 </select>
 

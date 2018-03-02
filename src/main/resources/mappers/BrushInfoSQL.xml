@@ -23,8 +23,7 @@
 	<result  property="gmtModified"  column="gmt_modified"/>
 	<result  property="operatorId"  column="operator_id"/>
 	<result  property="productName"  column="product_name"/>
-	<result  property="shopName"  column="shop_name"/>
-	
+	<result  property="shopName"  column=shop_name/>
 </resultMap>
 
 <sql id="BrushInfo_Column_List">
@@ -46,7 +45,8 @@
 		gmt_create,
 		gmt_modified,
 		operator_id,
-		product_name
+		product_name,
+		shop_name
 </sql>
 
 <insert id="addBrushInfo"  parameterType="com.oversea.task.domain.BrushInfo">
@@ -188,7 +188,7 @@
 </select>
 
 <select id="getBrushInfoById"  parameterType="java.lang.Long" resultMap="BrushInfo">
-	select * 
+	select <include refid="BrushInfo_Column_List"/>
  from brush_info where id=#{id}
 </select>
 

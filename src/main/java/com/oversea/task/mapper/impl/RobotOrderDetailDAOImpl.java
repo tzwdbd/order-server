@@ -157,4 +157,11 @@ public class RobotOrderDetailDAOImpl extends BaseDao implements RobotOrderDetail
         map.put("siteName", siteName);
 		return getSqlSession().selectOne("getOrderDetailBySiteName", map);
 	}
+
+	@Override
+	public List<RobotOrderDetail> getOrderDetailsForSpiderExpress(String status) {
+		Map<String, Object> map = new HashMap<String, Object>();
+        map.put("status", status);
+        return getSqlSession().selectList("getOrderDetailsForSpiderExpress", map);
+	}
 }

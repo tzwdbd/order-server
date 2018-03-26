@@ -478,5 +478,14 @@
     	 select * from automan.order_detail where site_name = #{siteName} and product_url is not null and status =100 and `is_stockpile` is null order by id desc limit 1;
     </select>
     
+    <select id="getOrderDetailsForSpiderExpress" resultMap="RobotOrderDetail">
+        select
+        <include refid="RobotOrderDetail_Column_List"/>
+        from automan.order_detail where `status` in(${status})  and mall_order_no is not null
+        and
+        mall_order_no!='' and is_auto_express=2
+        order by gmt_modified
+    </select>
+    
     
 </mapper>

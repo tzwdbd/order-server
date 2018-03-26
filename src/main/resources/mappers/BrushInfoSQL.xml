@@ -23,7 +23,7 @@
 	<result  property="gmtModified"  column="gmt_modified"/>
 	<result  property="operatorId"  column="operator_id"/>
 	<result  property="productName"  column="product_name"/>
-	<result  property="shopName"  column=shop_name/>
+	<result  property="shopName"  column="shop_name"/>
 </resultMap>
 
 <sql id="BrushInfo_Column_List">
